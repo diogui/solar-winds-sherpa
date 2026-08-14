@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import whoWeAre from '../assets/images/who-we-are.jpg';
+---
+
+<section class="who" aria-labelledby="who-heading">
+	<div class="who-media">
+		<Image
+			src={whoWeAre}
+			alt="A lone figure stands on a dark ridge beneath the Milky Way, looking up at a densely starred night sky"
+			widths={[800, 1400, 2000]}
+			sizes="100vw"
+			class="who-photo"
+			loading="lazy"
+		/>
+		<div class="who-shade"></div>
+	</div>
+	<div class="who-content reveal">
+		<p class="label">Who we are</p>
+		<h2 id="who-heading">Solar Wind Sherpas</h2>
+		<p>
+			For over 30 years we have travelled the world to study total solar eclipses and understand
+			our star, its wind, and its impact on Earth.
+		</p>
+		<a class="cta" href="/about">
+			Learn more about us <span class="cta-arrow" aria-hidden="true">→</span>
+		</a>
+	</div>
+</section>

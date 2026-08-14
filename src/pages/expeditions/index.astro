@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const expeditions = (await getCollection('expeditions')).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+	title="Expeditions"
+	description="From Spain to Antarctica, the Solar Wind Sherpas occupy the path of totality with imaging and spectroscopic instruments."
+>
+	<article class="page">
+		<div class="page-narrow">
+			<p class="label page-kicker">Our missions</p>
+			<h1>Expeditions</h1>
+			<p class="lead">
+				Each totality is a few minutes long. The years around it are spent choosing sites, building
+				instruments, and moving them to the shadow.
+			</p>
+		</div>
+
+		<div class="expedition-index">
+			{
+				expeditions.map((item) => (
+					<a class="mission-card reveal" href={`/expeditions/${item.id}`}>
+						<Image
+							src={item.data.cover}
+							alt={`${item.data.location}, ${item.data.country}, ${item.data.year}`}
+							widths={[640, 960]}
+							sizes="(max-width: 900px) 100vw, 50vw"
+							loading="lazy"
+						/>
+						<div class="mission-meta">
+							<span class="mission-year">{item.data.year}</span>
+							<span class="mission-place">{item.data.title}</span>
+						</div>
+					</a>
+				))
+			}
+		</div>
+	</article>
+</BaseLayout>

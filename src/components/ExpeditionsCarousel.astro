@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	expeditions: CollectionEntry<'expeditions'>[];
+}
+
+const { expeditions } = Astro.props;
+---
+
+<section class="missions" id="expeditions" aria-labelledby="missions-heading">
+	<div class="missions-head reveal">
+		<p class="label">Our missions</p>
+		<h2 id="missions-heading">Expeditions</h2>
+	</div>
+
+	<div class="carousel" data-carousel>
+		<div class="carousel-track" data-carousel-track tabindex="0" aria-label="Expedition photographs">
+			{
+				expeditions.map((item) => (
+					<a class="mission-card" href={`/expeditions/${item.id}`}>
+						<Image
+							src={item.data.cover}
+							alt={`${item.data.location}, ${item.data.country}, ${item.data.year}`}
+							widths={[480, 720]}
+							sizes="(max-width: 900px) 78vw, 340px"
+							loading="lazy"
+						/>
+						<div class="mission-meta">
+							<span class="mission-year">{item.data.year}</span>
+							<span class="mission-place">{item.data.title}</span>
+						</div>
+					</a>
+				))
+			}
+		</div>
+
+		<div class="carousel-controls">
+			<a class="cta" href="/expeditions">
+				See all expeditions <span class="cta-arrow" aria-hidden="true">→</span>
+			</a>
+			<div class="carousel-arrows">
+				<button class="icon-btn" type="button" data-carousel-prev aria-label="Previous expeditions">
+					←
+				</button>
+				<button class="icon-btn" type="button" data-carousel-next aria-label="Next expeditions">
+					→
+				</button>
+			</div>
+		</div>
+	</div>
+</section>

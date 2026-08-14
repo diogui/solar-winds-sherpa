@@ -1,0 +1,36 @@
+---
+interface Props {
+	id: string;
+	class?: string;
+}
+
+const { id, class: className } = Astro.props;
+const glow = `${id}-corona`;
+const sheen = `${id}-sheen`;
+---
+
+<svg
+	class:list={['eclipse-mark', className]}
+	viewBox="0 0 64 64"
+	fill="none"
+	aria-hidden="true"
+	focusable="false"
+>
+	<defs>
+		<radialGradient id={glow} cx="47%" cy="44%" r="54%">
+			<stop offset="28%" stop-color="#F7F1E4" stop-opacity="0.95"></stop>
+			<stop offset="42%" stop-color="#F3EBDA" stop-opacity="0.42"></stop>
+			<stop offset="68%" stop-color="#E8DCC4" stop-opacity="0.1"></stop>
+			<stop offset="100%" stop-color="#E8DCC4" stop-opacity="0"></stop>
+		</radialGradient>
+		<radialGradient id={sheen} cx="38%" cy="36%" r="22%">
+			<stop offset="0%" stop-color="#FFFDF8" stop-opacity="0.55"></stop>
+			<stop offset="100%" stop-color="#FFFDF8" stop-opacity="0"></stop>
+		</radialGradient>
+	</defs>
+	<ellipse cx="32.6" cy="31.4" rx="29" ry="27.2" fill={`url(#${glow})`}></ellipse>
+	<circle cx="32" cy="32" r="14.6" stroke="#F4EEE0" stroke-width="1.05" opacity="0.55"></circle>
+	<circle cx="32" cy="32" r="13.8" fill="#080D14"></circle>
+	<circle cx="32" cy="32" r="13.8" fill={`url(#${sheen})`}></circle>
+	<circle cx="22.1" cy="26.2" r="1.35" fill="#E87991"></circle>
+</svg>

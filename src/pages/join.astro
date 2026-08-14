@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactSection from '../components/ContactSection.astro';
+---
+
+<BaseLayout
+	title="Join / Support"
+	description="Support Solar Wind Sherpas expeditions, collaborate on coronal science, or follow the work from the field."
+>
+	<article class="page">
+		<div class="page-narrow">
+			<p class="label page-kicker">Join / Support</p>
+			<h1>Carry the instruments farther</h1>
+			<p class="lead">
+				Eclipse science is expensive in the least glamorous ways: freight, customs, generators,
+				and the people who can align a spectrograph at 4 a.m. Support keeps the team in the path.
+			</p>
+		</div>
+
+		<div class="support-grid">
+			<section class="support-card reveal">
+				<p class="label">Expeditions</p>
+				<h2>Fund a site</h2>
+				<p>
+					A single observing station is a temporary observatory. Contributions cover optics,
+					shipping, and the days on the ground when the sky is still blue and the clock is already
+					running.
+				</p>
+			</section>
+			<section class="support-card reveal">
+				<p class="label">Science</p>
+				<h2>Collaborate</h2>
+				<p>
+					We work with solar physicists, instrument builders, and students. If your group has a
+					question that totality can answer, write to us before the next path is fixed.
+				</p>
+			</section>
+			<section class="support-card reveal">
+				<p class="label">Public</p>
+				<h2>Follow the work</h2>
+				<p>
+					Field notes, images, and papers will live here as the archive grows. Until then, the
+					contact form is the most reliable way to stay close to the expedition.
+				</p>
+			</section>
+		</div>
+	</article>
+	<ContactSection />
+</BaseLayout>

@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import milkyWay from '../assets/images/milky-way.jpg';
+---
+
+<BaseLayout
+	title="Science"
+	description="During totality we image the solar corona in white light and in forbidden emission lines to diagnose temperature, magnetic structure, and the origin of the solar wind."
+>
+	<article class="page">
+		<div class="page-narrow">
+			<p class="label page-kicker">Science</p>
+			<h1>The corona, in a few minutes of night</h1>
+			<p class="lead">
+				A total solar eclipse is a laboratory. The Moon occults the photosphere so completely that
+				the faint outer atmosphere of the Sun — and the region where the solar wind begins — can be
+				measured from the ground.
+			</p>
+		</div>
+
+		<div class="page-hero-image reveal">
+			<Image
+				src={milkyWay}
+				alt="The Milky Way stretching across a dark night sky, dense with stars and dust lanes"
+				widths={[900, 1400, 2000]}
+				sizes="(max-width: 1120px) 100vw, 1120px"
+				loading="eager"
+			/>
+		</div>
+
+		<div class="page-narrow prose">
+			<p>
+				Our observations combine high-resolution white-light imaging of the corona with narrow-band
+				filters centred on forbidden emission lines of highly ionized iron, including Fe XI and Fe
+				XIV. Those lines retain the diagnostic power of extreme-ultraviolet spectroscopy, but they
+				can be recorded at much larger heights during the darkness of totality.
+			</p>
+			<p>
+				From those data we construct maps of electron temperature, ion charge state, and magnetic
+				topology in the acceleration region of the solar wind — a zone that remains difficult to
+				observe any other way. Occasional coronal mass ejections caught in the field of view become
+				experiments of their own.
+			</p>
+		</div>
+
+		<ol class="question-list page-wide">
+			<li class="reveal">
+				<h2>Why is the corona so hot?</h2>
+				<p>
+					The photosphere is about 5,800 K. A few thousand kilometres above it, the corona exceeds a
+					million. Totality lets us see how that heat is distributed with height and how it relates
+					to magnetic structure.
+				</p>
+			</li>
+			<li class="reveal">
+				<h2>Where does the solar wind originate?</h2>
+				<p>
+					The continuous outflow that fills the heliosphere is launched in the inner corona. Emission
+					lines of heavy ions mark the freeze-in of charge states and the rise of outflow speed.
+				</p>
+			</li>
+			<li class="reveal">
+				<h2>What holds magnetic structures in place?</h2>
+				<p>
+					Streamers, prominences, and the large-scale field of the corona evolve over the solar
+					cycle. Eclipse imaging records their geometry at a resolution and inner height that
+					coronagraphs cannot match.
+				</p>
+			</li>
+		</ol>
+	</article>
+</BaseLayout>

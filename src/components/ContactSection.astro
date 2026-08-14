@@ -1,0 +1,38 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="contact" id="contact" aria-labelledby="contact-heading">
+	<div class="contact-grid">
+		<div class="reveal">
+			<p class="label">Contact</p>
+			<h2 id="contact-heading">Write to the expedition</h2>
+			<p>
+				Collaboration, field support, press, and questions about the science all arrive here. We
+				read every message — replies follow the observing calendar.
+			</p>
+		</div>
+
+		<form class="contact-form reveal" data-contact-form>
+			<label class="field">
+				<span>Name</span>
+				<input type="text" name="name" autocomplete="name" required />
+			</label>
+			<label class="field">
+				<span>Email</span>
+				<input type="email" name="email" autocomplete="email" required />
+			</label>
+			<label class="field">
+				<span>Message</span>
+				<textarea name="message" required></textarea>
+			</label>
+			<button class="cta form-submit" type="submit">
+				Send message <span class="cta-arrow" aria-hidden="true">→</span>
+			</button>
+			<p class="form-note" data-form-status hidden></p>
+			<p class="footer-meta">
+				Or write directly to {site.email}
+			</p>
+		</form>
+	</div>
+</section>

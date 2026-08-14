@@ -1,0 +1,74 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import landscape from '../assets/images/night-mountain.jpg';
+
+const team = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
+const teamMembers = await Promise.all(
+	team.map(async (member) => {
+		const rendered = await render(member);
+		return { member, Content: rendered.Content };
+	}),
+);
+---
+
+<BaseLayout
+	title="About"
+	description="The Solar Wind Sherpas are scientists and explorers who have spent three decades travelling to total solar eclipses to study the corona and the solar wind."
+>
+	<article class="page">
+		<div class="page-narrow">
+			<p class="label page-kicker">About</p>
+			<h1>Scientists at the edge of the shadow</h1>
+			<p class="lead">
+				An international team founded in 1995 by Dr. Shadia R. Habbal. We carry observatories to
+				the path of totality — often to places with no observatory at all.
+			</p>
+		</div>
+
+		<div class="page-hero-image reveal">
+			<Image
+				src={landscape}
+				alt="Snow-capped mountain peaks under a dark, star-filled sky, with mist along the valley floor"
+				widths={[900, 1400, 2000]}
+				sizes="(max-width: 1120px) 100vw, 1120px"
+				loading="eager"
+			/>
+		</div>
+
+		<div class="page-narrow prose">
+			<p>
+				The Solar Wind Sherpas began as a small group of solar physicists who understood that the
+				corona — the Sun’s outer atmosphere — is only fully visible to the naked eye, and to certain
+				optical diagnostics, during a total solar eclipse. Space-borne coronagraphs occult the inner
+				corona. Totality does not.
+			</p>
+			<p>
+				The name is literal. Each expedition moves specialised imaging systems, spectrographs,
+				tracking mounts, and power into remote desert, ice, mountain, and coastal sites chosen for
+				the geometry of the umbra. The team has grown from six people to more than thirty scientists,
+				engineers, and observers from around the world.
+			</p>
+			<p>
+				What unites the group is a single physical problem: why the corona is hotter than a million
+				degrees, how the solar wind is launched, and how magnetic structure in that region shapes
+				space weather at Earth. The work is published. The method is still to stand in the shadow
+				with instruments that have been aligned in the hours before second contact.
+			</p>
+		</div>
+
+		<div class="page-narrow">
+			{
+				teamMembers.map(({ member, Content }) => (
+					<section class="team-card reveal">
+						<p class="role">{member.data.role}</p>
+						<h3>{member.data.name}</h3>
+						{member.data.affiliation && <p>{member.data.affiliation}</p>}
+						<Content />
+					</section>
+				))
+			}
+		</div>
+	</article>
+</BaseLayout>

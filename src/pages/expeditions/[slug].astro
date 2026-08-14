@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+	const expeditions = await getCollection('expeditions');
+	return expeditions.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+	title={`${entry.data.year} ${entry.data.title}`}
+	description={entry.data.excerpt}
+>
+	<article class="page">
+		<div class="page-narrow">
+			<p class="label page-kicker">{entry.data.dates}</p>
+			<h1>
+				{entry.data.year}
+				<br />
+				{entry.data.title}
+			</h1>
+			<p class="lead">{entry.data.excerpt}</p>
+		</div>
+
+		<div class="page-hero-image">
+			<Image
+				src={entry.data.cover}
+				alt={`${entry.data.location}, ${entry.data.country}`}
+				widths={[900, 1400, 2000]}
+				sizes="(max-width: 1120px) 100vw, 1120px"
+				loading="eager"
+			/>
+		</div>
+
+		<div class="page-narrow prose">
+			<Content />
+			<p>
+				<a class="cta" href="/expeditions">
+					All expeditions <span class="cta-arrow" aria-hidden="true">←</span>
+				</a>
+			</p>
+		</div>
+	</article>
+</BaseLayout>

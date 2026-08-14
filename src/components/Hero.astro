@@ -1,0 +1,43 @@
+---
+import EclipseMark from './EclipseMark.astro';
+---
+
+<section class="hero" data-hero aria-label="Total solar eclipse">
+	<div class="eclipse-origin" data-eclipse-origin aria-hidden="true"></div>
+
+	<div class="eclipse-fly" data-eclipse>
+		<img
+			src="/images/eclipse.webp"
+			width="1800"
+			height="1800"
+			alt="Total solar eclipse: the black disk of the Moon surrounded by a warm solar corona and a small pink prominence"
+			class="eclipse-fly-photo"
+			data-eclipse-photo
+			fetchpriority="high"
+			decoding="async"
+		/>
+		<div class="eclipse-fly-mark" data-eclipse-mark>
+			<EclipseMark id="hero" />
+		</div>
+	</div>
+
+	<div class="hero-copy" data-hero-copy>
+		<p class="hero-lines">
+			<span>We chase total solar eclipses</span>
+			<span>We study the Sun’s corona</span>
+			<span>To uncover the secrets of the solar wind.</span>
+		</p>
+		<a class="cta" href="#expeditions">
+			Let’s Explore Together <span class="cta-arrow" aria-hidden="true">→</span>
+		</a>
+	</div>
+
+	<div class="scroll-hint" aria-hidden="true">
+		Scroll
+		<i>↓</i>
+	</div>
+</section>
+
+<script>
+	import '../scripts/eclipse-transition.ts';
+</script>

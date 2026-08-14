@@ -1,0 +1,28 @@
+---
+import { footerLinks, site } from '../data/site';
+---
+
+<footer class="site-footer">
+	<div class="footer-inner">
+		<div class="footer-brand">
+			<a href="/" aria-label="Solar Wind Sherpas home">
+				<span class="brand-solar">Solar Wind</span>
+				<span class="brand-sherpas">Sherpas</span>
+			</a>
+			<p class="footer-meta">
+				Eclipse and expedition photographs via Wikimedia Commons and Unsplash.
+			</p>
+		</div>
+		<ul class="footer-links">
+			{
+				footerLinks.map((item) => (
+					<li>
+						<a class="nav-link" href={item.href}>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</footer>

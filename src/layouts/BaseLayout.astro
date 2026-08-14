@@ -1,0 +1,53 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import '@fontsource-variable/inter';
+import '@fontsource/space-grotesk/400.css';
+import '@fontsource/space-grotesk/500.css';
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	variant?: 'home' | 'page';
+}
+
+const {
+	title,
+	description = site.description,
+	variant = 'page',
+} = Astro.props;
+
+const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — Total solar eclipse science`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{pageTitle}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="theme-color" content="#080D14" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<slot name="head" />
+	</head>
+	<body>
+		<a class="skip-link" href="#main">Skip to content</a>
+		<Header variant={variant} />
+		<main id="main">
+			<slot />
+		</main>
+		<Footer />
+		<script src="../scripts/ui.ts"></script>
+	</body>
+</html>

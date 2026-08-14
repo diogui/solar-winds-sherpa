@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import WhoWeAre from '../components/WhoWeAre.astro';
+import ExpeditionsCarousel from '../components/ExpeditionsCarousel.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { site } from '../data/site';
+
+const expeditions = (await getCollection('expeditions')).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout variant="home" description={site.description}>
+	<link slot="head" rel="preload" as="image" href="/images/eclipse.webp" type="image/webp" />
+	<Hero />
+	<WhoWeAre />
+	<ExpeditionsCarousel expeditions={expeditions} />
+	<ContactSection />
+</BaseLayout>

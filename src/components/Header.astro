@@ -1,0 +1,83 @@
+---
+import { navLeft, navRight } from '../data/site';
+import EclipseMark from './EclipseMark.astro';
+
+interface Props {
+	variant?: 'home' | 'page';
+}
+
+const { variant = 'page' } = Astro.props;
+const path = Astro.url.pathname;
+---
+
+<header class="site-header" data-header data-variant={variant}>
+	<div class="header-fill" aria-hidden="true"></div>
+	<div class="logo-well" aria-hidden="true"></div>
+
+	<nav class="header-nav" aria-label="Primary">
+		<button
+			class="menu-toggle"
+			type="button"
+			data-menu-toggle
+			aria-expanded="false"
+			aria-controls="mobile-nav"
+			aria-label="Open menu"
+		>
+			<span></span>
+		</button>
+
+		<ul class="nav-cluster nav-cluster--left">
+			{
+				navLeft.map((item) => (
+					<li>
+						<a
+							class="nav-link"
+							href={item.href}
+							aria-current={path === item.href ? 'page' : undefined}
+						>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+
+		<a class="brand" href="/" aria-label="Solar Wind Sherpas home">
+			<span class="brand-eclipse-slot" data-eclipse-target>
+				<EclipseMark id="nav" class="brand-eclipse" />
+			</span>
+			<span class="brand-solar">Solar Wind</span>
+			<span class="brand-sherpas">Sherpas</span>
+		</a>
+
+		<ul class="nav-cluster nav-cluster--right">
+			{
+				navRight.map((item) => (
+					<li>
+						<a
+							class="nav-link"
+							href={item.href}
+							aria-current={path === item.href ? 'page' : undefined}
+						>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+</header>
+
+<div class="mobile-nav" id="mobile-nav" data-mobile-nav aria-hidden="true">
+	<ul>
+		{
+			[...navLeft, ...navRight].map((item) => (
+				<li>
+					<a href={item.href} aria-current={path === item.href ? 'page' : undefined}>
+						{item.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</div>
