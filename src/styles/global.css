@@ -479,25 +479,31 @@ p {
 .hero-copy {
 	position: absolute;
 	left: 50%;
-	bottom: 11vh;
+	bottom: 10vh;
 	z-index: 6;
 	width: min(44rem, calc(100% - 2.5rem));
 	transform: translateX(-50%);
 	text-align: center;
 }
 
-.hero-lines {
-	margin: 0 0 1.5rem;
+.hero-question {
+	margin: 0 0 0.85rem;
 	font-family: var(--font-display);
-	font-size: clamp(1.35rem, 2.6vw, 2rem);
+	font-size: clamp(1.3rem, 2.5vw, 1.9rem);
 	font-weight: 300;
-	letter-spacing: -0.02em;
-	line-height: 1.35;
+	letter-spacing: -0.03em;
+	line-height: 1.25;
 	color: var(--text);
+	text-wrap: balance;
 }
 
-.hero-lines span {
-	display: block;
+.hero-answer {
+	margin: 0 auto 1.5rem;
+	max-width: 36rem;
+	font-size: 0.98rem;
+	line-height: 1.55;
+	color: var(--text-dim);
+	text-wrap: pretty;
 }
 
 .scroll-hint {
@@ -1092,11 +1098,15 @@ p {
 	}
 
 	.hero-copy {
-		bottom: 9vh;
+		bottom: 8vh;
 	}
 
-	.hero-lines {
-		font-size: 1.25rem;
+	.hero-question {
+		font-size: 1.28rem;
+	}
+
+	.hero-answer {
+		font-size: 0.92rem;
 	}
 
 	.eclipse-fly,
