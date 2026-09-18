@@ -1,28 +1,58 @@
 ---
-import { footerLinks, site } from '../data/site';
+import EclipseMark from './EclipseMark.astro';
+import { navLeft, navRight, site } from '../data/site';
 ---
 
 <footer class="site-footer">
+	<div class="footer-orbit" aria-hidden="true"></div>
+	<div class="footer-mark" aria-hidden="true">
+		<EclipseMark id="footer-watermark" class="footer-watermark" />
+	</div>
+
 	<div class="footer-inner">
 		<div class="footer-brand">
-			<a href="/" aria-label="Solar Wind Sherpas home">
+			<a href="/" class="footer-logo-link" aria-label="Solar Wind Sherpas home">
+				<span class="footer-brand-mark">
+					<EclipseMark id="footer" class="footer-eclipse" />
+				</span>
 				<span class="brand-solar">Solar Wind</span>
 				<span class="brand-sherpas">Sherpas</span>
 			</a>
-			<p class="footer-meta">
-				Eclipse and expedition photographs via Wikimedia Commons and Unsplash.
-			</p>
+			<p class="footer-tagline">{site.tagline}</p>
+			<a class="footer-mail" href={`mailto:${site.email}`}>{site.email}</a>
 		</div>
-		<ul class="footer-links">
+
+		<nav class="footer-nav" aria-label="Footer">
+			<p class="footer-kicker">Explore</p>
+			<ul class="footer-links">
+				{
+					navLeft.map((item) => (
+						<li>
+							<a href={item.href}>{item.label}</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="footer-support">
+			<p class="footer-kicker">Support</p>
+			<p class="footer-support-copy">Help make the next totality possible.</p>
 			{
-				footerLinks.map((item) => (
-					<li>
-						<a class="nav-link" href={item.href}>
-							{item.label}
-						</a>
-					</li>
+				navRight.map((item) => (
+					<a class="cta cta--button" href={item.href}>
+						{item.label} <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
 				))
 			}
-		</ul>
+		</div>
+	</div>
+
+	<div class="footer-base">
+		<p>Solar Wind Sherpas</p>
+		<p class="footer-meta">
+			Eclipse photograph from the Solar Wind Sherpas archive. Other field photographs and credits
+			are still being confirmed.
+		</p>
 	</div>
 </footer>

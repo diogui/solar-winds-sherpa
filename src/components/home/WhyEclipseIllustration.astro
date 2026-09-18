@@ -1,0 +1,238 @@
+---
+const cx = 200;
+const cy = 200;
+
+const toRad = (deg: number) => (deg * Math.PI) / 180;
+
+const petal = (deg: number, len: number, spread: number) => {
+	const a = toRad(deg);
+	const p = a + Math.PI / 2;
+	const tipX = cx + Math.cos(a) * len;
+	const tipY = cy + Math.sin(a) * len;
+	const c1x = cx + Math.cos(a) * len * 0.38 + Math.cos(p) * spread;
+	const c1y = cy + Math.sin(a) * len * 0.38 + Math.sin(p) * spread;
+	const c2x = cx + Math.cos(a) * len * 0.38 - Math.cos(p) * spread;
+	const c2y = cy + Math.sin(a) * len * 0.38 - Math.sin(p) * spread;
+	return `M${cx} ${cy} Q ${c1x.toFixed(1)} ${c1y.toFixed(1)} ${tipX.toFixed(1)} ${tipY.toFixed(1)} Q ${c2x.toFixed(1)} ${c2y.toFixed(1)} ${cx} ${cy}`;
+};
+
+const streamers = [
+	{ deg: -6, len: 188, spread: 36, op: 0.5 },
+	{ deg: 12, len: 172, spread: 26, op: 0.38 },
+	{ deg: 174, len: 184, spread: 34, op: 0.48 },
+	{ deg: 192, len: 164, spread: 24, op: 0.34 },
+	{ deg: -24, len: 138, spread: 16, op: 0.26 },
+	{ deg: 34, len: 126, spread: 14, op: 0.22 },
+	{ deg: 150, len: 132, spread: 15, op: 0.24 },
+	{ deg: 214, len: 118, spread: 13, op: 0.2 },
+	{ deg: -76, len: 152, spread: 7, op: 0.3 },
+	{ deg: -90, len: 164, spread: 6, op: 0.36 },
+	{ deg: -104, len: 146, spread: 7, op: 0.26 },
+	{ deg: 76, len: 140, spread: 6, op: 0.24 },
+	{ deg: 90, len: 156, spread: 5.5, op: 0.32 },
+	{ deg: 106, len: 132, spread: 6.5, op: 0.22 },
+	{ deg: 48, len: 108, spread: 10, op: 0.16 },
+	{ deg: -46, len: 104, spread: 9, op: 0.15 },
+	{ deg: 230, len: 110, spread: 11, op: 0.16 },
+	{ deg: 132, len: 106, spread: 10, op: 0.15 },
+	{ deg: -132, len: 98, spread: 9, op: 0.14 },
+];
+
+const prominence = (deg: number, height: number, width = 0.22) => {
+	const a = toRad(deg);
+	const r0 = 52.4;
+	const x0 = cx + Math.cos(a - width) * r0;
+	const y0 = cy + Math.sin(a - width) * r0;
+	const x1 = cx + Math.cos(a) * (r0 + height);
+	const y1 = cy + Math.sin(a) * (r0 + height);
+	const x2 = cx + Math.cos(a + width) * r0;
+	const y2 = cy + Math.sin(a + width) * r0;
+	return `M ${x0.toFixed(1)} ${y0.toFixed(1)} Q ${x1.toFixed(1)} ${y1.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+};
+
+const prominences = [
+	{ deg: -128, height: 34, width: 0.32, w: 2.8, op: 1 },
+	{ deg: -142, height: 16, width: 0.16, w: 1.6, op: 0.8 },
+	{ deg: -38, height: 22, width: 0.22, w: 2.2, op: 0.95 },
+	{ deg: 28, height: 14, width: 0.15, w: 1.7, op: 0.72 },
+	{ deg: 158, height: 12, width: 0.13, w: 1.4, op: 0.58 },
+];
+
+const angDist = (a: number, b: number) => {
+	const d = Math.abs(a - b) % 360;
+	return d > 180 ? 360 - d : d;
+};
+
+const coronaRadius = (deg: number) => {
+	let radius = 82;
+	for (const streamer of streamers) {
+		const dist = angDist(deg, streamer.deg);
+		const sigma = Math.max(8, (Math.atan2(streamer.spread, streamer.len * 0.42) * 180) / Math.PI);
+		radius = Math.max(radius, streamer.len * Math.exp(-0.5 * (dist / sigma) ** 2));
+	}
+	return radius + 6;
+};
+
+const coronaPoint = (deg: number) => {
+	const radius = coronaRadius(deg);
+	const a = toRad(deg);
+	return {
+		x: cx + Math.cos(a) * radius,
+		y: cy + Math.sin(a) * radius,
+	};
+};
+
+const coronaOutline = (() => {
+	const steps = 96;
+	const pts = Array.from({ length: steps }, (_, i) => coronaPoint((i / steps) * 360 - 180));
+	const start = pts[0];
+	const curves = pts
+		.slice(1)
+		.map((pt) => `L ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`)
+		.join(' ');
+	return `M ${start.x.toFixed(1)} ${start.y.toFixed(1)} ${curves} Z`;
+})();
+
+const coronaLabelAnchor = coronaPoint(-28);
+---
+
+<svg
+	class="why-illu"
+	viewBox="0 0 400 400"
+	role="img"
+	aria-hidden="true"
+	focusable="false"
+>
+	<title>Illustrated sequence of a total solar eclipse</title>
+	<defs>
+		<radialGradient id="why-sky" cx="50%" cy="42%" r="70%">
+			<stop offset="0%" stop-color="#141c33"></stop>
+			<stop offset="55%" stop-color="#0b101c"></stop>
+			<stop offset="100%" stop-color="#05070c"></stop>
+		</radialGradient>
+		<radialGradient id="why-glare" cx="50%" cy="50%" r="50%">
+			<stop offset="0%" stop-color="#fff6d6" stop-opacity="1"></stop>
+			<stop offset="28%" stop-color="#f3d48a" stop-opacity="0.95"></stop>
+			<stop offset="52%" stop-color="#e8c56a" stop-opacity="0.35"></stop>
+			<stop offset="100%" stop-color="#e8c56a" stop-opacity="0"></stop>
+		</radialGradient>
+		<radialGradient id="why-corona-core" cx="50%" cy="50%" r="50%">
+			<stop offset="0%" stop-color="#fffaf0" stop-opacity="0.95"></stop>
+			<stop offset="16%" stop-color="#f4e6c4" stop-opacity="0.62"></stop>
+			<stop offset="38%" stop-color="#e8d4a0" stop-opacity="0.22"></stop>
+			<stop offset="100%" stop-color="#e8d4a0" stop-opacity="0"></stop>
+		</radialGradient>
+		<radialGradient id="why-inner-ring" cx="50%" cy="50%" r="50%">
+			<stop offset="0%" stop-color="#fffdf8" stop-opacity="0"></stop>
+			<stop offset="58%" stop-color="#fff6d8" stop-opacity="0"></stop>
+			<stop offset="72%" stop-color="#fff8e4" stop-opacity="0.85"></stop>
+			<stop offset="86%" stop-color="#f0e0b8" stop-opacity="0.28"></stop>
+			<stop offset="100%" stop-color="#f0e0b8" stop-opacity="0"></stop>
+		</radialGradient>
+		<radialGradient id="why-sun-disk" cx="42%" cy="38%" r="62%">
+			<stop offset="0%" stop-color="#fff8d8"></stop>
+			<stop offset="55%" stop-color="#f0c45a"></stop>
+			<stop offset="100%" stop-color="#d49a28"></stop>
+		</radialGradient>
+		<linearGradient id="why-prom" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0%" stop-color="#ffd4dc"></stop>
+			<stop offset="45%" stop-color="#e87991"></stop>
+			<stop offset="100%" stop-color="#c45d72"></stop>
+		</linearGradient>
+		<filter id="why-soft" x="-40%" y="-40%" width="180%" height="180%">
+			<feGaussianBlur stdDeviation="2.4"></feGaussianBlur>
+		</filter>
+		<filter id="why-bloom" x="-50%" y="-50%" width="200%" height="200%">
+			<feGaussianBlur stdDeviation="10"></feGaussianBlur>
+		</filter>
+		<filter id="why-prom-glow" x="-40%" y="-40%" width="180%" height="180%">
+			<feGaussianBlur stdDeviation="1.2"></feGaussianBlur>
+		</filter>
+		<mask id="why-limb">
+			<rect width="400" height="400" fill="white"></rect>
+			<circle cx="200" cy="200" r="52.2" fill="black"></circle>
+		</mask>
+	</defs>
+
+	<rect width="400" height="400" fill="url(#why-sky)"></rect>
+
+	<g class="why-stars" fill="#f5f5f3">
+		<circle cx="52" cy="58" r="0.9" opacity="0.55"></circle>
+		<circle cx="88" cy="36" r="0.7" opacity="0.35"></circle>
+		<circle cx="310" cy="48" r="0.8" opacity="0.45"></circle>
+		<circle cx="348" cy="96" r="0.6" opacity="0.3"></circle>
+		<circle cx="42" cy="310" r="0.7" opacity="0.28"></circle>
+		<circle cx="330" cy="328" r="0.9" opacity="0.4"></circle>
+		<circle cx="268" cy="24" r="0.55" opacity="0.32"></circle>
+		<circle cx="118" cy="348" r="0.5" opacity="0.25"></circle>
+		<circle cx="372" cy="210" r="0.6" opacity="0.28"></circle>
+	</g>
+
+	<g mask="url(#why-limb)">
+		<g class="why-streamers" filter="url(#why-soft)">
+			{
+				streamers.map((item) => (
+					<path
+						d={petal(item.deg, item.len, item.spread)}
+						fill="#f3e6c4"
+						opacity={item.op}
+					></path>
+				))
+			}
+		</g>
+
+		<circle class="why-corona-glow" cx="200" cy="200" r="108" fill="url(#why-corona-core)"></circle>
+		<circle class="why-corona-glow" cx="200" cy="200" r="78" fill="url(#why-inner-ring)"></circle>
+
+		<circle
+			class="why-chromosphere"
+			cx="200"
+			cy="200"
+			r="53.2"
+			fill="none"
+			stroke="#e87991"
+			stroke-width="1.35"
+			stroke-opacity="0.7"
+		></circle>
+
+		<g class="why-prominences" fill="none" stroke="url(#why-prom)" filter="url(#why-prom-glow)">
+			{
+				prominences.map((item) => (
+					<path
+						d={prominence(item.deg, item.height, item.width)}
+						stroke-width={item.w}
+						opacity={item.op}
+						stroke-linecap="round"
+					></path>
+				))
+			}
+		</g>
+	</g>
+
+	<circle class="why-glare" cx="200" cy="200" r="168" fill="url(#why-glare)" filter="url(#why-bloom)"
+	></circle>
+	<circle class="why-photosphere" cx="200" cy="200" r="52" fill="url(#why-sun-disk)"></circle>
+	<circle class="why-moon" cx="200" cy="200" r="52.4" fill="#070a12"></circle>
+
+	<g class="why-callouts">
+		<g class="why-callout why-callout--corona">
+			<path class="why-corona-outline" d={coronaOutline}></path>
+			<line
+				x1={coronaLabelAnchor.x.toFixed(1)}
+				y1={coronaLabelAnchor.y.toFixed(1)}
+				x2="318"
+				y2="46"
+			></line>
+			<circle cx="318" cy="46" r="1.6"></circle>
+			<text x="386" y="42" text-anchor="end">Solar corona</text>
+			<text class="why-callout-note" x="386" y="56" text-anchor="end">The Sun’s outer atmosphere</text>
+		</g>
+		<g class="why-callout why-callout--prominence">
+			<ellipse cx="164" cy="156" rx="20" ry="17" transform="rotate(-38 164 156)"></ellipse>
+			<line x1="150" y1="144" x2="86" y2="58"></line>
+			<circle cx="86" cy="58" r="1.6"></circle>
+			<text x="80" y="52" text-anchor="end">Prominence</text>
+			<text class="why-callout-note" x="80" y="66" text-anchor="end">Plasma looping from the limb</text>
+		</g>
+	</g>
+</svg>

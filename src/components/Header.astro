@@ -55,7 +55,7 @@ const path = Astro.url.pathname;
 				navRight.map((item) => (
 					<li>
 						<a
-							class="nav-link"
+							class="nav-link nav-link--support"
 							href={item.href}
 							aria-current={path === item.href ? 'page' : undefined}
 						>
@@ -73,7 +73,11 @@ const path = Astro.url.pathname;
 		{
 			[...navLeft, ...navRight].map((item) => (
 				<li>
-					<a href={item.href} aria-current={path === item.href ? 'page' : undefined}>
+					<a
+						href={item.href}
+						class={item.href === '/join' ? 'is-support' : undefined}
+						aria-current={path === item.href ? 'page' : undefined}
+					>
 						{item.label}
 					</a>
 				</li>

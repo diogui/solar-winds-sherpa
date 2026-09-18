@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import instruments from '../../assets/images/field/latest-instruments.jpg';
+import ridge from '../../assets/images/field/latest-ridge.jpg';
+import team from '../../assets/images/field/latest-team.jpg';
+
+const shots = [
+	{
+		image: instruments,
+		alt: 'Portable solar instruments and a field laptop on the Burgos ridge',
+		variant: 'instruments',
+	},
+	{
+		image: ridge,
+		alt: 'The Solar Wind Sherpas observing site near Burgos at sunset, with telescopes along the ridge',
+		variant: 'ridge',
+	},
+	{
+		image: team,
+		alt: 'Team members in the field around a telescope during the 2026 Spain expedition',
+		variant: 'team',
+	},
+] as const;
+---
+
+<section class="home-latest" aria-labelledby="latest-heading">
+	<!-- Review: photographer credits — Václav Široký (ridge & instruments); team photograph to confirm -->
+	<div class="home-latest-frame">
+		{
+			shots.map((shot) => (
+				<figure class:list={['home-latest-shot', `home-latest-shot--${shot.variant}`]}>
+					<Image
+						src={shot.image}
+						alt={shot.alt}
+						widths={[480, 800, 1200]}
+						sizes="(max-width: 900px) 30vw, 22vw"
+						class="home-latest-photo"
+					/>
+				</figure>
+			))
+		}
+
+		<div class="home-latest-copy reveal">
+			<div class="home-latest-intro">
+				<p class="label">Latest expedition · 2026</p>
+				<h2 id="latest-heading">Burgos, Spain</h2>
+			</div>
+			<p>
+				In 2026, our pursuit of total solar eclipses brought us to Burgos, Spain. Discover the
+				setting, the preparation and the people behind this expedition, and the scientific questions
+				that brought us into the field.
+			</p>
+			<a class="cta" href="/expeditions/spain-2026">
+				Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
+			</a>
+		</div>
+	</div>
+</section>

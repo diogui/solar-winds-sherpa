@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import freezeIn from '../../assets/images/papers/fe-composite.jpg';
+import structures from '../../assets/images/papers/corona-structures.jpg';
+import ironLine from '../../assets/images/papers/fe-xi.jpg';
+
+const papers = [
+	{
+		kicker: 'Boe et al. · 2018 · ApJ',
+		title: 'Tracing the solar wind’s origins',
+		text: 'Observations from the 2015 eclipse helped identify where two types of iron ions settle into the charge states they carry outward with the solar wind, offering clues to conditions near the Sun.',
+		original:
+			'The First Empirical Determination of the Fe¹⁰⁺ and Fe¹³⁺ Freeze-in Distances in the Solar Corona',
+		cta: 'View publication',
+		href: 'https://doi.org/10.3847/1538-4357/aabfb7',
+		external: true,
+		image: freezeIn,
+		alt: 'Composite eclipse image of the solar corona, with Fe XI emission in red and Fe XIV in green',
+		variant: 'freeze',
+	},
+	{
+		kicker: 'Druckmüller et al. · 2014 · ApJ',
+		title: 'Revealing fine structures in the corona',
+		text: 'Detailed processing of eclipse images revealed faint loops, rings and twisted structures, providing new evidence of the corona’s dynamic behavior.',
+		original: 'Discovery of a New Class of Coronal Structures in White Light Eclipse Images',
+		cta: 'View publication',
+		href: 'https://doi.org/10.1088/0004-637X/785/1/14',
+		external: true,
+		image: structures,
+		alt: 'Processed white-light eclipse image showing fine streamers and a prominence in the solar corona',
+		variant: 'structures',
+	},
+	{
+		kicker: 'The observing program',
+		title: 'The corona, in a few minutes of night',
+		text: 'Our observations combine high-resolution white-light imaging of the corona with narrow-band filters centred on forbidden emission lines of highly ionized iron, including Fe XI and Fe XIV.',
+		cta: 'Explore the science',
+		href: '/science',
+		external: false,
+		image: ironLine,
+		alt: 'Narrow-band eclipse image of the solar corona in Fe XI emission',
+		variant: 'archive',
+	},
+] as const;
+---
+
+<!--
+	Review: card thumbnails are cropped from Boe et al. 2018, arXiv 1805.03211 (author preprint Fig. 1).
+	Card 1 = Fig. 1C (Fe XI red + Fe XIV green). Card 2 = Fig. 1A (processed white light, 2015 eclipse)
+	as a stand-in for Druckmüller et al. 2014 — replace with a figure from that paper when Danilo has one.
+	Card 3 = Fig. 1D (Fe XI); not a third paper. Confirm a third publication before adding one.
+-->
+<section class="home-papers" aria-labelledby="papers-heading">
+	<div class="home-papers-head reveal">
+		<p class="label">Scientific contributions</p>
+		<a class="home-papers-all" href="/science">View all</a>
+		<h2 id="papers-heading">From eclipse observations to scientific knowledge.</h2>
+	</div>
+
+	<div class="home-papers-grid">
+		{
+			papers.map((paper) => (
+				<article class="home-papers-card reveal">
+					<div class="home-papers-photo">
+						<Image
+							src={paper.image}
+							alt={paper.alt}
+							widths={[480, 800, 1200]}
+							sizes="(max-width: 900px) 100vw, 33vw"
+							class:list={['home-papers-img', `home-papers-img--${paper.variant}`]}
+						/>
+					</div>
+					<div class="home-papers-text">
+						<p class="home-papers-kicker">{paper.kicker}</p>
+						<a
+							class="home-papers-title"
+							href={paper.href}
+							{...(paper.external ? { rel: 'noopener noreferrer' } : {})}
+						>
+							<h3>{paper.title}</h3>
+							<span class="cta-arrow" aria-hidden="true">
+								→
+							</span>
+						</a>
+						<p>{paper.text}</p>
+						{'original' in paper && (
+							<p class="home-papers-original">{paper.original}</p>
+						)}
+						<a
+							class="cta"
+							href={paper.href}
+							{...(paper.external ? { rel: 'noopener noreferrer' } : {})}
+						>
+							{paper.cta} <span class="cta-arrow" aria-hidden="true">→</span>
+						</a>
+					</div>
+				</article>
+			))
+		}
+	</div>
+</section>

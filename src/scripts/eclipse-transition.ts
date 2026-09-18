@@ -37,8 +37,11 @@ function initEclipseTransition() {
 
 	if (!eclipse || !origin || !target || !header || !hero) return;
 
+	const diagram = eclipse.querySelector<SVGElement>('[data-corona-diagram]');
+
 	if (prefersReducedMotion()) {
 		header.classList.add('is-reduced');
+		if (diagram) diagram.classList.add('is-ready');
 		const onScroll = () => {
 			const p = Math.min(1, window.scrollY / Math.max(hero.offsetHeight * 0.6, 1));
 			header.style.setProperty('--header-progress', String(p));
@@ -47,6 +50,7 @@ function initEclipseTransition() {
 			const mark = eclipse.querySelector<HTMLElement>('[data-eclipse-mark]');
 			if (photo) photo.style.opacity = String(1 - p);
 			if (mark) mark.style.opacity = '0';
+			if (diagram) diagram.style.opacity = String(1 - p);
 		};
 		onScroll();
 		window.addEventListener('scroll', onScroll, { passive: true });
@@ -77,10 +81,15 @@ function initEclipseTransition() {
 			gsap.set(copy, { opacity: 1 - fade, y: -24 * fade });
 		}
 		if (hint) gsap.set(hint, { opacity: 1 - Math.min(1, progress / 0.25) });
+		if (diagram) {
+			const fade = Math.min(1, progress / 0.3);
+			gsap.set(diagram, { opacity: 1 - fade });
+		}
 	};
 
 	eclipse.classList.add('is-fixed');
 	gsap.set(eclipse, { transformOrigin: '50% 50%' });
+	playCoronaDiagram(diagram);
 	place(0);
 
 	ScrollTrigger.create({
@@ -99,6 +108,29 @@ function initEclipseTransition() {
 	}
 
 	window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+}
+
+function playCoronaDiagram(diagram: SVGElement | null) {
+	if (!diagram) return;
+
+	const rings = [...diagram.querySelectorAll<SVGGeometryElement>('[data-ring]')];
+	const labels = [...diagram.querySelectorAll<SVGGElement>('[data-label]')];
+
+	rings.forEach((ring) => {
+		const length = ring.getTotalLength();
+		ring.style.strokeDasharray = `${length}`;
+		ring.style.strokeDashoffset = `${length}`;
+	});
+	gsap.set(labels, { opacity: 0 });
+	diagram.classList.add('is-ready');
+
+	const timeline = gsap.timeline({ delay: 0.65, defaults: { ease: 'power2.out' } });
+
+	rings.forEach((ring, index) => {
+		timeline.to(ring, { strokeDashoffset: 0, duration: 1.2 }, index === 0 ? 0 : '-=0.18');
+		const label = labels[index];
+		if (label) timeline.to(label, { opacity: 1, duration: 0.55 }, '-=0.38');
+	});
 }
 
 initEclipseTransition();

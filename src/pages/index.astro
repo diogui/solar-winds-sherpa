@@ -1,21 +1,24 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import WhoWeAre from '../components/WhoWeAre.astro';
-import ExpeditionsCarousel from '../components/ExpeditionsCarousel.astro';
-import ContactSection from '../components/ContactSection.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import HomeVision from '../components/home/HomeVision.astro';
+import HomePartners from '../components/home/HomePartners.astro';
+import HomeWhyEclipses from '../components/home/HomeWhyEclipses.astro';
+import HomeWork from '../components/home/HomeWork.astro';
+import HomeLatest from '../components/home/HomeLatest.astro';
+import HomeContributions from '../components/home/HomeContributions.astro';
+import HomeSupport from '../components/home/HomeSupport.astro';
 import { site } from '../data/site';
-
-const expeditions = (await getCollection('expeditions')).sort(
-	(a, b) => a.data.order - b.data.order,
-);
+import '../styles/home.css';
 ---
 
 <BaseLayout variant="home" description={site.description}>
-	<link slot="head" rel="preload" as="image" href="/images/eclipse.webp" type="image/webp" />
-	<Hero />
-	<WhoWeAre />
-	<ExpeditionsCarousel expeditions={expeditions} />
-	<ContactSection />
+	<HomeHero />
+	<HomeVision />
+	<HomePartners />
+	<HomeWhyEclipses />
+	<HomeWork />
+	<HomeLatest />
+	<HomeContributions />
+	<HomeSupport />
 </BaseLayout>

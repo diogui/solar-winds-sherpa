@@ -1,0 +1,76 @@
+---
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const videoPath = resolve('./public/video/hero.mp4');
+const hasVideo = existsSync(videoPath);
+const poster = '/images/hero-poster.jpg?v=2';
+---
+
+<section class="home-hero" aria-label="Introduction">
+	<div class="home-hero-media">
+		<img
+			src={poster}
+			width="1600"
+			height="900"
+			alt="Solar Wind Sherpas instruments set up on a ridge at dusk"
+			class="home-hero-still"
+			fetchpriority="high"
+			decoding="async"
+		/>
+		{
+			hasVideo && (
+				<video
+					class="home-hero-video"
+					data-hero-video
+					autoplay
+					muted
+					playsinline
+					preload="auto"
+					poster={poster}
+				>
+					<source src="/video/hero.mp4?v=2" type="video/mp4" />
+				</video>
+			)
+		}
+		<div class="home-hero-shade" aria-hidden="true"></div>
+		{
+			hasVideo && (
+				<div class="home-hero-mark" data-hero-mark>
+					<svg class="home-hero-ring" viewBox="0 0 100 100" focusable="false" aria-hidden="true">
+						<circle cx="50" cy="50" r="46"></circle>
+					</svg>
+					<p
+						class="home-hero-caption"
+						data-hero-caption
+						aria-label="Total Solar Eclipse. Location: Burgos, Spain. Duration: 1 min 40 seconds"
+					>
+						<span data-hero-line="title"></span>
+						<span data-hero-line></span>
+						<span data-hero-line></span>
+					</p>
+				</div>
+			)
+		}
+	</div>
+
+	<div class="home-hero-copy">
+		<p class="label">Solar Wind Sherpas</p>
+		<h1>Why is the Sun’s atmosphere hotter than its surface?</h1>
+		<p class="home-hero-mission">
+			We follow total solar eclipses to study the Sun’s outer atmosphere and the origins of the
+			solar wind.
+		</p>
+		<a class="cta home-hero-cta" href="#who-we-are">
+			Discover Who We Are <span class="cta-arrow cta-arrow--down" aria-hidden="true">↓</span>
+		</a>
+	</div>
+
+	{
+		hasVideo && (
+			<button class="home-hero-pause" type="button" data-hero-pause aria-pressed="false">
+				Pause video
+			</button>
+		)
+	}
+</section>

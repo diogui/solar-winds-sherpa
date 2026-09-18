@@ -1,0 +1,53 @@
+---
+import { defaultExpeditionId, expeditionSites } from '../../data/expeditions-map';
+
+const initial = expeditionSites.find((site) => site.id === defaultExpeditionId) ?? expeditionSites[0];
+---
+
+<!--
+	Expedition points follow the numbered list on solarwindsherpas.com/expeditions (24 entries).
+	Some lines name two countries, so they appear as two markers. Coordinates are regional,
+	not instrument GPS. Review with Danilo: this is 24 numbered expeditions, not 30.
+-->
+<section class="home-invite" data-expedition-section aria-labelledby="invite-heading">
+	<div
+		class="home-invite-map"
+		data-expedition-map
+		role="application"
+		aria-label="Globe of Solar Wind Sherpas eclipse expeditions"
+	>
+	</div>
+	<div class="home-invite-veil" aria-hidden="true"></div>
+
+	<div class="home-invite-inner">
+		<div class="home-invite-copy reveal">
+			<p class="label">Support our work</p>
+			<h2 id="invite-heading">Help make eclipse science possible.</h2>
+		</div>
+
+		<div class="home-invite-selected reveal" aria-live="polite">
+			<p class="home-invite-kicker" data-expedition-kicker>
+				Expedition {initial.n} · {initial.date}
+			</p>
+			<p class="home-invite-place" data-expedition-name>{initial.place}</p>
+			<p class="home-invite-duration" data-expedition-duration>
+				Totality {initial.totality}
+			</p>
+		</div>
+
+		<div class="home-invite-text reveal">
+			<p>
+				From preparing instruments to reaching observing sites and analyzing data, eclipse research
+				takes sustained effort. Talk to us about how you or your organization could contribute to
+				the work.
+			</p>
+			<a class="cta cta--button" href="/join">
+				Find out how to support us <span class="cta-arrow" aria-hidden="true">→</span>
+			</a>
+		</div>
+	</div>
+</section>
+
+<script>
+	import '../../scripts/expedition-globe.ts';
+</script>

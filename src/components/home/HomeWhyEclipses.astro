@@ -1,0 +1,143 @@
+---
+import { Image } from 'astro:assets';
+import sun from '../../assets/images/why/sun.jpg';
+import corona from '../../assets/images/why/corona.jpg';
+import prominences from '../../assets/images/why/prominences.jpg';
+
+const frames = [
+	{
+		image: sun,
+		alt: 'The uneclipsed Sun, a bright orange disk whose glare hides the corona',
+		stage: '0',
+		variant: 'sun',
+	},
+	{
+		image: corona,
+		alt: 'Total solar eclipse, with the Moon covering the Sun and the corona glowing around it',
+		stage: '1',
+		variant: 'corona',
+	},
+	{
+		image: prominences,
+		alt: 'The Moon’s limb during totality, with pink prominences and a sliver of chromosphere',
+		stage: '2',
+		variant: 'prominences',
+	},
+] as const;
+---
+
+<section class="home-why" id="why-eclipses" data-why-section aria-labelledby="why-heading">
+	<div class="home-why-pin">
+		<div class="home-why-copy">
+			<p class="label">Why we follow eclipses</p>
+			<h2 id="why-heading">The Moon reveals what sunlight hides.</h2>
+			<p>
+				The corona is the Sun’s outer atmosphere. Its faint visible light is usually lost in the
+				glare of the solar surface. During a total solar eclipse, the Moon blocks that glare, giving
+				us a rare opportunity to study the corona from Earth.
+			</p>
+
+			<div class="home-why-steps" data-why-steps>
+				<div class="home-why-progress" aria-hidden="true">
+					<span class="home-why-progress-bar"></span>
+				</div>
+				<button type="button" class="home-why-step is-active" data-why-step="0" aria-pressed="true">
+					<span class="home-why-step-index">01</span>
+					<span class="home-why-step-title">Hidden in the glare</span>
+					<span class="home-why-step-body">
+						The corona is always there. The Sun’s bright surface usually overwhelms its faint
+						visible light.
+					</span>
+				</button>
+				<button type="button" class="home-why-step is-locked" data-why-step="1" aria-pressed="false">
+					<span class="home-why-step-index">02</span>
+					<span class="home-why-step-title">Revealed by the Moon</span>
+					<span class="home-why-step-body">
+						During totality, the Moon covers the Sun’s bright disk, revealing the corona around it.
+					</span>
+				</button>
+				<button type="button" class="home-why-step is-locked" data-why-step="2" aria-pressed="false">
+					<span class="home-why-step-index">03</span>
+					<span class="home-why-step-title">A window for science</span>
+					<span class="home-why-step-body">
+						Prominences appear at the Moon’s limb — plasma structures we measure during the few
+						minutes of totality.
+					</span>
+				</button>
+			</div>
+
+			<p class="home-why-note">
+				Eclipse observations complement measurements from spacecraft and instruments that study the
+				corona throughout the year.
+			</p>
+			<a class="cta" href="/science">
+				Explore the science <span class="cta-arrow" aria-hidden="true">→</span>
+			</a>
+		</div>
+
+		<div class="home-why-visual">
+			<div class="home-why-figure" data-why-figure data-stage="0">
+				<div class="why-photo-stage">
+					{
+						frames.map((frame) => (
+							<Image
+								src={frame.image}
+								alt={frame.alt}
+								widths={[640, 960, 1400]}
+								sizes="(max-width: 900px) 80vw, 28rem"
+								class:list={['why-photo', `why-photo--${frame.variant}`]}
+								data-why-frame={frame.stage}
+							/>
+						))
+					}
+					<svg
+						class="why-photo-callouts"
+						viewBox="0 0 100 100"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<g class="why-callout why-callout--corona">
+							<path
+								class="why-corona-outline"
+								d="M50.2 17.2
+								C61.5 16.4 74 21.5 81.2 32.2
+								C88.4 43 88.6 56.8 82.4 67.2
+								C76.4 77.4 64.2 83.6 51.4 83.4
+								C38.4 83.2 26.2 76.6 20.4 65.6
+								C14.6 54.6 16.2 40.4 23.8 30.2
+								C31.6 19.8 39.6 17.8 50.2 17.2Z"
+							></path>
+							<line x1="78" y1="24" x2="86" y2="10"></line>
+							<circle class="why-callout-dot" cx="86" cy="10" r="0.7"></circle>
+							<text x="70" y="7.6">Solar corona</text>
+						</g>
+						<g class="why-callout why-callout--prominence">
+							<ellipse
+								class="why-prominence-outline"
+								cx="29.7"
+								cy="46.9"
+								rx="3.4"
+								ry="2.8"
+							></ellipse>
+							<ellipse
+								class="why-prominence-outline"
+								cx="63.9"
+								cy="54.2"
+								rx="3.6"
+								ry="4.4"
+								transform="rotate(12 63.9 54.2)"
+							></ellipse>
+							<line x1="27.4" y1="49.6" x2="10" y2="86"></line>
+							<circle class="why-callout-dot" cx="10" cy="86" r="0.7"></circle>
+							<text x="4" y="92">Prominences</text>
+						</g>
+					</svg>
+				</div>
+			</div>
+			<p class="home-why-caption is-in" data-why-caption>Hidden in the glare</p>
+			<p class="home-why-scroll-hint" data-why-hint>
+				Scroll to reveal the corona <span aria-hidden="true">↓</span>
+			</p>
+		</div>
+	</div>
+</section>

@@ -3,8 +3,6 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 import '@fontsource-variable/inter';
-import '@fontsource/space-grotesk/400.css';
-import '@fontsource/space-grotesk/500.css';
 import '../styles/global.css';
 
 interface Props {
@@ -32,7 +30,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<title>{pageTitle}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="theme-color" content="#080D14" />
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={description} />
