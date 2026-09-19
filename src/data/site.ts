@@ -16,6 +16,7 @@ export const navLeft = [
 ] as const;
 
 export const navRight = [
+	{ href: '/#contact', label: 'Contact' },
 	{ href: homeOnlyPreview ? '/#support' : '/join', label: 'Support' },
 ] as const;
 
@@ -23,5 +24,5 @@ export const footerLinks = [
 	{ href: navLeft[0].href, label: 'About' },
 	{ href: navLeft[1].href, label: 'Science' },
 	{ href: navLeft[2].href, label: 'Expeditions' },
-	{ href: navRight[0].href, label: 'Support' },
+	{ href: navRight[1].href, label: 'Support' },
 ] as const;

@@ -1,4 +1,5 @@
 import { mountHero } from './hero-video';
+import { mountLatestTriptych } from './latest-video';
 
 function initMobileNav() {
 	const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -140,6 +141,12 @@ function initHeroVideo() {
 	mountHero(hero);
 }
 
+function initLatestTriptych() {
+	const section = document.querySelector<HTMLElement>('[data-latest-triptych]');
+	if (!section) return;
+	mountLatestTriptych(section);
+}
+
 function initWhyEclipses() {
 	const section = document.querySelector<HTMLElement>('[data-why-section]');
 	const figure = document.querySelector<HTMLElement>('[data-why-figure]');
@@ -266,4 +273,5 @@ initNewsletterForm();
 initInnerHeader();
 initHomeHeader();
 initHeroVideo();
+initLatestTriptych();
 initWhyEclipses();

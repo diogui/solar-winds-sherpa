@@ -19,7 +19,6 @@ import { navLeft, navRight, site } from '../data/site';
 				<span class="brand-sherpas">Sherpas</span>
 			</a>
 			<p class="footer-tagline">{site.tagline}</p>
-			<a class="footer-mail" href={`mailto:${site.email}`}>{site.email}</a>
 			<p class="footer-palette">
 				<span class="footer-palette-chip" aria-hidden="true"></span>
 				Magenta #E87991
@@ -43,11 +42,13 @@ import { navLeft, navRight, site } from '../data/site';
 			<p class="footer-kicker">Support</p>
 			<p class="footer-support-copy">Help make the next totality possible.</p>
 			{
-				navRight.map((item) => (
+				navRight
+					.filter((item) => item.label === 'Support')
+					.map((item) => (
 					<a class="cta cta--button" href={item.href}>
 						{item.label} <span class="cta-arrow" aria-hidden="true">→</span>
 					</a>
-				))
+					))
 			}
 		</div>
 	</div>

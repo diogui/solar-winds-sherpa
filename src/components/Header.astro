@@ -55,7 +55,7 @@ const path = Astro.url.pathname;
 				navRight.map((item) => (
 					<li>
 						<a
-							class="nav-link nav-link--support"
+							class:list={['nav-link', item.label === 'Support' && 'nav-link--support']}
 							href={item.href}
 							aria-current={path === item.href ? 'page' : undefined}
 						>

@@ -3,61 +3,108 @@ import { Image } from 'astro:assets';
 import instruments from '../../assets/images/field/latest-instruments.jpg';
 import ridge from '../../assets/images/field/latest-ridge.jpg';
 import team from '../../assets/images/field/latest-team.jpg';
-import { homeOnlyPreview } from '../../data/site';
 
 const shots = [
 	{
 		image: instruments,
 		alt: 'Portable solar instruments and a field laptop on the Burgos ridge',
 		variant: 'instruments',
+		crop: 'left',
+		filmLabel: 'Burgos expedition film, left frame',
 	},
 	{
 		image: ridge,
-		alt: 'Instruments set up in the field during the Burgos expedition, seen from inside a tent',
+		alt: 'The Solar Wind Sherpas team in the field near Burgos, with telescopes, a camera tripod, and members at work',
 		variant: 'ridge',
+		crop: 'center',
+		filmLabel: 'Burgos expedition film, centre frame',
 	},
 	{
 		image: team,
 		alt: 'Solar Wind Sherpas team members in purple expedition shirts gathered around a telescope in Burgos',
 		variant: 'team',
+		crop: 'right',
+		filmLabel: 'Burgos expedition film, right frame',
 	},
 ] as const;
+
+const videoSrc = '/media/latest/burgos.mp4';
+const posterSrc = '/media/latest/burgos-poster.jpg';
 ---
 
-<section class="home-latest" id="latest-expedition" aria-labelledby="latest-heading">
+<section
+	class="home-latest"
+	id="latest-expedition"
+	aria-labelledby="latest-heading"
+	data-latest-triptych
+	data-latest-mode="film"
+	data-latest-src={videoSrc}
+>
 	<!-- Review: photographer credits — Václav Široký (ridge & instruments); team photograph to confirm -->
 	<div class="home-latest-frame">
-		{
-			shots.map((shot) => (
-				<figure class:list={['home-latest-shot', `home-latest-shot--${shot.variant}`]}>
-					<Image
-						src={shot.image}
-						alt={shot.alt}
-						widths={[480, 800, 1200]}
-						sizes="(max-width: 900px) 30vw, 22vw"
-						class="home-latest-photo"
-					/>
-				</figure>
-			))
-		}
+		<div class="home-latest-visual">
+			{
+				shots.map((shot, index) => (
+					<figure
+						class:list={[
+							'home-latest-shot',
+							`home-latest-shot--${shot.variant}`,
+							`home-latest-shot--${shot.crop}`,
+						]}
+					>
+						<video
+							class="home-latest-video"
+							data-latest-video={index === 0 ? 'master' : 'slave'}
+							muted
+							loop
+							playsinline
+							preload="none"
+							poster={posterSrc}
+							aria-label={shot.filmLabel}
+						>
+							<source src={videoSrc} type="video/mp4" />
+						</video>
+						<Image
+							src={shot.image}
+							alt={shot.alt}
+							widths={[480, 800, 1200]}
+							sizes="(max-width: 900px) 30vw, 22vw"
+							class="home-latest-photo"
+						/>
+					</figure>
+				))
+			}
+			<button
+				type="button"
+				class="home-latest-switch"
+				data-latest-toggle
+				role="switch"
+				aria-checked="false"
+			>
+				<span>Film</span>
+				<span class="home-latest-switch-track" aria-hidden="true">
+					<span class="home-latest-switch-thumb"></span>
+				</span>
+				<span>Photos</span>
+			</button>
+		</div>
 
 		<div class="home-latest-copy reveal">
 			<div class="home-latest-intro">
 				<p class="label">Latest expedition · 2026</p>
 				<h2 id="latest-heading">Burgos, Spain</h2>
 			</div>
-			<p>
-				In 2026, our pursuit of total solar eclipses brought us to Burgos, Spain. Discover the
-				setting, the preparation and the people behind this expedition, and the scientific questions
-				that brought us into the field.
-			</p>
-			{
-				!homeOnlyPreview && (
-					<a class="cta" href="/expeditions/spain-2026">
-						Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
-					</a>
-				)
-			}
+			<div class="home-latest-body">
+				<p>
+					In 2026, our pursuit of total solar eclipses brought us to Burgos, Spain. Discover the
+					setting, the preparation and the people behind this expedition, and the scientific questions
+					that brought us into the field.
+				</p>
+				<a class="cta cta--button" href="/expeditions/spain-2026">
+					Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
+				</a>
+				<p class="home-latest-credit">Film by Santiago Marrodán Ciordia</p>
+			</div>
 		</div>
 	</div>
 </section>
