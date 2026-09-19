@@ -81,6 +81,28 @@ export function initExpeditionGlobe() {
 
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	let selectedId = defaultExpeditionId;
+	let userLocked = false;
+	let tourTimer: number | undefined;
+	let tourIndex = Math.max(
+		0,
+		expeditionSites.findIndex((site) => site.id === defaultExpeditionId),
+	);
+	const dwellMs = 4800;
+	let scheduleTour = () => {};
+
+	const pauseTour = () => {
+		if (tourTimer !== undefined) {
+			window.clearInterval(tourTimer);
+			tourTimer = undefined;
+		}
+	};
+
+	const onMarkerHover = (active: boolean) => {
+		holder.style.cursor = active ? 'pointer' : '';
+		if (userLocked || reduced) return;
+		if (active) pauseTour();
+		else scheduleTour();
+	};
 
 	const globe = new Globe(holder, {
 		rendererConfig: { antialias: true, alpha: true },
@@ -104,11 +126,7 @@ export function initExpeditionGlobe() {
 		.onPointClick((point) => {
 			if (isSite(point)) select(point);
 		})
-		.onPointHover((point) => {
-			holder.style.cursor = point ? 'pointer' : '';
-			if (section.classList.contains('is-locked') || reduced) return;
-			globe.controls().autoRotate = !point;
-		})
+		.onPointHover((point) => onMarkerHover(Boolean(point)))
 		.ringsData([])
 		.ringLat('lat')
 		.ringLng('lng')
@@ -122,15 +140,7 @@ export function initExpeditionGlobe() {
 		.htmlAltitude(0.045)
 		.htmlTransitionDuration(reduced ? 0 : 500)
 		.htmlElement((d) =>
-			markerElement(
-				d as ExpeditionSite,
-				(site) => select(site),
-				(active) => {
-					holder.style.cursor = active ? 'pointer' : '';
-					if (section.classList.contains('is-locked') || reduced) return;
-					globe.controls().autoRotate = !active;
-				},
-			),
+			markerElement(d as ExpeditionSite, (site) => select(site), onMarkerHover),
 		);
 
 	const paintMarkers = () => {
@@ -153,14 +163,30 @@ export function initExpeditionGlobe() {
 		paintMarkers();
 	};
 
-	const select = (site: ExpeditionSite) => {
+	const showSite = (site: ExpeditionSite, animate: boolean) => {
 		selectedId = site.id;
+		tourIndex = expeditionSites.findIndex((item) => item.id === site.id);
 		setLabel(section, site);
-		section.classList.add('is-locked');
-		const controls = globe.controls();
-		controls.autoRotate = false;
 		paint();
-		globe.pointOfView({ lat: site.lat, lng: site.lng, altitude: 2.05 }, reduced ? 0 : 900);
+		globe.pointOfView(
+			{ lat: site.lat, lng: site.lng, altitude: 2.05 },
+			animate && !reduced ? 1100 : 0,
+		);
+	};
+
+	const select = (site: ExpeditionSite) => {
+		userLocked = true;
+		section.classList.add('is-locked');
+		pauseTour();
+		globe.controls().autoRotate = false;
+		showSite(site, true);
+	};
+
+	const advanceTour = () => {
+		if (userLocked || !expeditionSites.length) return;
+		tourIndex = (tourIndex + 1) % expeditionSites.length;
+		const site = expeditionSites[tourIndex];
+		if (site) showSite(site, true);
 	};
 
 	paint();
@@ -181,7 +207,7 @@ export function initExpeditionGlobe() {
 	const controls = globe.controls();
 	controls.enableZoom = false;
 	controls.enablePan = false;
-	controls.autoRotate = !reduced;
+	controls.autoRotate = false;
 	controls.autoRotateSpeed = 0.55;
 	controls.minPolarAngle = 0.55;
 	controls.maxPolarAngle = Math.PI - 0.55;
@@ -198,6 +224,35 @@ export function initExpeditionGlobe() {
 	requestAnimationFrame(layout);
 	window.addEventListener('resize', layout, { passive: true });
 	new ResizeObserver(layout).observe(holder);
+
+	let sectionVisible = false;
+	const tryTour = () => {
+		if (sectionVisible) scheduleTour();
+		else pauseTour();
+	};
+	scheduleTour = () => {
+		if (userLocked || reduced || document.hidden || !sectionVisible) return;
+		pauseTour();
+		tourTimer = window.setInterval(advanceTour, dwellMs);
+	};
+
+	new IntersectionObserver(
+		([entry]) => {
+			sectionVisible = Boolean(entry?.isIntersecting);
+			tryTour();
+		},
+		{ threshold: 0.35 },
+	).observe(section);
+
+	document.addEventListener('visibilitychange', tryTour);
+
+	holder.addEventListener('pointerdown', (event) => {
+		if (userLocked) return;
+		if (event.target instanceof Element && event.target.closest('.globe-marker-hit')) return;
+		pauseTour();
+	});
+	holder.addEventListener('pointerup', tryTour);
+	holder.addEventListener('pointercancel', tryTour);
 
 	holder.addEventListener('choose-expedition', ((event: Event) => {
 		const id = (event as CustomEvent<string>).detail;
