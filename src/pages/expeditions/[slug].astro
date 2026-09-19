@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-if (homeOnlyPreview && entry.id !== 'spain-2026') return Astro.redirect('/');
+if (homeOnlyPreview) return Astro.redirect('/');
 const { Content } = await render(entry);
 ---
 

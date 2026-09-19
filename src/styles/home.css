@@ -1036,6 +1036,11 @@
 	padding: 0.72rem 1.05rem 0.68rem 1.1rem;
 }
 
+.home-latest-body .cta--button[aria-disabled='true'] {
+	cursor: default;
+	pointer-events: none;
+}
+
 .home-latest-copy .cta {
 	margin-top: 0;
 }

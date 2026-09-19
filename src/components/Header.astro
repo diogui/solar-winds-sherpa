@@ -30,13 +30,19 @@ const path = Astro.url.pathname;
 			{
 				navLeft.map((item) => (
 					<li>
-						<a
-							class="nav-link"
-							href={item.href}
-							aria-current={path === item.href ? 'page' : undefined}
-						>
-							{item.label}
-						</a>
+						{item.live ? (
+							<a
+								class="nav-link"
+								href={item.href}
+								aria-current={path === item.href ? 'page' : undefined}
+							>
+								{item.label}
+							</a>
+						) : (
+							<span class="nav-link" aria-disabled="true">
+								{item.label}
+							</span>
+						)}
 					</li>
 				))
 			}
@@ -54,13 +60,22 @@ const path = Astro.url.pathname;
 			{
 				navRight.map((item) => (
 					<li>
-						<a
-							class:list={['nav-link', item.label === 'Support' && 'nav-link--support']}
-							href={item.href}
-							aria-current={path === item.href ? 'page' : undefined}
-						>
-							{item.label}
-						</a>
+						{item.live ? (
+							<a
+								class:list={['nav-link', item.label === 'Support' && 'nav-link--support']}
+								href={item.href}
+								aria-current={path === item.href ? 'page' : undefined}
+							>
+								{item.label}
+							</a>
+						) : (
+							<span
+								class:list={['nav-link', item.label === 'Support' && 'nav-link--support']}
+								aria-disabled="true"
+							>
+								{item.label}
+							</span>
+						)}
 					</li>
 				))
 			}
@@ -73,13 +88,17 @@ const path = Astro.url.pathname;
 		{
 			[...navLeft, ...navRight].map((item) => (
 				<li>
-					<a
-						href={item.href}
-						class={item.href === '/join' ? 'is-support' : undefined}
-						aria-current={path === item.href ? 'page' : undefined}
-					>
-						{item.label}
-					</a>
+					{item.live ? (
+						<a
+							href={item.href}
+							class={item.label === 'Support' ? 'is-support' : undefined}
+							aria-current={path === item.href ? 'page' : undefined}
+						>
+							{item.label}
+						</a>
+					) : (
+						<span aria-disabled="true">{item.label}</span>
+					)}
 				</li>
 			))
 		}

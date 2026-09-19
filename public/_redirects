@@ -2,7 +2,4 @@
 /science / 302
 /join / 302
 /expeditions / 302
-/expeditions/mexico-2024 / 302
-/expeditions/antarctica-2021 / 302
-/expeditions/chile-2019 / 302
-/expeditions/usa-2017 / 302
+/expeditions/* / 302

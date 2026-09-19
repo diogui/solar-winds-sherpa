@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { homeOnlyPreview } from '../../data/site';
 import instruments from '../../assets/images/field/latest-instruments.jpg';
 import ridge from '../../assets/images/field/latest-ridge.jpg';
 import team from '../../assets/images/field/latest-team.jpg';
@@ -103,9 +104,17 @@ const posterSrc = '/media/latest/burgos-poster.jpg';
 					setting, the preparation and the people behind this expedition, and the scientific questions
 					that brought us into the field.
 				</p>
-				<a class="cta cta--button" href="/expeditions/spain-2026">
-					Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
-				</a>
+				{
+					homeOnlyPreview ? (
+						<button type="button" class="cta cta--button" aria-disabled="true">
+							Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
+						</button>
+					) : (
+						<a class="cta cta--button" href="/expeditions/spain-2026">
+							Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
+						</a>
+					)
+				}
 				<p class="home-latest-credit">Film by Santiago Marrodán Ciordia</p>
 			</div>
 		</div>

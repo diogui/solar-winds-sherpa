@@ -10,19 +10,19 @@ export const site = {
 export const homeOnlyPreview = true;
 
 export const navLeft = [
-	{ href: homeOnlyPreview ? '/#who-we-are' : '/about', label: 'About' },
-	{ href: homeOnlyPreview ? '/#why-eclipses' : '/science', label: 'Science' },
-	{ href: homeOnlyPreview ? '/#latest-expedition' : '/expeditions', label: 'Expeditions' },
-] as const;
+	{ href: '/about', label: 'About', live: !homeOnlyPreview },
+	{ href: '/science', label: 'Science', live: !homeOnlyPreview },
+	{ href: '/expeditions', label: 'Expeditions', live: !homeOnlyPreview },
+];
 
 export const navRight = [
-	{ href: '/#contact', label: 'Contact' },
-	{ href: homeOnlyPreview ? '/#support' : '/join', label: 'Support' },
-] as const;
+	{ href: '/#contact', label: 'Contact', live: true },
+	{ href: homeOnlyPreview ? '/#support' : '/join', label: 'Support', live: true },
+];
 
 export const footerLinks = [
-	{ href: navLeft[0].href, label: 'About' },
-	{ href: navLeft[1].href, label: 'Science' },
-	{ href: navLeft[2].href, label: 'Expeditions' },
-	{ href: navRight[1].href, label: 'Support' },
-] as const;
+	{ href: navLeft[0].href, label: 'About', live: navLeft[0].live },
+	{ href: navLeft[1].href, label: 'Science', live: navLeft[1].live },
+	{ href: navLeft[2].href, label: 'Expeditions', live: navLeft[2].live },
+	{ href: navRight[1].href, label: 'Support', live: navRight[1].live },
+];

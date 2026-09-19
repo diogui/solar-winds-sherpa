@@ -31,7 +31,11 @@ import { navLeft, navRight, site } from '../data/site';
 				{
 					navLeft.map((item) => (
 						<li>
-							<a href={item.href}>{item.label}</a>
+							{item.live ? (
+								<a href={item.href}>{item.label}</a>
+							) : (
+								<span aria-disabled="true">{item.label}</span>
+							)}
 						</li>
 					))
 				}
