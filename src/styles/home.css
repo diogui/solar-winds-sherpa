@@ -905,11 +905,18 @@
 	visibility: hidden;
 }
 
-.home-latest-switch {
+.home-latest-controls {
 	position: absolute;
 	right: 0.7rem;
 	bottom: 0.7rem;
 	z-index: 3;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0.32rem;
+}
+
+.home-latest-switch {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.45rem;
@@ -955,6 +962,27 @@
 .home-latest-switch:focus-visible {
 	border-color: rgb(245 245 243 / 0.32);
 	color: var(--text);
+}
+
+.home-latest-load {
+	height: 0.22rem;
+	overflow: hidden;
+	border-radius: 999px;
+	background: rgb(245 245 243 / 0.16);
+}
+
+.home-latest-load-bar {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: var(--accent);
+	transform: scaleX(0);
+	transform-origin: left center;
+	transition: transform 0.28s linear;
+}
+
+.home-latest[data-latest-load='ready'] .home-latest-load-bar {
+	transform: scaleX(1);
 }
 
 .home-latest-copy {

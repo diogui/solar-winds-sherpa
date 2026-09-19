@@ -64,19 +64,32 @@ const posterSrc = '/media/latest/burgos-poster.jpg';
 					</figure>
 				))
 			}
-			<button
-				type="button"
-				class="home-latest-switch"
-				data-latest-toggle
-				role="switch"
-				aria-checked="false"
-			>
-				<span>Film</span>
-				<span class="home-latest-switch-track" aria-hidden="true">
-					<span class="home-latest-switch-thumb"></span>
-				</span>
-				<span>Photos</span>
-			</button>
+			<div class="home-latest-controls">
+				<button
+					type="button"
+					class="home-latest-switch"
+					data-latest-toggle
+					role="switch"
+					aria-checked="false"
+				>
+					<span>Film</span>
+					<span class="home-latest-switch-track" aria-hidden="true">
+						<span class="home-latest-switch-thumb"></span>
+					</span>
+					<span>Photos</span>
+				</button>
+				<div
+					class="home-latest-load"
+					data-latest-load
+					role="progressbar"
+					aria-label="Film download"
+					aria-valuemin="0"
+					aria-valuemax="100"
+					aria-valuenow="0"
+				>
+					<span class="home-latest-load-bar" data-latest-load-bar></span>
+				</div>
+			</div>
 		</div>
 
 		<div class="home-latest-copy reveal">

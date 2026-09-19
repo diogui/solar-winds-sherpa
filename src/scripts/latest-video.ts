@@ -28,6 +28,8 @@ function chooseSrc(root: HTMLElement, force = false): string | null {
 export function mountLatestTriptych(root: HTMLElement) {
 	const video = root.querySelector<HTMLVideoElement>('[data-latest-video]');
 	const toggle = root.querySelector<HTMLButtonElement>('[data-latest-toggle]');
+	const load = root.querySelector<HTMLElement>('[data-latest-load]');
+	const loadBar = root.querySelector<HTMLElement>('[data-latest-load-bar]');
 	if (!video || !toggle) return;
 
 	const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -36,8 +38,34 @@ export function mountLatestTriptych(root: HTMLElement) {
 
 	const mode = () => (root.dataset.latestMode === PHOTOS ? PHOTOS : FILM);
 
+	const setLoad = (percent: number, state: 'idle' | 'loading' | 'ready') => {
+		const value = Math.max(0, Math.min(100, Math.round(percent)));
+		root.dataset.latestLoad = state;
+		if (loadBar) loadBar.style.transform = `scaleX(${value / 100})`;
+		if (!load) return;
+		load.setAttribute('aria-valuenow', String(value));
+		load.setAttribute(
+			'aria-valuetext',
+			state === 'ready' ? 'Film downloaded' : `Film downloading, ${value} percent`,
+		);
+	};
+
+	const updateLoad = () => {
+		const duration = video.duration;
+		if (!duration || !Number.isFinite(duration)) {
+			setLoad(0, warmed ? 'loading' : 'idle');
+			return;
+		}
+		let loaded = 0;
+		const ranges = video.buffered;
+		if (ranges.length) loaded = ranges.end(ranges.length - 1);
+		const percent = (loaded / duration) * 100;
+		setLoad(percent, percent >= 99.5 ? 'ready' : 'loading');
+	};
+
 	const attach = (src: string) => {
 		if (video.getAttribute('src') === src) return;
+		setLoad(0, 'loading');
 		video.preload = 'auto';
 		video.src = src;
 	};
@@ -68,14 +96,20 @@ export function mountLatestTriptych(root: HTMLElement) {
 		else warm(true);
 	};
 
+	video.addEventListener('loadstart', () => setLoad(0, 'loading'));
+	video.addEventListener('progress', updateLoad);
+	video.addEventListener('loadedmetadata', updateLoad);
 	video.addEventListener('canplay', () => {
+		updateLoad();
 		if (inView && mode() === FILM && !motion.matches) {
 			const playAttempt = video.play();
 			if (playAttempt) playAttempt.catch(() => undefined);
 		}
 	});
+	video.addEventListener('canplaythrough', updateLoad);
 
 	if (motion.matches || !chooseSrc(root)) setMode(PHOTOS);
+	setLoad(0, 'idle');
 
 	new IntersectionObserver(
 		(entries) => {
