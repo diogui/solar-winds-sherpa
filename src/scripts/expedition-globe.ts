@@ -11,6 +11,22 @@ function kickerFor(site: ExpeditionSite) {
 		: `Expedition ${site.n} · ${site.date}`;
 }
 
+function readAccent() {
+	const probe = document.createElement('span');
+	probe.style.color = 'var(--accent)';
+	document.documentElement.appendChild(probe);
+	const computed = getComputedStyle(probe).color;
+	probe.remove();
+	const channels = computed.match(/\d+/g)?.slice(0, 3).join(', ') ?? '249, 171, 0';
+	const hex =
+		'#' +
+		channels
+			.split(', ')
+			.map((n) => Number(n).toString(16).padStart(2, '0'))
+			.join('');
+	return { hex, rgb: channels };
+}
+
 function setLabel(root: HTMLElement, site: ExpeditionSite) {
 	const kicker = root.querySelector('[data-expedition-kicker]');
 	const name = root.querySelector('[data-expedition-name]');
@@ -80,6 +96,7 @@ export function initExpeditionGlobe() {
 	}
 
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const { hex: accentHex, rgb: accentRgb } = readAccent();
 	let selectedId = defaultExpeditionId;
 	let userLocked = false;
 	let tourTimer: number | undefined;
@@ -111,7 +128,7 @@ export function initExpeditionGlobe() {
 		.globeImageUrl('/images/earth-night.jpg')
 		.backgroundColor('rgba(8,13,20,0)')
 		.showAtmosphere(true)
-		.atmosphereColor('#e87991')
+		.atmosphereColor(accentHex)
 		.atmosphereAltitude(0.18)
 		.pointsData(expeditionSites)
 		.pointLat('lat')
@@ -130,7 +147,7 @@ export function initExpeditionGlobe() {
 		.ringsData([])
 		.ringLat('lat')
 		.ringLng('lng')
-		.ringColor(() => (t: number) => `rgba(232, 121, 145, ${1 - t})`)
+		.ringColor(() => (t: number) => `rgba(${accentRgb}, ${1 - t})`)
 		.ringMaxRadius(5)
 		.ringPropagationSpeed(2.4)
 		.ringRepeatPeriod(1400)
@@ -157,7 +174,7 @@ export function initExpeditionGlobe() {
 	const paint = () => {
 		const selected = expeditionSites.find((site) => site.id === selectedId);
 		globe
-			.pointColor((d) => ((d as ExpeditionSite).id === selectedId ? '#f5f5f3' : '#e87991'))
+			.pointColor((d) => ((d as ExpeditionSite).id === selectedId ? '#f5f5f3' : accentHex))
 			.pointRadius((d) => ((d as ExpeditionSite).id === selectedId ? 0.95 : 0.7))
 			.ringsData(selected ? [selected] : []);
 		paintMarkers();

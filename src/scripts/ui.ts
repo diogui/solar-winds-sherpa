@@ -97,6 +97,21 @@ function initContactForm() {
 	});
 }
 
+function initNewsletterForm() {
+	const form = document.querySelector<HTMLFormElement>('[data-newsletter-form]');
+	if (!form) return;
+
+	form.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const email = new FormData(form).get('email');
+		const to = form.dataset.mailto;
+		if (typeof email !== 'string' || !email.trim() || !to) return;
+		const subject = encodeURIComponent('Newsletter subscribe');
+		const body = encodeURIComponent(`Please add this address to the newsletter:\n\n${email.trim()}`);
+		window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+	});
+}
+
 function initInnerHeader() {
 	const header = document.querySelector<HTMLElement>('[data-header]');
 	if (!header || header.dataset.variant === 'home') return;
@@ -247,6 +262,7 @@ initMobileNav();
 initCarousel();
 initReveals();
 initContactForm();
+initNewsletterForm();
 initInnerHeader();
 initHomeHeader();
 initHeroVideo();

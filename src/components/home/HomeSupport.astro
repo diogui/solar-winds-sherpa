@@ -1,5 +1,6 @@
 ---
 import { defaultExpeditionId, expeditionSites } from '../../data/expeditions-map';
+import { homeOnlyPreview, site } from '../../data/site';
 
 const initial = expeditionSites.find((site) => site.id === defaultExpeditionId) ?? expeditionSites[0];
 ---
@@ -9,7 +10,7 @@ const initial = expeditionSites.find((site) => site.id === defaultExpeditionId) 
 	Some lines name two countries, so they appear as two markers. Coordinates are regional,
 	not instrument GPS. Review with Danilo: this is 24 numbered expeditions, not 30.
 -->
-<section class="home-invite" data-expedition-section aria-labelledby="invite-heading">
+<section class="home-invite" id="support" data-expedition-section aria-labelledby="invite-heading">
 	<div
 		class="home-invite-map"
 		data-expedition-map
@@ -41,7 +42,7 @@ const initial = expeditionSites.find((site) => site.id === defaultExpeditionId) 
 				takes sustained effort. Talk to us about how you or your organization could contribute to
 				the work.
 			</p>
-			<a class="cta cta--button" href="/join">
+			<a class="cta cta--button" href={homeOnlyPreview ? `mailto:${site.email}` : '/join'}>
 				Find out how to support us <span class="cta-arrow" aria-hidden="true">→</span>
 			</a>
 		</div>

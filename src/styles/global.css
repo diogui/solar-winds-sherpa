@@ -35,18 +35,24 @@
 	--text: #f5f5f3;
 	--text-dim: rgba(245, 245, 243, 0.7);
 	--text-mute: rgba(245, 245, 243, 0.42);
-	--accent: #e87991;
-	--accent-soft: rgba(232, 121, 145, 0.18);
-	--line: rgba(232, 121, 145, 0.28);
+	/* Magenta kept for rollback: set --accent and --accent-rgb to the magenta tokens. */
+	--accent-magenta: #e87991;
+	--accent-magenta-rgb: 232 121 145;
+	--accent-meet: #f9ab00; /* Google Meet yellow */
+	--accent-meet-rgb: 249 171 0;
+	--accent: var(--accent-meet);
+	--accent-rgb: var(--accent-meet-rgb);
+	--accent-soft: rgb(var(--accent-rgb) / 0.18);
+	--line: rgb(var(--accent-rgb) / 0.28);
 	--line-quiet: rgba(245, 245, 243, 0.1);
 	--header-h: 72px;
 	--header-progress: 0;
 	--well-w: 148px;
 	--eclipse-logo: 52px;
 	--ease: cubic-bezier(0.22, 1, 0.36, 1);
-	--font-display: 'Satoshi', 'Inter Variable', sans-serif;
-	--font-body: 'Inter Variable', Inter, system-ui, sans-serif;
-	--font-logo: 'Satoshi', 'Inter Variable', sans-serif;
+	--font-display: 'Oswald', 'Satoshi', sans-serif;
+	--font-body: 'Open Sans', system-ui, sans-serif;
+	--font-logo: 'Satoshi', 'Oswald', sans-serif;
 	--content: min(1120px, calc(100% - 3rem));
 }
 
@@ -70,9 +76,9 @@ html.has-eclipse-lock {
 body {
 	margin: 0;
 	font-family: var(--font-body);
-	font-size: 1.05rem;
+	font-size: 1.125rem;
 	font-weight: 400;
-	line-height: 1.65;
+	line-height: 1.7;
 	background: var(--bg);
 	color: var(--text);
 	-webkit-font-smoothing: antialiased;
@@ -102,9 +108,9 @@ h2,
 h3,
 h4 {
 	font-family: var(--font-display);
-	font-weight: 300;
-	letter-spacing: -0.03em;
-	line-height: 1.12;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	line-height: 1.16;
 	margin: 0;
 }
 
@@ -573,7 +579,7 @@ p {
 
 .corona-diagram text {
 	font-family: var(--font-display);
-	font-weight: 300;
+	font-weight: 400;
 	paint-order: stroke fill;
 	stroke: var(--bg);
 	stroke-width: 2.4;
@@ -624,8 +630,8 @@ p {
 	margin: 0 0 0.85rem;
 	font-family: var(--font-display);
 	font-size: clamp(1.3rem, 2.5vw, 1.9rem);
-	font-weight: 300;
-	letter-spacing: -0.03em;
+	font-weight: 400;
+	letter-spacing: 0.01em;
 	line-height: 1.25;
 	color: var(--text);
 	text-wrap: balance;
@@ -819,8 +825,8 @@ p {
 .mission-place {
 	font-family: var(--font-display);
 	font-size: 1.55rem;
-	font-weight: 300;
-	letter-spacing: -0.02em;
+	font-weight: 400;
+	letter-spacing: 0.01em;
 	color: rgba(245, 245, 243, 0.88);
 	transition: color 0.4s;
 }
@@ -966,7 +972,7 @@ p {
 	overflow: hidden;
 	padding: 4.75rem 0 0;
 	background: #05080f;
-	border-top: 1px solid rgb(232 121 145 / 0.32);
+	border-top: 1px solid rgb(var(--accent-rgb) / 0.32);
 }
 
 .footer-orbit {
@@ -1058,6 +1064,27 @@ p {
 	color: var(--accent);
 }
 
+.footer-palette {
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+	margin: 0.85rem 0 0;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.footer-palette-chip {
+	width: 0.72rem;
+	height: 0.72rem;
+	border-radius: 2px;
+	background: var(--accent-magenta);
+	box-shadow: 0 0 0 1px rgb(245 245 243 / 0.22);
+}
+
 .footer-kicker {
 	margin: 0.35rem 0 1.05rem;
 	color: var(--accent);
@@ -1143,7 +1170,7 @@ p {
 .lead {
 	font-family: var(--font-display);
 	font-size: clamp(1.2rem, 2vw, 1.55rem);
-	font-weight: 300;
+	font-weight: 400;
 	line-height: 1.5;
 	color: var(--text-dim);
 	margin-bottom: 2.5rem;
@@ -1355,7 +1382,7 @@ p {
 		font-size: 0.95rem;
 		letter-spacing: 0.28em;
 		text-transform: uppercase;
-		font-weight: 300;
+		font-weight: 500;
 	}
 
 	.mobile-nav a.is-support {

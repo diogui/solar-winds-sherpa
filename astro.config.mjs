@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { homeOnlyPreview } from './src/data/site.ts';
 
 export default defineConfig({
 	site: 'https://solarwindsherpas.com',
@@ -10,4 +11,12 @@ export default defineConfig({
 	image: {
 		responsiveStyles: true,
 	},
+	redirects: homeOnlyPreview
+		? {
+				'/about': '/',
+				'/science': '/',
+				'/join': '/',
+				'/expeditions': '/',
+			}
+		: {},
 });

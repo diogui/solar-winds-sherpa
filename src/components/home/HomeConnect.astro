@@ -1,0 +1,37 @@
+---
+import { site } from '../../data/site';
+---
+
+<section class="home-connect" id="contact" aria-labelledby="connect-heading">
+	<div class="home-connect-inner">
+		<h2 id="connect-heading" class="label">Contact & Subscribe</h2>
+
+		<div class="home-connect-grid">
+			<article class="home-connect-card reveal">
+				<p class="home-connect-kicker">Contact</p>
+				<h3>Write to us</h3>
+				<p>For questions, collaboration, press, or anything else — send an email.</p>
+				<a class="home-connect-email" href={`mailto:${site.email}`}>{site.email}</a>
+			</article>
+
+			<article class="home-connect-card reveal">
+				<p class="home-connect-kicker">Subscribe</p>
+				<h3>Stay informed — join our newsletter</h3>
+				<p>Be the first to hear about upcoming eclipses, expeditions, and new discoveries.</p>
+				<form class="home-connect-form" data-newsletter-form data-mailto={site.email}>
+					<input
+						type="email"
+						name="email"
+						autocomplete="email"
+						required
+						placeholder="Enter your email"
+						aria-label="Enter your email"
+					/>
+					<button class="cta cta--button" type="submit">
+						Send <span class="cta-arrow" aria-hidden="true">→</span>
+					</button>
+				</form>
+			</article>
+		</div>
+	</div>
+</section>

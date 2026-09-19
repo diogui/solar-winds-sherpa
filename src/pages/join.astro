@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactSection from '../components/ContactSection.astro';
+import { homeOnlyPreview } from '../data/site';
+
+if (homeOnlyPreview) return Astro.redirect('/');
 ---
 
 <BaseLayout

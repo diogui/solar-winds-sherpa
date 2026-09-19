@@ -2,6 +2,9 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { homeOnlyPreview } from '../../data/site';
+
+if (homeOnlyPreview) return Astro.redirect('/');
 
 const expeditions = (await getCollection('expeditions')).sort(
 	(a, b) => a.data.order - b.data.order,

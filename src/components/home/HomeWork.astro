@@ -3,12 +3,13 @@ import { Image } from 'astro:assets';
 import researchPhoto from '../../assets/images/work/research.jpg';
 import expeditionsPhoto from '../../assets/images/work/expeditions.jpg';
 import outreachPhoto from '../../assets/images/work/outreach.jpg';
+import { homeOnlyPreview } from '../../data/site';
 
 const fronts = [
 	{
 		title: 'Scientific Research',
 		text: 'We use specialized instruments to study the solar corona. By analyzing its light, we investigate its temperature, structure and connection to the solar wind, adding observations that complement those made by space-based observatories.',
-		href: '/science',
+		href: homeOnlyPreview ? '/#why-eclipses' : '/science',
 		cta: 'Explore the science',
 		image: researchPhoto,
 		alt: 'A Solar Wind Sherpas team member studies an eclipse image on a camera in the field',
@@ -17,7 +18,7 @@ const fronts = [
 	{
 		title: 'Eclipse Expeditions',
 		text: 'Observing a total solar eclipse starts long before totality. We select observing sites, prepare instruments and bring people and equipment into the field, ready to make the most of a brief opportunity to study the corona.',
-		href: '/expeditions',
+		href: homeOnlyPreview ? '/#latest-expedition' : '/expeditions',
 		cta: 'Explore our expeditions',
 		image: expeditionsPhoto,
 		alt: 'Telescopes set up on a ridge in Spain at sunset, ready for eclipse observations',
@@ -27,7 +28,7 @@ const fronts = [
 	{
 		title: 'Education & Outreach',
 		text: 'We share eclipse science with communities where our expeditions take us. Through talks and educational activities, we explain what happens during an eclipse, introduce our research and help people understand how to observe the event safely.',
-		href: '/about',
+		href: homeOnlyPreview ? '/#who-we-are' : '/about',
 		cta: 'Discover our outreach',
 		image: outreachPhoto,
 		alt: 'An evening public talk in a village square, with a lunar eclipse projected for the audience',

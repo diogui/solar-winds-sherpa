@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import sun from '../../assets/images/why/sun.jpg';
 import corona from '../../assets/images/why/corona.jpg';
 import prominences from '../../assets/images/why/prominences.jpg';
+import { homeOnlyPreview } from '../../data/site';
 
 const frames = [
 	{
@@ -70,7 +71,7 @@ const frames = [
 				Eclipse observations complement measurements from spacecraft and instruments that study the
 				corona throughout the year.
 			</p>
-			<a class="cta" href="/science">
+			<a class="cta" href={homeOnlyPreview ? '/#papers-heading' : '/science'}>
 				Explore the science <span class="cta-arrow" aria-hidden="true">→</span>
 			</a>
 		</div>
@@ -96,20 +97,35 @@ const frames = [
 						aria-hidden="true"
 						focusable="false"
 					>
+						<defs>
+							<marker
+								id="why-arrowhead"
+								viewBox="0 0 10 10"
+								refX="8.6"
+								refY="5"
+								markerWidth="2.6"
+								markerHeight="2.6"
+								orient="auto"
+								markerUnits="userSpaceOnUse"
+							>
+								<path d="M1.2 1.6 L8.8 5 L1.2 8.4 Z" fill="var(--accent)"></path>
+							</marker>
+						</defs>
 						<g class="why-callout why-callout--corona">
-							<path
+							<circle
 								class="why-corona-outline"
-								d="M50.2 17.2
-								C61.5 16.4 74 21.5 81.2 32.2
-								C88.4 43 88.6 56.8 82.4 67.2
-								C76.4 77.4 64.2 83.6 51.4 83.4
-								C38.4 83.2 26.2 76.6 20.4 65.6
-								C14.6 54.6 16.2 40.4 23.8 30.2
-								C31.6 19.8 39.6 17.8 50.2 17.2Z"
+								cx="50"
+								cy="45"
+								r="21.6"
+								pathLength="100"
+							></circle>
+							<path
+								class="why-callout-arrow"
+								d="M79.4 7.2 C74.6 8.4 68.2 16.8 63.4 26.6"
+								marker-end="url(#why-arrowhead)"
 							></path>
-							<line x1="78" y1="24" x2="86" y2="10"></line>
-							<circle class="why-callout-dot" cx="86" cy="10" r="0.7"></circle>
-							<text x="70" y="7.6">Solar corona</text>
+							<circle class="why-callout-dot" cx="79.4" cy="7.2" r="0.7"></circle>
+							<text x="76.8" y="5.8" text-anchor="end">Solar corona</text>
 						</g>
 						<g class="why-callout why-callout--prominence">
 							<ellipse
@@ -127,9 +143,13 @@ const frames = [
 								ry="4.4"
 								transform="rotate(12 63.9 54.2)"
 							></ellipse>
-							<line x1="27.4" y1="49.6" x2="10" y2="86"></line>
-							<circle class="why-callout-dot" cx="10" cy="86" r="0.7"></circle>
-							<text x="4" y="92">Prominences</text>
+							<path
+								class="why-callout-arrow"
+								d="M12 88.2 C16.5 78.4 22.4 62.2 27.2 51.4"
+								marker-end="url(#why-arrowhead)"
+							></path>
+							<circle class="why-callout-dot" cx="12" cy="88.2" r="1.15"></circle>
+							<text x="16" y="93.4">Prominences</text>
 						</g>
 					</svg>
 				</div>
