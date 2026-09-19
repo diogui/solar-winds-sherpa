@@ -9,26 +9,21 @@ const shots = [
 		image: instruments,
 		alt: 'Portable solar instruments and a field laptop on the Burgos ridge',
 		variant: 'instruments',
-		crop: 'left',
-		filmLabel: 'Burgos expedition film, left frame',
 	},
 	{
 		image: ridge,
 		alt: 'The Solar Wind Sherpas team in the field near Burgos, with telescopes, a camera tripod, and members at work',
 		variant: 'ridge',
-		crop: 'center',
-		filmLabel: 'Burgos expedition film, centre frame',
 	},
 	{
 		image: team,
 		alt: 'Solar Wind Sherpas team members in purple expedition shirts gathered around a telescope in Burgos',
 		variant: 'team',
-		crop: 'right',
-		filmLabel: 'Burgos expedition film, right frame',
 	},
 ] as const;
 
 const videoSrc = '/media/latest/burgos.mp4';
+const videoSrcLight = '/media/latest/burgos-640.mp4';
 const posterSrc = '/media/latest/burgos-poster.jpg';
 ---
 
@@ -39,31 +34,26 @@ const posterSrc = '/media/latest/burgos-poster.jpg';
 	data-latest-triptych
 	data-latest-mode="film"
 	data-latest-src={videoSrc}
+	data-latest-src-light={videoSrcLight}
 >
 	<!-- Review: photographer credits — Václav Široký (ridge & instruments); team photograph to confirm -->
 	<div class="home-latest-frame">
 		<div class="home-latest-visual">
+			<div class="home-latest-film">
+				<video
+					class="home-latest-video"
+					data-latest-video
+					muted
+					loop
+					playsinline
+					preload="none"
+					poster={posterSrc}
+					aria-label="Burgos expedition film"
+				></video>
+			</div>
 			{
-				shots.map((shot, index) => (
-					<figure
-						class:list={[
-							'home-latest-shot',
-							`home-latest-shot--${shot.variant}`,
-							`home-latest-shot--${shot.crop}`,
-						]}
-					>
-						<video
-							class="home-latest-video"
-							data-latest-video={index === 0 ? 'master' : 'slave'}
-							muted
-							loop
-							playsinline
-							preload="none"
-							poster={posterSrc}
-							aria-label={shot.filmLabel}
-						>
-							<source src={videoSrc} type="video/mp4" />
-						</video>
+				shots.map((shot) => (
+					<figure class:list={['home-latest-shot', `home-latest-shot--${shot.variant}`]}>
 						<Image
 							src={shot.image}
 							alt={shot.alt}

@@ -1,79 +1,101 @@
+import type { ConnectionLike } from './hero-video';
+
 const FILM = 'film';
 const PHOTOS = 'photos';
 
+function network(): ConnectionLike | null {
+	const nav = navigator as Navigator & {
+		connection?: ConnectionLike;
+		mozConnection?: ConnectionLike;
+		webkitConnection?: ConnectionLike;
+	};
+	return nav.connection ?? nav.mozConnection ?? nav.webkitConnection ?? null;
+}
+
+function chooseSrc(root: HTMLElement, force = false): string | null {
+	const full = root.dataset.latestSrc ?? '/media/latest/burgos.mp4';
+	const light = root.dataset.latestSrcLight ?? '/media/latest/burgos-640.mp4';
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const connection = network();
+	const type = connection?.effectiveType;
+	if (!force && (reducedMotion || connection?.saveData || ['slow-2g', '2g'].includes(type ?? ''))) {
+		return null;
+	}
+	const slow = type === '3g' || (typeof connection?.downlink === 'number' && connection.downlink < 1.5);
+	return slow || window.innerWidth < 768 ? light : full;
+}
+
 export function mountLatestTriptych(root: HTMLElement) {
-	const videos = [...root.querySelectorAll<HTMLVideoElement>('[data-latest-video]')];
+	const video = root.querySelector<HTMLVideoElement>('[data-latest-video]');
 	const toggle = root.querySelector<HTMLButtonElement>('[data-latest-toggle]');
-	if (!videos.length) return;
+	if (!video || !toggle) return;
 
 	const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-	const src = root.dataset.latestSrc ?? '/media/latest/burgos.mp4';
-	const master = videos[0];
-	const slaves = videos.slice(1);
 	let inView = false;
-
-	videos.forEach((video) => {
-		video.muted = true;
-		video.defaultMuted = true;
-		video.loop = true;
-		video.playsInline = true;
-		if (!video.getAttribute('src') && !video.querySelector('source')) {
-			video.src = src;
-		}
-	});
+	let warmed = false;
 
 	const mode = () => (root.dataset.latestMode === PHOTOS ? PHOTOS : FILM);
 
-	const syncSlaves = () => {
-		const time = master.currentTime;
-		for (const slave of slaves) {
-			if (Math.abs(slave.currentTime - time) > 0.12) slave.currentTime = time;
-		}
+	const attach = (src: string) => {
+		if (video.getAttribute('src') === src) return;
+		video.preload = 'auto';
+		video.src = src;
 	};
 
-	const playAll = () => {
+	const warm = (force = false) => {
+		const src = chooseSrc(root, force);
+		if (!src || warmed) return;
+		warmed = true;
+		attach(src);
+	};
+
+	const play = () => {
 		if (mode() !== FILM || motion.matches) return;
-		videos.forEach((video) => {
-			const play = video.play();
-			if (play) play.catch(() => undefined);
-		});
+		warm(true);
+		const playAttempt = video.play();
+		if (playAttempt) playAttempt.catch(() => undefined);
 	};
 
-	const pauseAll = () => {
-		videos.forEach((video) => video.pause());
+	const pause = () => {
+		video.pause();
 	};
 
 	const setMode = (next: typeof FILM | typeof PHOTOS) => {
 		root.dataset.latestMode = next;
-		toggle?.setAttribute('aria-checked', String(next === PHOTOS));
-		if (next === PHOTOS) pauseAll();
-		else if (inView) playAll();
+		toggle.setAttribute('aria-checked', String(next === PHOTOS));
+		if (next === PHOTOS) pause();
+		else if (inView) play();
+		else warm(true);
 	};
 
-	if (!motion.matches) {
-		master.addEventListener('timeupdate', syncSlaves);
-		master.addEventListener('seeked', syncSlaves);
-		master.addEventListener('play', playAll);
-		master.addEventListener('pause', () => {
-			if (mode() === PHOTOS || !inView) slaves.forEach((video) => video.pause());
-		});
+	video.addEventListener('canplay', () => {
+		if (inView && mode() === FILM && !motion.matches) {
+			const playAttempt = video.play();
+			if (playAttempt) playAttempt.catch(() => undefined);
+		}
+	});
 
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					inView = entry.isIntersecting && entry.intersectionRatio >= 0.28;
-					if (inView) playAll();
-					else pauseAll();
-				}
-			},
-			{ threshold: [0, 0.28, 0.6] },
-		);
-		observer.observe(root);
-	} else {
-		setMode(PHOTOS);
-	}
+	if (motion.matches || !chooseSrc(root)) setMode(PHOTOS);
 
-	toggle?.addEventListener('click', () => {
+	new IntersectionObserver(
+		(entries) => {
+			if (entries.some((entry) => entry.isIntersecting)) warm();
+		},
+		{ rootMargin: '900px 0px', threshold: 0 },
+	).observe(root);
+
+	new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				inView = entry.isIntersecting && entry.intersectionRatio >= 0.2;
+				if (inView) play();
+				else pause();
+			}
+		},
+		{ threshold: [0, 0.2, 0.6] },
+	).observe(root);
+
+	toggle.addEventListener('click', () => {
 		setMode(mode() === FILM ? PHOTOS : FILM);
 	});
 }
