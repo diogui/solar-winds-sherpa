@@ -2,56 +2,41 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const videoPath = resolve('./public/video/hero.mp4');
-const hasVideo = existsSync(videoPath);
-const poster = '/images/hero-poster.jpg?v=2';
+const hasVideo = existsSync(resolve('./public/media/hero/hero-desktop-1280.mp4'));
 ---
 
-<section class="home-hero" aria-label="Introduction">
+<section class="home-hero" data-hero aria-label="Introduction">
 	<div class="home-hero-media">
-		<img
-			src={poster}
-			width="1600"
-			height="900"
-			alt="Solar Wind Sherpas instruments set up on a ridge at dusk"
-			class="home-hero-still"
-			fetchpriority="high"
-			decoding="async"
-		/>
+		<picture class="home-hero-poster">
+			<source
+				media="(max-width: 767px) and (orientation: portrait)"
+				srcset="/media/hero/poster-mobile.jpg"
+				width="720"
+				height="1280"
+			/>
+			<img
+				src="/media/hero/poster-desktop.jpg"
+				width="1600"
+				height="900"
+				alt="Solar Wind Sherpas instruments set up on a ridge at dusk"
+				class="home-hero-still"
+				fetchpriority="high"
+				decoding="async"
+			/>
+		</picture>
 		{
 			hasVideo && (
 				<video
 					class="home-hero-video"
 					data-hero-video
-					autoplay
 					muted
 					playsinline
-					preload="auto"
-					poster={poster}
-				>
-					<source src="/video/hero.mp4?v=2" type="video/mp4" />
-				</video>
+					preload="none"
+					aria-hidden="true"
+				></video>
 			)
 		}
 		<div class="home-hero-shade" aria-hidden="true"></div>
-		{
-			hasVideo && (
-				<div class="home-hero-mark" data-hero-mark>
-					<svg class="home-hero-ring" viewBox="0 0 100 100" focusable="false" aria-hidden="true">
-						<circle cx="50" cy="50" r="46"></circle>
-					</svg>
-					<p
-						class="home-hero-caption"
-						data-hero-caption
-						aria-label="Total Solar Eclipse. Location: Burgos, Spain. Duration: 1 min 40 seconds"
-					>
-						<span data-hero-line="title"></span>
-						<span data-hero-line></span>
-						<span data-hero-line></span>
-					</p>
-				</div>
-			)
-		}
 	</div>
 
 	<div class="home-hero-copy">

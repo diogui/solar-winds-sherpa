@@ -31,6 +31,31 @@ function captionElement(site: ExpeditionSite) {
 	return el;
 }
 
+function markerElement(
+	site: ExpeditionSite,
+	onSelect: (site: ExpeditionSite) => void,
+	onHover: (active: boolean) => void,
+) {
+	const wrap = document.createElement('div');
+	wrap.className = 'globe-marker';
+	wrap.dataset.siteId = site.id;
+
+	const hit = document.createElement('button');
+	hit.type = 'button';
+	hit.className = 'globe-marker-hit';
+	hit.setAttribute('aria-label', `${site.place}. Totality ${site.totality}`);
+	hit.style.pointerEvents = 'auto';
+	hit.addEventListener('click', (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+		onSelect(site);
+	});
+	hit.addEventListener('pointerenter', () => onHover(true));
+	hit.addEventListener('pointerleave', () => onHover(false));
+	wrap.appendChild(hit);
+	return wrap;
+}
+
 function hasWebGL() {
 	try {
 		const canvas = document.createElement('canvas');
@@ -69,8 +94,8 @@ export function initExpeditionGlobe() {
 		.pointsData(expeditionSites)
 		.pointLat('lat')
 		.pointLng('lng')
-		.pointAltitude(0.018)
-		.pointResolution(12)
+		.pointAltitude(0.026)
+		.pointResolution(20)
 		.pointLabel((d) => {
 			const site = d as ExpeditionSite;
 			if (site.id === selectedId) return '';
@@ -79,27 +104,53 @@ export function initExpeditionGlobe() {
 		.onPointClick((point) => {
 			if (isSite(point)) select(point);
 		})
+		.onPointHover((point) => {
+			holder.style.cursor = point ? 'pointer' : '';
+			if (section.classList.contains('is-locked') || reduced) return;
+			globe.controls().autoRotate = !point;
+		})
 		.ringsData([])
 		.ringLat('lat')
 		.ringLng('lng')
 		.ringColor(() => (t: number) => `rgba(232, 121, 145, ${1 - t})`)
-		.ringMaxRadius(4)
+		.ringMaxRadius(5)
 		.ringPropagationSpeed(2.4)
 		.ringRepeatPeriod(1400)
-		.htmlElementsData([])
+		.htmlElementsData(expeditionSites)
 		.htmlLat('lat')
 		.htmlLng('lng')
-		.htmlAltitude(0.08)
+		.htmlAltitude(0.045)
 		.htmlTransitionDuration(reduced ? 0 : 500)
-		.htmlElement((d) => captionElement(d as ExpeditionSite));
+		.htmlElement((d) =>
+			markerElement(
+				d as ExpeditionSite,
+				(site) => select(site),
+				(active) => {
+					holder.style.cursor = active ? 'pointer' : '';
+					if (section.classList.contains('is-locked') || reduced) return;
+					globe.controls().autoRotate = !active;
+				},
+			),
+		);
+
+	const paintMarkers = () => {
+		holder.querySelectorAll<HTMLElement>('.globe-marker').forEach((el) => {
+			const on = el.dataset.siteId === selectedId;
+			el.classList.toggle('is-selected', on);
+			el.querySelector('.globe-caption')?.remove();
+			if (!on) return;
+			const selected = expeditionSites.find((site) => site.id === selectedId);
+			if (selected) el.appendChild(captionElement(selected));
+		});
+	};
 
 	const paint = () => {
 		const selected = expeditionSites.find((site) => site.id === selectedId);
 		globe
 			.pointColor((d) => ((d as ExpeditionSite).id === selectedId ? '#f5f5f3' : '#e87991'))
-			.pointRadius((d) => ((d as ExpeditionSite).id === selectedId ? 0.62 : 0.34))
-			.ringsData(selected ? [selected] : [])
-			.htmlElementsData(selected ? [selected] : []);
+			.pointRadius((d) => ((d as ExpeditionSite).id === selectedId ? 0.95 : 0.7))
+			.ringsData(selected ? [selected] : []);
+		paintMarkers();
 	};
 
 	const select = (site: ExpeditionSite) => {
@@ -114,6 +165,18 @@ export function initExpeditionGlobe() {
 
 	paint();
 	globe.pointOfView({ lat: start.lat, lng: start.lng, altitude: 2.25 }, 0);
+
+	let frames = 0;
+	const waitForMarkers = () => {
+		if (holder.querySelector('.globe-marker')) {
+			paintMarkers();
+			return;
+		}
+		if (frames > 180) return;
+		frames += 1;
+		window.requestAnimationFrame(waitForMarkers);
+	};
+	waitForMarkers();
 
 	const controls = globe.controls();
 	controls.enableZoom = false;

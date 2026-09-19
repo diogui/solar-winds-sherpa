@@ -28,6 +28,7 @@
 }
 
 .home-hero-media,
+.home-hero-poster,
 .home-hero-still,
 .home-hero-video {
 	position: absolute;
@@ -36,10 +37,23 @@
 	height: 100%;
 }
 
+.home-hero-poster {
+	display: block;
+}
+
 .home-hero-still,
 .home-hero-video {
 	object-fit: cover;
-	object-position: 50% 42%;
+	object-position: 50% 28%;
+}
+
+.home-hero-video {
+	opacity: 0;
+	transition: opacity 0.45s var(--ease);
+}
+
+.home-hero[data-playing='true'] .home-hero-video {
+	opacity: 1;
 }
 
 .home-hero-shade {
@@ -258,8 +272,8 @@
 
 .home-vision-star {
 	display: block;
-	margin-top: 0.28em;
-	font-size: clamp(2.9rem, 8.4vw, 5.8rem);
+	margin-top: 0.06em;
+	font-size: clamp(2.1rem, 6.1vw, 4.2rem);
 	font-weight: 500;
 	letter-spacing: 0.06em;
 	line-height: 0.94;
@@ -1084,6 +1098,9 @@
 	pointer-events: none;
 }
 
+.home-invite-copy,
+.home-invite-selected,
+.home-invite-text,
 .home-invite-inner a {
 	pointer-events: auto;
 }
@@ -1118,6 +1135,31 @@
 	background:
 		radial-gradient(circle at 68% 48%, rgb(232 121 145 / 0.14), transparent 46%),
 		#080d14;
+}
+
+.globe-marker {
+	position: relative;
+	pointer-events: none;
+}
+
+.globe-marker-hit {
+	pointer-events: auto;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 2.15rem;
+	height: 2.15rem;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
+}
+
+.globe-marker.is-selected .globe-marker-hit {
+	width: 2.55rem;
+	height: 2.55rem;
 }
 
 .globe-tip {
@@ -1390,14 +1432,42 @@
 	}
 }
 
+@media (max-width: 767px) and (orientation: portrait) {
+	.home-hero-still,
+	.home-hero-video {
+		object-position: 50% 8%;
+	}
+
+	.home-hero-copy {
+		width: calc(100% - 2rem);
+		margin-bottom: 5.75rem;
+	}
+
+	.home-hero-copy h1 {
+		font-size: 1.55rem;
+	}
+
+	.home-hero-mission {
+		margin-bottom: 1.35rem;
+		font-size: 1rem;
+	}
+
+	.home-hero-shade {
+		background: linear-gradient(
+			180deg,
+			rgb(23 29 46 / 0.06) 0%,
+			rgb(23 29 46 / 0.02) 32%,
+			rgb(23 29 46 / 0.38) 64%,
+			rgb(23 29 46 / 0.8) 88%,
+			var(--hero-dusk) 100%
+		);
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.home-work-card:hover,
 	.home-papers-card:hover {
 		transform: none;
-	}
-
-	.home-hero-video {
-		display: none;
 	}
 
 	.home-hero-mark {
