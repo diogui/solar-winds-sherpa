@@ -71,7 +71,6 @@ export function mountLatestTriptych(root: HTMLElement) {
 	};
 
 	const warm = (force = false) => {
-		if (mode() !== FILM) return;
 		const src = chooseSrc(root, force);
 		if (!src || warmed) return;
 		warmed = true;
@@ -123,8 +122,10 @@ export function mountLatestTriptych(root: HTMLElement) {
 		(entries) => {
 			for (const entry of entries) {
 				inView = entry.isIntersecting && entry.intersectionRatio >= 0.2;
-				if (inView) play();
-				else pause();
+				if (inView) {
+					warm();
+					play();
+				} else pause();
 			}
 		},
 		{ threshold: [0, 0.2, 0.6] },

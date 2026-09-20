@@ -901,8 +901,7 @@
 	pointer-events: none;
 }
 
-.home-latest[data-latest-mode='photos'] .home-latest-credit,
-.home-latest[data-latest-mode='photos'] .home-latest-load {
+.home-latest[data-latest-mode='photos'] .home-latest-credit {
 	visibility: hidden;
 }
 
