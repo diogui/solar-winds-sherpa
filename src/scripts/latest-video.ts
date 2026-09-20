@@ -71,6 +71,7 @@ export function mountLatestTriptych(root: HTMLElement) {
 	};
 
 	const warm = (force = false) => {
+		if (mode() !== FILM) return;
 		const src = chooseSrc(root, force);
 		if (!src || warmed) return;
 		warmed = true;
