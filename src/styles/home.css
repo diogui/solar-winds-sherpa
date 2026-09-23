@@ -448,7 +448,6 @@
 	line-height: 1.5;
 	transition:
 		opacity 0.55s var(--ease),
-		filter 0.55s var(--ease),
 		color 0.45s var(--ease);
 }
 
@@ -507,7 +506,6 @@
 
 .home-why-step.is-locked {
 	opacity: 0.28;
-	filter: blur(3px);
 	cursor: default;
 }
 
@@ -684,106 +682,6 @@
 }
 
 /* ——— Our work ——— */
-
-.home-work {
-	padding: 4.5rem 0 5.5rem;
-}
-
-.home-work-intro {
-	width: var(--content);
-	margin: 0 auto 2.75rem;
-}
-
-.home-work-intro h2 {
-	margin-top: 0.7rem;
-	max-width: 38rem;
-	font-size: clamp(1.55rem, 3vw, 2.15rem);
-	line-height: 1.25;
-}
-
-.home-work-grid {
-	width: var(--content);
-	margin: 0 auto;
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: 1.75rem;
-	align-items: stretch;
-}
-
-.home-work-card {
-	display: grid;
-	grid-template-rows: auto 1fr;
-	background: var(--bg-2);
-	border: 1px solid rgb(245 245 243 / 0.07);
-	border-radius: 6px;
-	overflow: hidden;
-	box-shadow:
-		inset 0 1px 0 rgb(245 245 243 / 0.05),
-		0 16px 36px rgb(0 0 0 / 0.32);
-	transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
-}
-
-.home-work-card:hover {
-	transform: translateY(-3px);
-	border-color: rgb(245 245 243 / 0.12);
-	box-shadow:
-		inset 0 1px 0 rgb(245 245 243 / 0.08),
-		0 22px 44px rgb(0 0 0 / 0.42);
-}
-
-.home-work-photo {
-	position: relative;
-	aspect-ratio: 4 / 3;
-	overflow: hidden;
-	background: var(--bg-2);
-}
-
-.home-work-img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.home-work-img--research {
-	object-position: 50% 42%;
-}
-
-.home-work-img--expeditions {
-	object-position: 50% 58%;
-}
-
-.home-work-img--outreach {
-	object-position: 48% 42%;
-}
-
-.home-work-credit {
-	position: absolute;
-	right: 0.75rem;
-	bottom: 0.55rem;
-	margin: 0;
-	font-family: var(--font-display);
-	font-size: 0.58rem;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: rgb(245 245 243 / 0.72);
-	text-shadow: 0 1px 8px rgb(8 13 20 / 0.65);
-}
-
-.home-work-text {
-	display: grid;
-	align-content: start;
-	padding: 1.2rem 1.2rem 1.35rem;
-}
-
-.home-work-text h3 {
-	margin-bottom: 0.7rem;
-	font-size: 1.28rem;
-}
-
-.home-work-text p {
-	margin-bottom: 1.15rem;
-	color: var(--text-dim);
-}
 
 /* ——— Latest ——— */
 
@@ -1604,7 +1502,6 @@
 		margin: 0 auto;
 	}
 
-	.home-work-grid,
 	.home-papers-grid {
 		grid-template-columns: 1fr;
 		gap: 2.25rem;
@@ -1654,7 +1551,6 @@
 		min-height: 0;
 	}
 
-	.home-work-photo,
 	.home-papers-photo {
 		aspect-ratio: 16 / 10;
 	}
@@ -1755,7 +1651,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.home-work-card:hover,
 	.home-papers-card:hover {
 		transform: none;
 	}
@@ -1785,7 +1680,6 @@
 	}
 
 	.home-why-step.is-locked {
-		filter: none;
 		opacity: 0.55;
 	}
 

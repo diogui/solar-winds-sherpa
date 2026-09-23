@@ -6,11 +6,11 @@ export const site = {
 	email: 'contact@solarwindsherpas.com',
 };
 
-/** Inner pages stay in the repo but redirect to Home until this is false. Also drop `public/_redirects`. */
+/** Science, Expeditions and Join redirect to Home while this is true. About is live. Drop `public/_redirects` when opening the rest. */
 export const homeOnlyPreview = true;
 
 export const navLeft = [
-	{ href: '/about', label: 'About', live: !homeOnlyPreview },
+	{ href: '/about', label: 'About', live: true },
 	{ href: '/science', label: 'Science', live: !homeOnlyPreview },
 	{ href: '/expeditions', label: 'Expeditions', live: !homeOnlyPreview },
 ];

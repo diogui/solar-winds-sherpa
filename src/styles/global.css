@@ -1349,6 +1349,10 @@ p {
 		padding-right: 0.2rem;
 	}
 
+	.nav-cluster--right .nav-link:not(.nav-link--support) {
+		display: none;
+	}
+
 	.menu-toggle {
 		display: inline-flex;
 	}

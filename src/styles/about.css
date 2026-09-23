@@ -1,0 +1,257 @@
+.about {
+	--hero-dusk: #171d2e;
+	padding-bottom: 0;
+	width: 100%;
+	max-width: 100%;
+	overflow-x: clip;
+}
+
+article.page.about h1 {
+	font-size: clamp(1.85rem, 8vw, 3.55rem);
+	line-height: 1.12;
+	margin-bottom: 1.25rem;
+	text-wrap: wrap;
+	overflow-wrap: break-word;
+}
+
+.about .lead {
+	max-width: 36rem;
+	margin-bottom: 1.35rem;
+}
+
+.about .page-narrow {
+	width: min(760px, calc(100vw - 3rem));
+}
+
+.about-intro .page-narrow > p:last-of-type {
+	color: var(--text-dim);
+}
+
+.about-media {
+	margin: 2.25rem auto 0;
+	width: var(--content);
+	max-width: 100%;
+}
+
+.about-media-frame {
+	aspect-ratio: 16 / 8;
+	overflow: hidden;
+	border-radius: 6px;
+}
+
+.about-media-frame img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.about-media figcaption {
+	margin: 0.65rem 0 0;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.about-block {
+	padding: 4.25rem 0 1rem;
+}
+
+.about-block h2 {
+	margin: 0.2rem 0 1.15rem;
+	font-size: clamp(1.7rem, 3.2vw, 2.45rem);
+}
+
+.about-block .page-narrow > p {
+	color: var(--text-dim);
+}
+
+.about-timeline {
+	width: min(760px, calc(100% - 3rem));
+	margin: 2.25rem auto 0;
+	padding: 0;
+	list-style: none;
+}
+
+.about-timeline li {
+	display: grid;
+	grid-template-columns: 6.5rem minmax(0, 1fr);
+	gap: 1.25rem;
+	padding: 1.15rem 0;
+	border-top: 1px solid var(--line-quiet);
+}
+
+.about-timeline li:last-child {
+	border-bottom: 1px solid var(--line-quiet);
+}
+
+.about-timeline-year {
+	margin: 0;
+	font-family: var(--font-display);
+	font-size: 1.05rem;
+	letter-spacing: 0.08em;
+	color: var(--accent);
+}
+
+.about-timeline p:last-child {
+	margin: 0;
+	color: var(--text-dim);
+}
+
+.about-founder {
+	width: var(--content);
+	max-width: 100%;
+	margin: 2.5rem auto 0;
+	display: grid;
+	grid-template-columns: minmax(15rem, 0.86fr) minmax(0, 1.14fr);
+	gap: 1.5rem;
+	align-items: start;
+}
+
+.about-founder-photo {
+	margin: 0;
+}
+
+.about-founder-frame {
+	aspect-ratio: 2 / 3;
+	overflow: hidden;
+	border-radius: 6px;
+	background: var(--bg-2);
+}
+
+.about-founder-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 6% 40%;
+	transform: scale(1.42);
+	transform-origin: 8% 38%;
+}
+
+.about-founder-photo figcaption {
+	margin: 0.65rem 0 0;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.about-founder-copy {
+	padding: 1.55rem 1.45rem 1.6rem;
+	background: var(--bg-2);
+	border: 1px solid rgb(245 245 243 / 0.07);
+	border-radius: 6px;
+	box-shadow:
+		inset 0 1px 0 rgb(245 245 243 / 0.05),
+		0 16px 36px rgb(0 0 0 / 0.32);
+}
+
+.about-founder-copy h3 {
+	margin: 0.15rem 0 0.45rem;
+	font-size: clamp(1.7rem, 3vw, 2.35rem);
+}
+
+.about-founder-affiliation {
+	margin: 0 0 1.15rem;
+	color: var(--text-dim);
+	font-size: 0.98rem;
+}
+
+.about-founder-copy p + p {
+	margin-top: 0.95rem;
+	color: var(--text-dim);
+}
+
+.about-partners .home-partners-grid {
+	width: 100%;
+	max-width: 64rem;
+	margin: 2rem auto 0;
+	display: grid;
+	gap: 1.05rem;
+	padding-inline: 1.5rem;
+	box-sizing: border-box;
+}
+
+.about-partners .home-partner-logo {
+	display: block;
+	width: auto;
+	height: 5.28rem;
+	object-fit: contain;
+	mix-blend-mode: screen;
+}
+
+.about-partners .home-partner-logo--mark {
+	height: 4.02rem;
+}
+
+.about-partners .home-partner-logo--brno {
+	height: 3.8rem;
+}
+
+.about-partners .home-partner-logo--aberystwyth {
+	height: 4.35rem;
+}
+
+.about-partners .home-partners-row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem 1.85rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.about-partners .home-partners-row li {
+	flex: none;
+}
+
+.about-invite {
+	margin-top: 3.5rem;
+	padding: 4.5rem 0 5.5rem;
+	background: var(--hero-dusk);
+}
+
+.about-invite h2 {
+	margin: 0.2rem 0 1.15rem;
+	font-size: clamp(1.7rem, 3.2vw, 2.45rem);
+}
+
+.about-invite p:not(.label) {
+	max-width: 34rem;
+	color: var(--text-dim);
+}
+
+.about-invite-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.85rem 1rem;
+	margin-top: 1.75rem;
+}
+
+@media (max-width: 900px) {
+	article.page.about h1 {
+		font-size: clamp(1.55rem, 7.2vw, 2.2rem);
+	}
+
+	.about-media-frame {
+		aspect-ratio: 16 / 11;
+	}
+
+	.about-founder {
+		grid-template-columns: 1fr;
+	}
+
+	.about-founder-frame {
+		aspect-ratio: 4 / 5;
+		max-width: 28rem;
+	}
+
+	.about-timeline li {
+		grid-template-columns: 1fr;
+		gap: 0.35rem;
+	}
+}

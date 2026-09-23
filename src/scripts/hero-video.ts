@@ -33,15 +33,14 @@ export function chooseHero({
 	if (reducedMotion || connection?.saveData || ['slow-2g', '2g'].includes(type ?? '')) {
 		return { file: null, poster, reason: 'poster' };
 	}
-	const slow = type === '3g' || (typeof downlink === 'number' && downlink < 1.5);
 	const fast = type === '4g' && typeof downlink === 'number' && downlink >= 5;
 	if (mobile) {
 		return { file: `hero-mobile-${fast ? 720 : 480}.mp4`, poster, reason: fast ? 'mobile-fast' : 'mobile' };
 	}
 	return {
-		file: `hero-desktop-${slow ? 960 : fast && width >= 1400 ? 1600 : 1280}.mp4`,
+		file: `hero-desktop-${fast && width >= 1400 ? 1280 : 960}.mp4`,
 		poster,
-		reason: slow ? 'desktop-slow' : fast && width >= 1400 ? 'desktop-fast' : 'desktop',
+		reason: fast && width >= 1400 ? 'desktop-fast' : 'desktop',
 	};
 }
 
@@ -101,6 +100,17 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		video.load();
 	};
 
+	const release = () => {
+		video.pause();
+		if (!video.getAttribute('src')) {
+			idle();
+			return;
+		}
+		video.removeAttribute('src');
+		video.load();
+		idle();
+	};
+
 	const play = async (explicit = false) => {
 		if (!video.getAttribute('src')) {
 			const selected =
@@ -148,6 +158,16 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	});
 
 	idle();
-	if (selection.file) void play();
+	new IntersectionObserver(
+		([entry]) => {
+			if (entry?.isIntersecting && (entry.intersectionRatio ?? 0) >= 0.2) {
+				if (!userPaused && selection.file) void play();
+				return;
+			}
+			release();
+		},
+		{ threshold: [0, 0.2] },
+	).observe(root);
+
 	return selection;
 }

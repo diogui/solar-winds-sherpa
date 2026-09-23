@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import nasa from '../assets/images/partners/nasa.png';
+import nsf from '../assets/images/partners/nsf.png';
+import wentworth from '../assets/images/partners/wentworth.png';
+import hawaii from '../assets/images/partners/hawaii.png';
+import msmt from '../assets/images/partners/msmt.png';
+import brno from '../assets/images/partners/brno.png';
+import aberystwyth from '../assets/images/partners/aberystwyth.png';
+import astelco from '../assets/images/partners/astelco.png';
+import berlin from '../assets/images/partners/berlin.png';
+
+const rowOne = [
+	{ src: nasa, alt: 'NASA' },
+	{ src: nsf, alt: 'National Science Foundation' },
+	{ src: wentworth, alt: 'Wentworth Institute of Technology' },
+	{ src: hawaii, alt: 'Institute for Astronomy, University of Hawaiʻi' },
+	{ src: msmt, alt: 'Ministry of Education, Youth and Sports of the Czech Republic' },
+];
+
+const rowTwo = [
+	{
+		src: brno,
+		alt: 'Brno University of Technology, Faculty of Mechanical Engineering',
+		variant: 'brno',
+	},
+	{ src: aberystwyth, alt: 'Aberystwyth University', variant: 'aberystwyth' },
+	{ src: astelco, alt: 'ASTELCO Systems' },
+	{ src: berlin, alt: 'Technische Universität Berlin' },
+];
+---
+
+<div class="home-partners-grid">
+	<ul class="home-partners-row">
+		{
+			rowOne.map((partner) => (
+				<li>
+					<Image
+						src={partner.src}
+						alt={partner.alt}
+						widths={[200, 320, 480]}
+						sizes="160px"
+						class="home-partner-logo"
+					/>
+				</li>
+			))
+		}
+	</ul>
+	<ul class="home-partners-row home-partners-row--marks">
+		{
+			rowTwo.map((partner) => (
+				<li>
+					<Image
+						src={partner.src}
+						alt={partner.alt}
+						widths={[240, 400, 560]}
+						sizes="200px"
+						class:list={[
+							'home-partner-logo',
+							'home-partner-logo--mark',
+							partner.variant && `home-partner-logo--${partner.variant}`,
+						]}
+					/>
+				</li>
+			))
+		}
+	</ul>
+</div>

@@ -115,7 +115,7 @@ export function mountLatestTriptych(root: HTMLElement) {
 		(entries) => {
 			if (entries.some((entry) => entry.isIntersecting)) warm();
 		},
-		{ rootMargin: '900px 0px', threshold: 0 },
+		{ rootMargin: '160px 0px', threshold: 0 },
 	).observe(root);
 
 	new IntersectionObserver(

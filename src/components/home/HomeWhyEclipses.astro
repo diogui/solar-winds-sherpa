@@ -88,6 +88,8 @@ const frames = [
 								sizes="(max-width: 900px) 80vw, 28rem"
 								class:list={['why-photo', `why-photo--${frame.variant}`]}
 								data-why-frame={frame.stage}
+								loading={frame.stage === '0' ? 'eager' : 'lazy'}
+								decoding="async"
 							/>
 						))
 					}

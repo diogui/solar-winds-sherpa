@@ -1,4 +1,4 @@
-import Globe from 'globe.gl';
+import type { GlobeInstance } from 'globe.gl';
 import { defaultExpeditionId, expeditionSites, type ExpeditionSite } from '../data/expeditions-map';
 
 function isSite(value: object): value is ExpeditionSite {
@@ -97,6 +97,8 @@ export function initExpeditionGlobe() {
 
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const { hex: accentHex, rgb: accentRgb } = readAccent();
+	let globe: GlobeInstance | null = null;
+	let mounting = false;
 	let selectedId = defaultExpeditionId;
 	let userLocked = false;
 	let tourTimer: number | undefined;
@@ -105,6 +107,7 @@ export function initExpeditionGlobe() {
 		expeditionSites.findIndex((site) => site.id === defaultExpeditionId),
 	);
 	const dwellMs = 4800;
+	let sectionVisible = false;
 	let scheduleTour = () => {};
 
 	const pauseTour = () => {
@@ -114,51 +117,28 @@ export function initExpeditionGlobe() {
 		}
 	};
 
+	const capRenderer = () => {
+		globe?.renderer().setPixelRatio(1);
+	};
+
+	const setRunning = (on: boolean) => {
+		if (!globe) return;
+		if (on && !document.hidden) {
+			capRenderer();
+			globe.resumeAnimation();
+			scheduleTour();
+		} else {
+			pauseTour();
+			globe.pauseAnimation();
+		}
+	};
+
 	const onMarkerHover = (active: boolean) => {
 		holder.style.cursor = active ? 'pointer' : '';
 		if (userLocked || reduced) return;
 		if (active) pauseTour();
 		else scheduleTour();
 	};
-
-	const globe = new Globe(holder, {
-		rendererConfig: { antialias: true, alpha: true },
-		animateIn: !reduced,
-	})
-		.globeImageUrl('/images/earth-night.jpg')
-		.backgroundColor('rgba(8,13,20,0)')
-		.showAtmosphere(true)
-		.atmosphereColor(accentHex)
-		.atmosphereAltitude(0.18)
-		.pointsData(expeditionSites)
-		.pointLat('lat')
-		.pointLng('lng')
-		.pointAltitude(0.026)
-		.pointResolution(20)
-		.pointLabel((d) => {
-			const site = d as ExpeditionSite;
-			if (site.id === selectedId) return '';
-			return `<span class="globe-tip">${site.place}<br>${site.totality}</span>`;
-		})
-		.onPointClick((point) => {
-			if (isSite(point)) select(point);
-		})
-		.onPointHover((point) => onMarkerHover(Boolean(point)))
-		.ringsData([])
-		.ringLat('lat')
-		.ringLng('lng')
-		.ringColor(() => (t: number) => `rgba(${accentRgb}, ${1 - t})`)
-		.ringMaxRadius(5)
-		.ringPropagationSpeed(2.4)
-		.ringRepeatPeriod(1400)
-		.htmlElementsData(expeditionSites)
-		.htmlLat('lat')
-		.htmlLng('lng')
-		.htmlAltitude(0.045)
-		.htmlTransitionDuration(reduced ? 0 : 500)
-		.htmlElement((d) =>
-			markerElement(d as ExpeditionSite, (site) => select(site), onMarkerHover),
-		);
 
 	const paintMarkers = () => {
 		holder.querySelectorAll<HTMLElement>('.globe-marker').forEach((el) => {
@@ -172,6 +152,7 @@ export function initExpeditionGlobe() {
 	};
 
 	const paint = () => {
+		if (!globe) return;
 		const selected = expeditionSites.find((site) => site.id === selectedId);
 		globe
 			.pointColor((d) => ((d as ExpeditionSite).id === selectedId ? '#f5f5f3' : accentHex))
@@ -181,6 +162,7 @@ export function initExpeditionGlobe() {
 	};
 
 	const showSite = (site: ExpeditionSite, animate: boolean) => {
+		if (!globe) return;
 		selectedId = site.id;
 		tourIndex = expeditionSites.findIndex((item) => item.id === site.id);
 		setLabel(section, site);
@@ -195,6 +177,10 @@ export function initExpeditionGlobe() {
 		userLocked = true;
 		section.classList.add('is-locked');
 		pauseTour();
+		selectedId = site.id;
+		tourIndex = expeditionSites.findIndex((item) => item.id === site.id);
+		setLabel(section, site);
+		if (!globe) return;
 		globe.controls().autoRotate = false;
 		showSite(site, true);
 	};
@@ -206,70 +192,128 @@ export function initExpeditionGlobe() {
 		if (site) showSite(site, true);
 	};
 
-	paint();
-	globe.pointOfView({ lat: start.lat, lng: start.lng, altitude: 2.25 }, 0);
-
-	let frames = 0;
-	const waitForMarkers = () => {
-		if (holder.querySelector('.globe-marker')) {
-			paintMarkers();
-			return;
-		}
-		if (frames > 180) return;
-		frames += 1;
-		window.requestAnimationFrame(waitForMarkers);
+	scheduleTour = () => {
+		if (userLocked || reduced || document.hidden || !sectionVisible || !globe) return;
+		pauseTour();
+		tourTimer = window.setInterval(advanceTour, dwellMs);
 	};
-	waitForMarkers();
-
-	const controls = globe.controls();
-	controls.enableZoom = false;
-	controls.enablePan = false;
-	controls.autoRotate = false;
-	controls.autoRotateSpeed = 0.55;
-	controls.minPolarAngle = 0.55;
-	controls.maxPolarAngle = Math.PI - 0.55;
 
 	const layout = () => {
+		if (!globe) return;
 		const { width, height } = holder.getBoundingClientRect();
 		if (width < 8 || height < 8) return;
+		capRenderer();
 		globe.width(width).height(height);
 		const shift = width >= 900 ? Math.round(width * 0.18) : 0;
 		globe.globeOffset([shift, 0]);
 	};
 
-	layout();
-	requestAnimationFrame(layout);
-	window.addEventListener('resize', layout, { passive: true });
-	new ResizeObserver(layout).observe(holder);
+	const mount = async () => {
+		if (globe || mounting) return;
+		mounting = true;
 
-	let sectionVisible = false;
-	const tryTour = () => {
-		if (sectionVisible) scheduleTour();
-		else pauseTour();
-	};
-	scheduleTour = () => {
-		if (userLocked || reduced || document.hidden || !sectionVisible) return;
-		pauseTour();
-		tourTimer = window.setInterval(advanceTour, dwellMs);
+		const { default: Globe } = await import('globe.gl');
+		if (globe) return;
+
+		globe = new Globe(holder, {
+			rendererConfig: { antialias: false, alpha: true, powerPreference: 'low-power' },
+			animateIn: false,
+		})
+			.globeImageUrl('/images/earth-night.jpg')
+			.backgroundColor('rgba(8,13,20,0)')
+			.showAtmosphere(true)
+			.atmosphereColor(accentHex)
+			.atmosphereAltitude(0.18)
+			.pointsData(expeditionSites)
+			.pointLat('lat')
+			.pointLng('lng')
+			.pointAltitude(0.026)
+			.pointResolution(20)
+			.pointLabel((d) => {
+				const site = d as ExpeditionSite;
+				if (site.id === selectedId) return '';
+				return `<span class="globe-tip">${site.place}<br>${site.totality}</span>`;
+			})
+			.onPointClick((point) => {
+				if (isSite(point)) select(point);
+			})
+			.onPointHover((point) => onMarkerHover(Boolean(point)))
+			.ringsData([])
+			.ringLat('lat')
+			.ringLng('lng')
+			.ringColor(() => (t: number) => `rgba(${accentRgb}, ${1 - t})`)
+			.ringMaxRadius(5)
+			.ringPropagationSpeed(2.4)
+			.ringRepeatPeriod(1400)
+			.htmlElementsData(expeditionSites)
+			.htmlLat('lat')
+			.htmlLng('lng')
+			.htmlAltitude(0.045)
+			.htmlTransitionDuration(reduced ? 0 : 500)
+			.htmlElement((d) =>
+				markerElement(d as ExpeditionSite, (site) => select(site), onMarkerHover),
+			);
+
+		const selected = expeditionSites.find((site) => site.id === selectedId) ?? start;
+		paint();
+		if (selected) {
+			globe.pointOfView({ lat: selected.lat, lng: selected.lng, altitude: 2.25 }, 0);
+		}
+
+		let frames = 0;
+		const waitForMarkers = () => {
+			if (holder.querySelector('.globe-marker')) {
+				paintMarkers();
+				return;
+			}
+			if (frames > 180) return;
+			frames += 1;
+			window.requestAnimationFrame(waitForMarkers);
+		};
+		waitForMarkers();
+
+		const controls = globe.controls();
+		controls.enableZoom = false;
+		controls.enablePan = false;
+		controls.autoRotate = false;
+		controls.autoRotateSpeed = 0.55;
+		controls.minPolarAngle = 0.55;
+		controls.maxPolarAngle = Math.PI - 0.55;
+
+		layout();
+		requestAnimationFrame(layout);
+		window.addEventListener('resize', layout, { passive: true });
+		new ResizeObserver(layout).observe(holder);
+		setRunning(sectionVisible);
 	};
 
 	new IntersectionObserver(
 		([entry]) => {
-			sectionVisible = Boolean(entry?.isIntersecting);
-			tryTour();
+			if (entry?.isIntersecting) void mount();
 		},
-		{ threshold: 0.35 },
+		{ rootMargin: '320px 0px', threshold: 0 },
 	).observe(section);
 
-	document.addEventListener('visibilitychange', tryTour);
+	new IntersectionObserver(
+		([entry]) => {
+			sectionVisible = Boolean(entry?.isIntersecting);
+			if (sectionVisible) void mount();
+			setRunning(sectionVisible);
+		},
+		{ threshold: 0.12 },
+	).observe(section);
+
+	document.addEventListener('visibilitychange', () => {
+		setRunning(sectionVisible);
+	});
 
 	holder.addEventListener('pointerdown', (event) => {
 		if (userLocked) return;
 		if (event.target instanceof Element && event.target.closest('.globe-marker-hit')) return;
 		pauseTour();
 	});
-	holder.addEventListener('pointerup', tryTour);
-	holder.addEventListener('pointercancel', tryTour);
+	holder.addEventListener('pointerup', () => scheduleTour());
+	holder.addEventListener('pointercancel', () => scheduleTour());
 
 	holder.addEventListener('choose-expedition', ((event: Event) => {
 		const id = (event as CustomEvent<string>).detail;

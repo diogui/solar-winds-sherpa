@@ -123,6 +123,7 @@ function initHomeHeader() {
 	const header = document.querySelector<HTMLElement>('[data-header]');
 	if (!header || header.dataset.variant !== 'home') return;
 	const hero = document.querySelector<HTMLElement>('.home-hero');
+	let ticking = false;
 
 	const update = () => {
 		const range = Math.max(180, (hero?.offsetHeight ?? 640) * 0.22);
@@ -132,7 +133,18 @@ function initHomeHeader() {
 	};
 
 	update();
-	window.addEventListener('scroll', update, { passive: true });
+	window.addEventListener(
+		'scroll',
+		() => {
+			if (ticking) return;
+			ticking = true;
+			window.requestAnimationFrame(() => {
+				update();
+				ticking = false;
+			});
+		},
+		{ passive: true },
+	);
 }
 
 function initHeroVideo() {
@@ -214,11 +226,14 @@ function initWhyEclipses() {
 		}
 	};
 
-	const trackStart = () => section.getBoundingClientRect().top + window.scrollY - headerOffset();
-	const trackRange = () => Math.max(1, section.offsetHeight - window.innerHeight);
+	let start = 0;
+	let range = 1;
+	const measure = () => {
+		start = section.getBoundingClientRect().top + window.scrollY - headerOffset();
+		range = Math.max(1, section.offsetHeight - window.innerHeight);
+	};
 
-	const progressFromScroll = () =>
-		Math.min(1, Math.max(0, (window.scrollY - trackStart()) / trackRange()));
+	const progressFromScroll = () => Math.min(1, Math.max(0, (window.scrollY - start) / range));
 
 	const stageFromProgress = (progress: number) => {
 		if (progress >= 0.999) return last;
@@ -239,16 +254,18 @@ function initWhyEclipses() {
 			setStage(stage);
 			if (reduced) return;
 			const progress = (stage + 0.4) / (last + 1);
-			window.scrollTo({ top: trackStart() + progress * trackRange(), behavior: 'auto' });
+			window.scrollTo({ top: start + progress * range, behavior: 'auto' });
 		});
 	});
 
 	setStage(0);
+	measure();
 	if (reduced) {
 		section.style.setProperty('--why-progress', '1');
 		return;
 	}
 
+	window.addEventListener('resize', measure, { passive: true });
 	window.addEventListener(
 		'scroll',
 		() => {

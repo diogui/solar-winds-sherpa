@@ -1,77 +1,174 @@
 ---
 import { Image } from 'astro:assets';
-import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import landscape from '../assets/images/night-mountain.jpg';
+import PartnerLogos from '../components/PartnerLogos.astro';
+import WorkCards from '../components/WorkCards.astro';
 import { homeOnlyPreview } from '../data/site';
+import instruments from '../assets/images/field/latest-instruments.jpg';
+import shadia from '../assets/images/field/latest-ridge.jpg';
+import '../styles/about.css';
+import '../styles/work.css';
 
-if (homeOnlyPreview) return Astro.redirect('/');
-
-const team = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
-const teamMembers = await Promise.all(
-	team.map(async (member) => {
-		const rendered = await render(member);
-		return { member, Content: rendered.Content };
-	}),
-);
+const scienceHref = homeOnlyPreview ? '/#why-eclipses' : '/science';
 ---
 
 <BaseLayout
 	title="About"
-	description="The Solar Wind Sherpas are scientists and explorers who have spent three decades travelling to total solar eclipses to study the corona and the solar wind."
+	description="Solar Wind Sherpas advances scientific understanding of the Sun through total solar eclipse expeditions, led by Dr. Shadia Habbal."
 >
-	<article class="page">
-		<div class="page-narrow">
-			<p class="label page-kicker">About</p>
-			<h1>Scientists at the edge of the shadow</h1>
-			<p class="lead">
-				An international team founded in 1995 by Dr. Shadia R. Habbal. We carry observatories to
-				the path of totality — often to places with no observatory at all.
-			</p>
-		</div>
+	<article class="page about">
+		<section class="about-intro" id="introduction" aria-labelledby="about-heading">
+			<div class="page-narrow">
+				<p class="label page-kicker">About</p>
+				<h1 id="about-heading">
+					Some of the most important questions in solar physics can only be answered by going to the
+					path of totality.
+				</h1>
+				<p class="lead">
+					Thirty-one years. Twenty-one expeditions. An international collaboration led by Dr. Shadia
+					Habbal.
+				</p>
+				<p>
+					Solar Wind Sherpas organizes expeditions to total solar eclipses worldwide. Portable
+					observatories go to the umbra — wherever it falls — to study the solar corona and the
+					origins of the solar wind. The work is led from the Institute for Astronomy, University of
+					Hawaiʻi.
+				</p>
+			</div>
+			<figure class="about-media reveal">
+				<div class="about-media-frame">
+					<Image
+						src={instruments}
+						alt="Portable solar instruments and a field laptop on a ridge during the 2026 Burgos expedition"
+						widths={[900, 1400, 2000]}
+						sizes="(max-width: 1120px) 100vw, 1120px"
+						loading="eager"
+					/>
+				</div>
+				<figcaption>Burgos, Spain · 2026</figcaption>
+			</figure>
+		</section>
 
-		<div class="page-hero-image reveal">
-			<Image
-				src={landscape}
-				alt="Snow-capped mountain peaks under a dark, star-filled sky, with mist along the valley floor"
-				widths={[900, 1400, 2000]}
-				sizes="(max-width: 1120px) 100vw, 1120px"
-				loading="eager"
-			/>
-		</div>
+		<section class="about-block" id="our-story" aria-labelledby="story-heading">
+			<div class="page-narrow">
+				<h2 id="story-heading">Our Story</h2>
+				<p>
+					Dr. Shadia Habbal founded Solar Wind Sherpas in 1995 and has led every expedition since.
+					The name is literal: each expedition carries specialised imaging systems, spectrographs,
+					tracking mounts and power into the path of totality.
+				</p>
+			</div>
+			<ol class="about-timeline">
+				<li>
+					<p class="about-timeline-year">1995</p>
+					<p>
+						The collaboration begins. The first expedition is to India, on 24 October 1995.
+					</p>
+				</li>
+				<li>
+					<p class="about-timeline-year">2005</p>
+					<p>
+						Dr. Habbal becomes Professor and Astronomer at the Institute for Astronomy, University
+						of Hawaiʻi, where the work is based.
+					</p>
+				</li>
+				<li>
+					<p class="about-timeline-year">Today</p>
+					<p>
+						Thirty-one years and twenty-one expeditions, across six continents, with decades of
+						peer-reviewed research on the corona and the solar wind.
+					</p>
+				</li>
+			</ol>
+		</section>
 
-		<div class="page-narrow prose">
-			<p>
-				The Solar Wind Sherpas began as a small group of solar physicists who understood that the
-				corona — the Sun’s outer atmosphere — is only fully visible to the naked eye, and to certain
-				optical diagnostics, during a total solar eclipse. Space-borne coronagraphs occult the inner
-				corona. Totality does not.
-			</p>
-			<p>
-				The name is literal. Each expedition moves specialised imaging systems, spectrographs,
-				tracking mounts, and power into remote desert, ice, mountain, and coastal sites chosen for
-				the geometry of the umbra. The team has grown from six people to more than thirty scientists,
-				engineers, and observers from around the world.
-			</p>
-			<p>
-				What unites the group is a single physical problem: why the corona is hotter than a million
-				degrees, how the solar wind is launched, and how magnetic structure in that region shapes
-				space weather at Earth. The work is published. The method is still to stand in the shadow
-				with instruments that have been aligned in the hours before second contact.
-			</p>
-		</div>
+		<section class="about-block" id="people" aria-labelledby="people-heading">
+			<div class="page-narrow">
+				<h2 id="people-heading">The People Behind the Sherpas</h2>
+				<p>
+					There is no permanent roster. Each path of totality brings together the scientists,
+					engineers and observers needed for those minutes. People who take part appear with that
+					expedition.
+				</p>
+			</div>
+			<div class="about-founder reveal">
+				<figure class="about-founder-photo">
+					<div class="about-founder-frame">
+						<Image
+							src={shadia}
+							alt="Dr. Shadia Habbal in the field during the 2026 Burgos expedition"
+							widths={[640, 960, 1400]}
+							sizes="(max-width: 900px) 92vw, 40vw"
+							class="about-founder-img"
+						/>
+					</div>
+					<figcaption>Dr. Shadia Habbal · Burgos, Spain · 2026</figcaption>
+				</figure>
+				<div class="about-founder-copy">
+					<p class="label">Founder</p>
+					<h3>Dr. Shadia R. Habbal</h3>
+					<p class="about-founder-affiliation">
+						Professor and Astronomer, Institute for Astronomy, University of Hawaiʻi
+					</p>
+					<p>
+						Dr. Shadia Rifai Habbal has spent fifty years at the frontier of solar physics. Born in
+						Syria, she earned her Ph.D. in Physics from the University of Cincinnati in 1977.
+					</p>
+					<p>
+						She spent over two decades as a Research Physicist at the Smithsonian Astrophysical
+						Observatory and lectured at Harvard University. Since 2005 she has been Professor and
+						Astronomer at the Institute for Astronomy, University of Hawaiʻi, and serves as Lead
+						Editor of the Astrophysical Journal.
+					</p>
+					<p>
+						Her method — deploying portable observatories to total solar eclipses — has defined her
+						career. The work has been recognized with a NASA Certificate of Appreciation and an
+						Honorary Doctorate from Brno University of Technology.
+					</p>
+				</div>
+			</div>
+		</section>
 
-		<div class="page-narrow">
-			{
-				teamMembers.map(({ member, Content }) => (
-					<section class="team-card reveal">
-						<p class="role">{member.data.role}</p>
-						<h3>{member.data.name}</h3>
-						{member.data.affiliation && <p>{member.data.affiliation}</p>}
-						<Content />
-					</section>
-				))
-			}
-		</div>
+		<section class="home-work about-actions" id="actions" aria-labelledby="actions-heading">
+			<div class="home-work-intro reveal">
+				<p class="label">Actions</p>
+				<h2 id="actions-heading">
+					We bring solar research into the field and share the science of eclipses with the
+					communities we meet.
+				</h2>
+			</div>
+			<WorkCards outreachHref={false} />
+		</section>
+
+		<section class="about-block about-partners" id="partners" aria-labelledby="about-partners-heading">
+			<div class="page-narrow">
+				<h2 id="about-partners-heading">Partners & Supporters</h2>
+				<p>
+					Expeditions depend on institutions and supporters. The logos below are the list currently
+					shown on the site. Ongoing partnerships and expedition-specific support will be
+					distinguished as each relationship is confirmed.
+				</p>
+			</div>
+			<PartnerLogos />
+		</section>
+
+		<section class="about-invite" id="invite" aria-labelledby="invite-heading">
+			<div class="page-narrow">
+				<p class="label">Continue</p>
+				<h2 id="invite-heading">The science, or the next totality</h2>
+				<p>
+					Methods and papers live with the science. Support is how instruments, people and freight
+					reach the path.
+				</p>
+				<div class="about-invite-actions">
+					<a class="cta cta--button" href={scienceHref}>
+						Explore the science <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
+					<a class="cta cta--button" href="/#support">
+						Support this work <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
+				</div>
+			</div>
+		</section>
 	</article>
 </BaseLayout>
