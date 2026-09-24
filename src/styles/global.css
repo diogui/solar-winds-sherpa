@@ -1069,27 +1069,6 @@ p {
 	color: var(--accent);
 }
 
-.footer-palette {
-	display: flex;
-	align-items: center;
-	gap: 0.45rem;
-	margin: 0.85rem 0 0;
-	color: var(--text-mute);
-	font-family: var(--font-display);
-	font-size: 0.62rem;
-	font-weight: 500;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
-}
-
-.footer-palette-chip {
-	width: 0.72rem;
-	height: 0.72rem;
-	border-radius: 2px;
-	background: var(--accent-magenta);
-	box-shadow: 0 0 0 1px rgb(245 245 243 / 0.22);
-}
-
 .footer-kicker {
 	margin: 0.35rem 0 1.05rem;
 	color: var(--accent);

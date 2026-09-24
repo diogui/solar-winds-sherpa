@@ -22,36 +22,12 @@ const shots = [
 		variant: 'team',
 	},
 ] as const;
-
-const videoSrc = '/media/latest/burgos.mp4';
-const videoSrcLight = '/media/latest/burgos-640.mp4';
-const posterSrc = '/media/latest/burgos-poster.jpg';
 ---
 
-<section
-	class="home-latest"
-	id="latest-expedition"
-	aria-labelledby="latest-heading"
-	data-latest-triptych
-	data-latest-mode="photos"
-	data-latest-src={videoSrc}
-	data-latest-src-light={videoSrcLight}
->
+<section class="home-latest" id="latest-expedition" aria-labelledby="latest-heading">
 	<!-- Review: photographer credits — Václav Široký (ridge & instruments); team photograph to confirm -->
 	<div class="home-latest-frame">
 		<div class="home-latest-visual">
-			<div class="home-latest-film">
-				<video
-					class="home-latest-video"
-					data-latest-video
-					muted
-					loop
-					playsinline
-					preload="none"
-					poster={posterSrc}
-					aria-label="Burgos expedition film"
-				></video>
-			</div>
 			{
 				shots.map((shot) => (
 					<figure class:list={['home-latest-shot', `home-latest-shot--${shot.variant}`]}>
@@ -65,32 +41,6 @@ const posterSrc = '/media/latest/burgos-poster.jpg';
 					</figure>
 				))
 			}
-			<div class="home-latest-controls">
-				<button
-					type="button"
-					class="home-latest-switch"
-					data-latest-toggle
-					role="switch"
-					aria-checked="true"
-				>
-					<span>Film</span>
-					<span class="home-latest-switch-track" aria-hidden="true">
-						<span class="home-latest-switch-thumb"></span>
-					</span>
-					<span>Photos</span>
-				</button>
-				<div
-					class="home-latest-load"
-					data-latest-load
-					role="progressbar"
-					aria-label="Film download"
-					aria-valuemin="0"
-					aria-valuemax="100"
-					aria-valuenow="0"
-				>
-					<span class="home-latest-load-bar" data-latest-load-bar></span>
-				</div>
-			</div>
 		</div>
 
 		<div class="home-latest-copy reveal">
@@ -115,7 +65,6 @@ const posterSrc = '/media/latest/burgos-poster.jpg';
 						</a>
 					)
 				}
-				<p class="home-latest-credit">Film by Santiago Marrodán Ciordia</p>
 			</div>
 		</div>
 	</div>
