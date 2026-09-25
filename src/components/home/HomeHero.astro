@@ -2,23 +2,17 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const hasVideo = existsSync(resolve('./public/media/hero/hero-desktop-1280.mp4'));
+const hasVideo = existsSync(resolve('./public/media/hero/hero-clean.mp4'));
 ---
 
 <section class="home-hero" data-hero aria-label="Introduction">
 	<div class="home-hero-media">
 		<picture class="home-hero-poster">
-			<source
-				media="(max-width: 767px) and (orientation: portrait)"
-				srcset="/media/hero/poster-mobile.jpg"
-				width="720"
-				height="1280"
-			/>
 			<img
-				src="/media/hero/poster-desktop.jpg"
+				src="/media/hero/hero-poster.jpg"
 				width="1600"
 				height="900"
-				alt="Solar Wind Sherpas instruments set up on a ridge at dusk"
+				alt="Total solar eclipse over the Burgos observing ridge at dusk"
 				class="home-hero-still"
 				fetchpriority="high"
 				decoding="async"
@@ -39,6 +33,26 @@ const hasVideo = existsSync(resolve('./public/media/hero/hero-desktop-1280.mp4')
 			)
 		}
 		<div class="home-hero-shade" aria-hidden="true"></div>
+		{
+			hasVideo && (
+				<div class="home-hero-annotation" data-hero-annotation hidden aria-hidden="true">
+					<svg
+						class="home-hero-annotation-svg"
+						data-hero-svg
+						aria-hidden="true"
+						focusable="false"
+					>
+						<circle cx="0" cy="0" r="0" />
+						<line x1="0" y1="0" x2="0" y2="0" visibility="hidden" />
+					</svg>
+					<div class="home-hero-annotation-card" data-hero-caption>
+						<p class="home-hero-annotation-title">Total Solar Eclipse</p>
+						<p class="home-hero-annotation-meta">Location: Burgos, Spain</p>
+						<p class="home-hero-annotation-meta">Duration: 1 min 40 seconds</p>
+					</div>
+				</div>
+			)
+		}
 	</div>
 
 	<div class="home-hero-copy">

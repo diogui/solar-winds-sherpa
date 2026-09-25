@@ -47,7 +47,7 @@
 	--line-quiet: rgba(245, 245, 243, 0.1);
 	--header-h: 72px;
 	--header-progress: 0;
-	--well-w: 148px;
+	--well-w: 176px;
 	--eclipse-logo: 52px;
 	--ease: cubic-bezier(0.22, 1, 0.36, 1);
 	--font-display: 'Oswald', 'Satoshi', sans-serif;
@@ -311,7 +311,7 @@ p {
 	z-index: 2;
 	display: grid;
 	grid-template-columns: 1fr auto 1fr;
-	align-items: start;
+	align-items: center;
 	width: min(1280px, calc(100% - 2.5rem));
 	margin: 0 auto;
 	height: var(--header-h);
@@ -344,14 +344,24 @@ p {
 .brand {
 	position: relative;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	width: var(--well-w);
-	padding-top: calc(var(--eclipse-logo) + 12px);
+	height: var(--header-h);
+	padding: 0;
 	text-align: center;
 	justify-self: center;
 	pointer-events: auto;
 	overflow: visible;
+}
+
+.brand-lockup {
+	display: block;
+	width: auto;
+	height: 52px;
+	max-width: calc(var(--well-w) - 12px);
+	object-fit: contain;
+	filter: drop-shadow(0 1px 10px rgb(8 13 20 / 0.45));
 }
 
 .brand-words {
@@ -434,13 +444,8 @@ p {
 	text-shadow: 0 1px 10px rgb(8 13 20 / 0.55);
 }
 
-.site-header[data-variant='home']:not(.is-scrolled) .brand-solar,
-.site-header[data-variant='home']:not(.is-scrolled) .brand-sherpas {
-	text-shadow: 0 1px 12px rgb(8 13 20 / 0.7);
-}
-
-.site-header[data-variant='home']:not(.is-scrolled) .brand-eclipse {
-	filter: drop-shadow(0 1px 10px rgb(8 13 20 / 0.55)) drop-shadow(0 0 1.5px rgb(245 245 243 / 0.9));
+.site-header[data-variant='home']:not(.is-scrolled) .brand-lockup {
+	filter: drop-shadow(0 1px 12px rgb(8 13 20 / 0.55));
 }
 
 .brand-solar {
@@ -474,7 +479,7 @@ p {
 	justify-content: center;
 	width: 44px;
 	height: 44px;
-	margin-top: 14px;
+	margin-top: 0;
 	padding: 0;
 	background: none;
 	border: 0;
@@ -1074,36 +1079,16 @@ p {
 }
 
 .footer-logo-link {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
+	display: block;
+	width: min(16rem, 100%);
 	color: inherit;
 	text-decoration: none;
 }
 
-.footer-brand-mark {
-	display: block;
-	width: 4.75rem;
-	height: 4.75rem;
-	margin: 0 0 0.7rem;
-}
-
-.footer-eclipse {
+.footer-lockup {
 	display: block;
 	width: 100%;
-	height: 100%;
-	object-fit: contain;
-}
-
-.footer-logo-link .brand-solar {
-	font-size: 1.18rem;
-	letter-spacing: 0.16em;
-}
-
-.footer-logo-link .brand-sherpas {
-	font-size: 0.92rem;
-	letter-spacing: 0.24em;
-	margin-top: 0.18rem;
+	height: auto;
 }
 
 .footer-tagline {
@@ -1367,7 +1352,7 @@ p {
 @media (max-width: 900px) {
 	:root {
 		--header-h: 64px;
-		--well-w: 128px;
+		--well-w: 152px;
 		--eclipse-logo: 44px;
 		--content: min(1120px, calc(100% - 2rem));
 	}
@@ -1395,8 +1380,8 @@ p {
 		grid-template-columns: 44px 1fr auto;
 	}
 
-	.brand {
-		padding-top: calc(var(--eclipse-logo) + 6px);
+	.brand-lockup {
+		height: 44px;
 	}
 
 	.site-header[data-brand-hero] .brand-words {

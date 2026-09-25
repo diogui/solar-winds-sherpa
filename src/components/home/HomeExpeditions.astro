@@ -31,8 +31,8 @@
 				prepare instruments and bring people and equipment into the field, ready to make the most of
 				a brief opportunity to study the corona.
 			</p>
-			<a class="cta cta--button" href="#support" data-expeditions-support>
-				Support our work <span class="cta-arrow" aria-hidden="true">→</span>
+			<a class="cta cta--button" href="#latest-expedition" data-expeditions-latest>
+				See our latest expedition <span class="cta-arrow" aria-hidden="true">→</span>
 			</a>
 			<dl class="home-expeditions-stats">
 				<div>
@@ -51,11 +51,11 @@
 <script>
 	import '../../scripts/expedition-globe.ts';
 
-	const supportLink = document.querySelector<HTMLAnchorElement>('[data-expeditions-support]');
-	supportLink?.addEventListener('click', (event) => {
+	const latestLink = document.querySelector<HTMLAnchorElement>('[data-expeditions-latest]');
+	latestLink?.addEventListener('click', (event) => {
 		event.preventDefault();
 		event.stopPropagation();
-		document.getElementById('support')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		history.replaceState(null, '', '#support');
+		document.getElementById('latest-expedition')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		history.replaceState(null, '', '#latest-expedition');
 	});
 </script>

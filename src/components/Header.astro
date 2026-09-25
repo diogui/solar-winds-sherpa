@@ -1,6 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { navLeft, navRight } from '../data/site';
-import EclipseMark from './EclipseMark.astro';
+import logoLockup from '../assets/images/brand/logo-lockup-dark.png';
 
 interface Props {
 	variant?: 'home' | 'page';
@@ -49,13 +50,14 @@ const path = Astro.url.pathname;
 		</ul>
 
 		<a class="brand" href="/" aria-label="Solar Wind Sherpas home">
-			<span class="brand-eclipse-slot" data-eclipse-target>
-				<EclipseMark id="nav" class="brand-eclipse" />
-			</span>
-			<span class="brand-words">
-				<span class="brand-solar">Solar Wind</span>
-				<span class="brand-sherpas">Sherpas</span>
-			</span>
+			<Image
+				src={logoLockup}
+				alt=""
+				class="brand-lockup"
+				widths={[220, 360, 520]}
+				sizes="168px"
+				data-eclipse-target
+			/>
 		</a>
 
 		<ul class="nav-cluster nav-cluster--right">

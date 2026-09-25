@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import sun from '../../assets/images/why/sun.jpg';
 import corona from '../../assets/images/why/corona.jpg';
 import prominences from '../../assets/images/why/prominences.jpg';
-import { homeOnlyPreview } from '../../data/site';
 
 const frames = [
 	{
@@ -71,8 +70,8 @@ const frames = [
 				Eclipse observations complement measurements from spacecraft and instruments that study the
 				corona throughout the year.
 			</p>
-			<a class="cta" href={homeOnlyPreview ? '/#papers-heading' : '/science'}>
-				Explore the science <span class="cta-arrow" aria-hidden="true">→</span>
+			<a class="cta" href="#expeditions">
+				See your expeditions <span class="cta-arrow cta-arrow--down" aria-hidden="true">↓</span>
 			</a>
 		</div>
 

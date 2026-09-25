@@ -1,3 +1,5 @@
+import { mountHeroAnnotation } from './hero-annotation';
+
 // Selection happens before any video is requested. This is not HLS/streaming ABR.
 
 export type ConnectionLike = {
@@ -21,27 +23,15 @@ type ChooseHeroOptions = {
 };
 
 export function chooseHero({
-	width,
-	portrait,
 	reducedMotion = false,
 	connection = null,
 }: ChooseHeroOptions): HeroChoice {
-	const mobile = width < 768 && portrait;
-	const poster = `poster-${mobile ? 'mobile' : 'desktop'}.jpg`;
+	const poster = 'hero-poster.jpg';
 	const type = connection?.effectiveType;
-	const downlink = connection?.downlink;
 	if (reducedMotion || connection?.saveData || ['slow-2g', '2g'].includes(type ?? '')) {
 		return { file: null, poster, reason: 'poster' };
 	}
-	const fast = type === '4g' && typeof downlink === 'number' && downlink >= 5;
-	if (mobile) {
-		return { file: `hero-mobile-${fast ? 720 : 480}.mp4`, poster, reason: fast ? 'mobile-fast' : 'mobile' };
-	}
-	return {
-		file: `hero-desktop-${fast && width >= 1400 ? 1280 : 960}.mp4`,
-		poster,
-		reason: fast && width >= 1400 ? 'desktop-fast' : 'desktop',
-	};
+	return { file: 'hero-clean.mp4', poster, reason: 'clean' };
 }
 
 function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean) {
@@ -158,6 +148,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	});
 
 	idle();
+	mountHeroAnnotation(root, video);
 	new IntersectionObserver(
 		([entry]) => {
 			if (entry?.isIntersecting && (entry.intersectionRatio ?? 0) >= 0.2) {

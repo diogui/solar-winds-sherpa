@@ -1,22 +1,26 @@
 ---
-import EclipseMark from './EclipseMark.astro';
+import { Image } from 'astro:assets';
+import logoLockup from '../assets/images/brand/logo-lockup-dark.png';
+import logoMark from '../assets/images/brand/logo-mark-color.png';
 import { navLeft, navRight, site } from '../data/site';
 ---
 
 <footer class="site-footer">
 	<div class="footer-orbit" aria-hidden="true"></div>
 	<div class="footer-mark" aria-hidden="true">
-		<EclipseMark id="footer-watermark" class="footer-watermark" />
+		<Image src={logoMark} alt="" class="footer-watermark" widths={[320, 480, 640]} sizes="15rem" />
 	</div>
 
 	<div class="footer-inner">
 		<div class="footer-brand">
 			<a href="/" class="footer-logo-link" aria-label="Solar Wind Sherpas home">
-				<span class="footer-brand-mark">
-					<EclipseMark id="footer" class="footer-eclipse" />
-				</span>
-				<span class="brand-solar">Solar Wind</span>
-				<span class="brand-sherpas">Sherpas</span>
+				<Image
+					src={logoLockup}
+					alt=""
+					class="footer-lockup"
+					widths={[360, 560, 800]}
+					sizes="(max-width: 900px) 13rem, 16rem"
+				/>
 			</a>
 			<p class="footer-tagline">{site.tagline}</p>
 		</div>
