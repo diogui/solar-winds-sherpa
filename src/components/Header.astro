@@ -8,15 +8,9 @@ interface Props {
 
 const { variant = 'page' } = Astro.props;
 const path = Astro.url.pathname;
-const brandHero = variant === 'home' && (path === '/' || path === '');
 ---
 
-<header
-	class="site-header"
-	data-header
-	data-variant={variant}
-	data-brand-hero={brandHero ? '' : undefined}
->
+<header class="site-header" data-header data-variant={variant}>
 	<div class="header-fill" aria-hidden="true"></div>
 	<div class="logo-well" aria-hidden="true"></div>
 

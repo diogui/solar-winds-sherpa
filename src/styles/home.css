@@ -60,14 +60,22 @@
 .home-hero-shade {
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(
-		180deg,
-		rgb(23 29 46 / 0.38) 0%,
-		rgb(23 29 46 / 0.1) 26%,
-		rgb(23 29 46 / 0.04) 48%,
-		rgb(23 29 46 / 0.42) 76%,
-		rgb(23 29 46 / 0.82) 100%
-	);
+	background:
+		linear-gradient(
+			90deg,
+			rgb(23 29 46 / 0.72) 0%,
+			rgb(23 29 46 / 0.28) 28%,
+			rgb(23 29 46 / 0.04) 52%,
+			transparent 68%
+		),
+		linear-gradient(
+			180deg,
+			rgb(23 29 46 / 0.38) 0%,
+			rgb(23 29 46 / 0.1) 26%,
+			rgb(23 29 46 / 0.04) 48%,
+			rgb(23 29 46 / 0.42) 76%,
+			rgb(23 29 46 / 0.82) 100%
+		);
 	pointer-events: none;
 }
 
@@ -76,24 +84,43 @@
 	z-index: 2;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: flex-end;
-	width: min(100%, calc(100% - 2.5rem));
+	align-items: flex-start;
+	justify-content: center;
+	width: min(1280px, calc(100% - 2.5rem));
 	min-height: 100dvh;
 	margin: 0 auto;
 	padding: calc(var(--header-h) + 1.15rem) 0 4.25rem;
-	text-align: center;
+	text-align: left;
+}
+
+.home-hero-name {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	color: #fff;
+	font-family: var(--font-display);
+	font-size: clamp(3.4rem, 9vw, 7.4rem);
+	font-weight: 500;
+	gap: 0.06em;
+	letter-spacing: 0.04em;
+	line-height: 0.98;
+	text-transform: uppercase;
+	text-shadow: 0 10px 32px rgb(8 13 20 / 0.55);
+}
+
+.home-hero-name span {
+	display: block;
 }
 
 .home-hero-question {
-	max-width: 28rem;
-	margin: 0;
+	max-width: 26rem;
+	margin: 1.5rem 0 0;
 	color: rgb(245 245 243 / 0.96);
 	font-family: var(--font-display);
-	font-size: clamp(1.7rem, 3.8vw, 2.95rem);
+	font-size: clamp(1.4rem, 2.6vw, 1.9rem);
 	font-weight: 400;
 	letter-spacing: 0.02em;
-	line-height: 1.22;
+	line-height: 1.28;
 	text-wrap: balance;
 	text-shadow: 0 2px 22px rgb(8 13 20 / 0.55);
 }
@@ -258,8 +285,22 @@
 	text-align: center;
 }
 
+.home-vision .label {
+	color: var(--text);
+}
+
 .home-vision h2 {
-	margin: 1.15rem auto 1.7rem;
+	margin: 0.7rem auto 1.7rem;
+}
+
+.home-vision-facts {
+	margin: 0.85rem 0 0;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.78rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
 }
 
 .home-vision-lead {
@@ -287,7 +328,7 @@
 	text-transform: uppercase;
 }
 
-.home-vision p {
+.home-vision p:not(.label):not(.home-vision-facts) {
 	max-width: 36rem;
 	margin: 0 auto;
 	color: var(--text);
@@ -1102,14 +1143,14 @@
 .home-support-funds {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 1.45rem 2rem;
-	margin: 2rem 0 0;
+	gap: 2.35rem 2.6rem;
+	margin: 2.6rem 0 0;
 	padding: 0;
 	list-style: none;
 }
 
 .home-support-fund-title {
-	margin: 0 0 0.4rem;
+	margin: 0 0 0.85rem;
 	font-family: var(--font-display);
 	font-size: 0.78rem;
 	font-weight: 500;
@@ -1129,17 +1170,21 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.7rem;
-	margin-top: 2rem;
+	margin-top: 2.6rem;
 }
 
 @media (max-width: 900px) {
 	.home-hero-copy {
-		width: calc(100% - 1.75rem);
+		width: calc(100% - 1.25rem);
 		padding-bottom: 5.5rem;
 	}
 
+	.home-hero-name {
+		font-size: clamp(3rem, 14vw, 5.4rem);
+	}
+
 	.home-hero-question {
-		font-size: clamp(1.45rem, 6.2vw, 2rem);
+		font-size: clamp(1.3rem, 4.6vw, 1.7rem);
 	}
 
 	.home-hero-pause {
@@ -1215,7 +1260,7 @@
 
 	.home-support-funds {
 		grid-template-columns: 1fr;
-		gap: 0.9rem;
+		gap: 1.65rem;
 	}
 
 	.home-papers-photo {
@@ -1293,22 +1338,33 @@
 	}
 
 	.home-hero-copy {
-		width: calc(100% - 1.5rem);
+		width: calc(100% - 1.25rem);
 		padding-bottom: 5.25rem;
 	}
 
+	.home-hero-name {
+		font-size: clamp(2.7rem, 16vw, 4.4rem);
+	}
+
 	.home-hero-question {
-		font-size: clamp(1.35rem, 6.8vw, 1.85rem);
+		font-size: clamp(1.25rem, 5.2vw, 1.55rem);
 	}
 
 	.home-hero-shade {
-		background: linear-gradient(
-			180deg,
-			rgb(23 29 46 / 0.28) 0%,
-			rgb(23 29 46 / 0.06) 30%,
-			rgb(23 29 46 / 0.28) 62%,
-			rgb(23 29 46 / 0.78) 100%
-		);
+		background:
+			linear-gradient(
+				90deg,
+				rgb(23 29 46 / 0.62) 0%,
+				rgb(23 29 46 / 0.18) 42%,
+				transparent 70%
+			),
+			linear-gradient(
+				180deg,
+				rgb(23 29 46 / 0.28) 0%,
+				rgb(23 29 46 / 0.06) 30%,
+				rgb(23 29 46 / 0.28) 62%,
+				rgb(23 29 46 / 0.78) 100%
+			);
 	}
 }
 
