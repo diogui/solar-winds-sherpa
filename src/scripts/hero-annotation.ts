@@ -245,7 +245,15 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 	const showingPoster = () =>
 		root.dataset.playing !== 'true' || !video.getAttribute('src') || video.readyState < 2;
 
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+	const setCopyClear = (time: number) => {
+		const clear = !showingPoster() && !reducedMotion.matches && time >= OVERLAY_TIMING.fadeInEnd;
+		if (clear) root.dataset.copyClear = 'true';
+		else delete root.dataset.copyClear;
+	};
+
 	const sync = (time = video.currentTime) => {
+		setCopyClear(time);
 		if (showingPoster()) {
 			hide();
 			return;
@@ -314,7 +322,10 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 		if (!usingVideoFrames) sync();
 	};
 	const onLoaded = () => sync();
-	const onEmptied = () => hide();
+	const onEmptied = () => {
+		delete root.dataset.copyClear;
+		hide();
+	};
 
 	video.addEventListener('play', onPlay);
 	video.addEventListener('playing', onPlay);
@@ -344,6 +355,7 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 		video.removeEventListener('loadeddata', onLoaded);
 		video.removeEventListener('emptied', onEmptied);
 		video.removeEventListener('ended', onPause);
+		delete root.dataset.copyClear;
 		hide();
 	};
 }
