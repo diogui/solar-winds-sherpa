@@ -6,13 +6,18 @@ export const site = {
 	email: 'contact@solarwindsherpas.com',
 };
 
+export const supportLinks = [
+	{ href: 'https://www.patreon.com/SolarWindSherpas', label: 'Patreon' },
+	{ href: 'https://buymeacoffee.com/solarwindsherpas', label: 'Buy Me a Coffee' },
+] as const;
+
 /** Science, Expeditions and Join redirect to Home while this is true. About is live. Drop `public/_redirects` when opening the rest. */
 export const homeOnlyPreview = true;
 
 export const navLeft = [
 	{ href: '/about', label: 'About', live: true },
 	{ href: '/science', label: 'Science', live: !homeOnlyPreview },
-	{ href: '/expeditions', label: 'Expeditions', live: !homeOnlyPreview },
+	{ href: homeOnlyPreview ? '/#expeditions' : '/expeditions', label: 'Expeditions', live: true },
 ];
 
 export const navRight = [

@@ -118,14 +118,18 @@ function initInnerHeader() {
 	header.style.setProperty('--header-progress', '1');
 }
 
+function isHomeArchive() {
+	return Boolean(document.querySelector('[data-home-archive]'));
+}
+
 function initHomeHeader() {
 	const header = document.querySelector<HTMLElement>('[data-header]');
-	if (!header || header.dataset.variant !== 'home') return;
+	if (!header || header.dataset.variant !== 'home' || isHomeArchive()) return;
 	const hero = document.querySelector<HTMLElement>('.home-hero');
 	let ticking = false;
 
 	const update = () => {
-		const range = Math.max(180, (hero?.offsetHeight ?? 640) * 0.22);
+		const range = Math.max(320, (hero?.offsetHeight ?? 640) * 0.48);
 		const progress = Math.min(1, window.scrollY / range);
 		header.style.setProperty('--header-progress', String(progress));
 		header.classList.toggle('is-scrolled', window.scrollY > 20);
@@ -147,27 +151,21 @@ function initHomeHeader() {
 }
 
 function initHeroVideo() {
+	if (isHomeArchive()) return;
 	const hero = document.querySelector<HTMLElement>('.home-hero[data-hero]');
 	if (!hero?.querySelector('[data-hero-video]')) return;
 	mountHero(hero);
 }
 
 function initWhyEclipses() {
+	if (isHomeArchive()) return;
 	const section = document.querySelector<HTMLElement>('[data-why-section]');
 	const figure = document.querySelector<HTMLElement>('[data-why-figure]');
 	const caption = document.querySelector<HTMLElement>('[data-why-caption]');
-	const hint = document.querySelector<HTMLElement>('[data-why-hint]');
 	const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-why-step]')];
 	if (!section || !figure || !buttons.length) return;
 
-	const labels = buttons.map(
-		(button) => button.querySelector('.home-why-step-title')?.textContent ?? '',
-	);
-	const hintCopy = [
-		'Scroll to reveal the corona',
-		'Scroll to see prominences',
-		'Keep scrolling',
-	];
+	const photoTitles = ['', 'Solar corona', 'Prominences'];
 	const last = buttons.length - 1;
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	let index = 0;
@@ -182,7 +180,14 @@ function initWhyEclipses() {
 	};
 
 	const setCaption = (label: string) => {
-		if (!caption || caption.textContent === label) return;
+		if (!caption) return;
+		if (!label) {
+			caption.hidden = true;
+			caption.textContent = '';
+			return;
+		}
+		caption.hidden = false;
+		if (caption.textContent === label) return;
 		if (reduced) {
 			caption.textContent = label;
 			return;
@@ -202,7 +207,7 @@ function initWhyEclipses() {
 		index = Math.max(0, Math.min(last, next));
 		figure.dataset.stage = String(index);
 		section.dataset.stage = String(index);
-		setCaption(labels[index] ?? '');
+		setCaption(photoTitles[index] ?? '');
 		buttons.forEach((button, i) => {
 			const active = i === index;
 			button.classList.toggle('is-active', active);
@@ -210,13 +215,6 @@ function initWhyEclipses() {
 			button.classList.toggle('is-locked', !reduced && i > index);
 			button.setAttribute('aria-pressed', String(active));
 		});
-		if (hint) {
-			const done = reduced || index >= last;
-			hint.hidden = done;
-			if (!done) {
-				hint.innerHTML = `${hintCopy[index] ?? 'Scroll to reveal'} <span aria-hidden="true">↓</span>`;
-			}
-		}
 	};
 
 	let start = 0;

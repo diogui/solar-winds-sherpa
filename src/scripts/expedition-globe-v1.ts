@@ -82,8 +82,6 @@ function hasWebGL() {
 }
 
 export function initExpeditionGlobe() {
-	if (document.querySelector('[data-home-archive]')) return;
-
 	const section = document.querySelector<HTMLElement>('[data-expedition-section]');
 	const holder = section?.querySelector<HTMLElement>('[data-expedition-map]');
 	if (!section || !holder || holder.dataset.ready === 'true') return;

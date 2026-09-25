@@ -336,10 +336,43 @@ article.page.about h1 {
 }
 
 .about-support .page-narrow > p {
-	color: var(--text-dim);
+	margin: 0;
+	max-width: 40rem;
+	color: rgb(245 245 243 / 0.92);
+	font-size: 1.08rem;
+	line-height: 1.6;
+}
+
+.about-support-funds {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1.45rem 2rem;
+	margin: 2rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.about-support-fund-title {
+	margin: 0 0 0.4rem;
+	font-family: var(--font-display);
+	font-size: 0.78rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--accent);
+}
+
+.about-support-funds li p {
+	margin: 0;
+	color: rgb(245 245 243 / 0.88);
+	font-size: 1.02rem;
+	line-height: 1.5;
 }
 
 .about-support-cta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.7rem;
 	margin-top: 2rem;
 }
 
@@ -381,5 +414,10 @@ article.page.about h1 {
 	.about-timeline li {
 		grid-template-columns: 1fr;
 		gap: 0.35rem;
+	}
+
+	.about-support-funds {
+		grid-template-columns: 1fr;
+		gap: 0.9rem;
 	}
 }

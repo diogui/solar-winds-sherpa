@@ -1,9 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import sun from '../../assets/images/why/sun.jpg';
-import corona from '../../assets/images/why/corona.jpg';
-import prominences from '../../assets/images/why/prominences.jpg';
-import { homeOnlyPreview } from '../../data/site';
+import sun from '../../../assets/images/why/sun.jpg';
+import corona from '../../../assets/images/why/corona.jpg';
+import prominences from '../../../assets/images/why/prominences.jpg';
 
 const frames = [
 	{
@@ -71,7 +70,7 @@ const frames = [
 				Eclipse observations complement measurements from spacecraft and instruments that study the
 				corona throughout the year.
 			</p>
-			<a class="cta" href={homeOnlyPreview ? '/#papers-heading' : '/science'}>
+			<a class="cta" href="/home/v1#papers-heading">
 				Explore the science <span class="cta-arrow" aria-hidden="true">→</span>
 			</a>
 		</div>
@@ -93,9 +92,73 @@ const frames = [
 							/>
 						))
 					}
+					<svg
+						class="why-photo-callouts"
+						viewBox="0 0 100 100"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<defs>
+							<marker
+								id="why-arrowhead"
+								viewBox="0 0 10 10"
+								refX="8.6"
+								refY="5"
+								markerWidth="2.6"
+								markerHeight="2.6"
+								orient="auto"
+								markerUnits="userSpaceOnUse"
+							>
+								<path d="M1.2 1.6 L8.8 5 L1.2 8.4 Z" fill="var(--accent)"></path>
+							</marker>
+						</defs>
+						<g class="why-callout why-callout--corona">
+							<circle
+								class="why-corona-outline"
+								cx="51.2"
+								cy="49.1"
+								r="21.6"
+								pathLength="100"
+							></circle>
+							<path
+								class="why-callout-arrow"
+								d="M79.4 7.2 C74.6 9.8 68.8 20.4 63.9 31.7"
+								marker-end="url(#why-arrowhead)"
+							></path>
+							<circle class="why-callout-dot" cx="79.4" cy="7.2" r="0.7"></circle>
+							<text x="76.8" y="5.8" text-anchor="end">Solar corona</text>
+						</g>
+						<g class="why-callout why-callout--prominence">
+							<ellipse
+								class="why-prominence-outline"
+								cx="30"
+								cy="50.3"
+								rx="3.2"
+								ry="2.7"
+							></ellipse>
+							<ellipse
+								class="why-prominence-outline"
+								cx="64.8"
+								cy="60.7"
+								rx="3.3"
+								ry="4.8"
+								transform="rotate(22 64.8 60.7)"
+							></ellipse>
+							<path
+								class="why-callout-arrow"
+								d="M12 88.2 C16.5 79.2 22.8 64.4 28.2 53.2"
+								marker-end="url(#why-arrowhead)"
+							></path>
+							<circle class="why-callout-dot" cx="12" cy="88.2" r="1.15"></circle>
+							<text x="16" y="93.4">Prominences</text>
+						</g>
+					</svg>
 				</div>
 			</div>
-			<p class="home-why-caption is-in" data-why-caption hidden></p>
+			<p class="home-why-caption is-in" data-why-caption>Hidden in the glare</p>
+			<p class="home-why-scroll-hint" data-why-hint>
+				Scroll to reveal the corona <span aria-hidden="true">↓</span>
+			</p>
 		</div>
 	</div>
 </section>

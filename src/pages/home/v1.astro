@@ -1,0 +1,61 @@
+---
+/**
+ * Frozen Home snapshot (Danilo review). Keep this tree isolated from
+ * src/components/home and src/styles/home.css so live Home edits do not
+ * change /home/v1. Not linked in the public nav.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HomeHero from '../../components/home/v1/HomeHero.astro';
+import HomeVision from '../../components/home/v1/HomeVision.astro';
+import HomePartners from '../../components/home/v1/HomePartners.astro';
+import HomeWhyEclipses from '../../components/home/v1/HomeWhyEclipses.astro';
+import HomeWork from '../../components/home/v1/HomeWork.astro';
+import HomeLatest from '../../components/home/v1/HomeLatest.astro';
+import HomeContributions from '../../components/home/v1/HomeContributions.astro';
+import HomeSupport from '../../components/home/v1/HomeSupport.astro';
+import HomeConnect from '../../components/home/v1/HomeConnect.astro';
+import { site } from '../../data/site';
+import '../../styles/home-v1.css';
+import '../../styles/work-v1.css';
+---
+
+<BaseLayout variant="home" title="Home v1 (archive)" description={site.description}>
+	<Fragment slot="head">
+		<meta name="robots" content="noindex, nofollow" />
+	</Fragment>
+	<p class="home-archive-flag">Archive · Home v1</p>
+	<div data-home-archive="v1">
+		<HomeHero />
+		<HomeVision />
+		<HomePartners />
+		<HomeWhyEclipses />
+		<HomeWork />
+		<HomeLatest />
+		<HomeContributions />
+		<HomeSupport />
+		<HomeConnect />
+	</div>
+</BaseLayout>
+
+<script src="../../scripts/home-v1.ts"></script>
+
+<style>
+	.home-archive-flag {
+		position: fixed;
+		z-index: 40;
+		right: 0.85rem;
+		bottom: 0.85rem;
+		margin: 0;
+		padding: 0.35rem 0.6rem;
+		border: 1px solid rgb(255 255 255 / 0.18);
+		border-radius: 999px;
+		background: rgb(8 13 20 / 0.72);
+		color: rgb(255 255 255 / 0.78);
+		font-family: var(--font-display);
+		font-size: 0.62rem;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		pointer-events: none;
+	}
+</style>

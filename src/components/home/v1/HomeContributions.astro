@@ -1,9 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import freezeIn from '../../assets/images/papers/card-freeze.jpg';
-import structures from '../../assets/images/papers/card-structures.jpg';
-import ironLine from '../../assets/images/papers/card-archive.jpg';
-import { homeOnlyPreview } from '../../data/site';
+import freezeIn from '../../../assets/images/papers/fe-composite.jpg';
+import structures from '../../../assets/images/papers/corona-structures.jpg';
+import ironLine from '../../../assets/images/papers/fe-xi.jpg';
 
 const papers = [
 	{
@@ -36,7 +35,7 @@ const papers = [
 		title: 'The corona, in a few minutes of night',
 		text: 'Our observations combine high-resolution white-light imaging of the corona with narrow-band filters centred on forbidden emission lines of highly ionized iron, including Fe XI and Fe XIV.',
 		cta: 'Explore the science',
-		href: homeOnlyPreview ? '/#why-eclipses' : '/science',
+		href: '/home/v1#why-eclipses',
 		external: false,
 		image: ironLine,
 		alt: 'Narrow-band eclipse image of the solar corona in Fe XI emission',
@@ -50,14 +49,10 @@ const papers = [
 	Card 1 = Fig. 1C (Fe XI red + Fe XIV green). Card 2 = Fig. 1A (processed white light, 2015 eclipse)
 	as a stand-in for Druckmüller et al. 2014 — replace with a figure from that paper when Danilo has one.
 	Card 3 = Fig. 1D (Fe XI); not a third paper. Confirm a third publication before adding one.
-	card-*.jpg are 16:10 recrops with the lunar disk centred and matched in diameter.
 -->
 <section class="home-papers" aria-labelledby="papers-heading">
 	<div class="home-papers-head reveal">
 		<p class="label">Scientific contributions</p>
-		{!homeOnlyPreview && (
-			<a class="home-papers-all" href="/science">View all</a>
-		)}
 		<h2 id="papers-heading">From eclipse observations to scientific knowledge.</h2>
 	</div>
 

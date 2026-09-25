@@ -2,7 +2,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const hasVideo = existsSync(resolve('./public/media/hero/hero-desktop-1280.mp4'));
+const hasVideo = existsSync(resolve('./public/media/hero-v1/hero-desktop-1280.mp4'));
 ---
 
 <section class="home-hero" data-hero aria-label="Introduction">
@@ -10,12 +10,12 @@ const hasVideo = existsSync(resolve('./public/media/hero/hero-desktop-1280.mp4')
 		<picture class="home-hero-poster">
 			<source
 				media="(max-width: 767px) and (orientation: portrait)"
-				srcset="/media/hero/poster-mobile.jpg"
+				srcset="/media/hero-v1/poster-mobile.jpg"
 				width="720"
 				height="1280"
 			/>
 			<img
-				src="/media/hero/poster-desktop.jpg"
+				src="/media/hero-v1/poster-desktop.jpg"
 				width="1600"
 				height="900"
 				alt="Solar Wind Sherpas instruments set up on a ridge at dusk"
@@ -42,7 +42,12 @@ const hasVideo = existsSync(resolve('./public/media/hero/hero-desktop-1280.mp4')
 	</div>
 
 	<div class="home-hero-copy">
-		<h1 class="home-hero-question">What are the origins of the solar wind?</h1>
+		<p class="label">Solar Wind Sherpas</p>
+		<h1>What are the origins of the solar wind?</h1>
+		<p class="home-hero-mission">
+			We follow total solar eclipses to study the Sun’s outer atmosphere and the origins of the
+			solar wind.
+		</p>
 		<a class="cta home-hero-cta" href="#who-we-are">
 			Discover Who We Are <span class="cta-arrow cta-arrow--down" aria-hidden="true">↓</span>
 		</a>

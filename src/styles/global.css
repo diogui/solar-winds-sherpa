@@ -351,11 +351,65 @@ p {
 	text-align: center;
 	justify-self: center;
 	pointer-events: auto;
+	overflow: visible;
 }
 
-.site-header[data-variant='home'] .brand {
+.brand-words {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.site-header[data-variant='home']:not([data-brand-hero]) .brand {
 	transform: scale(calc(0.9 + var(--header-progress) * 0.1));
 	transform-origin: top center;
+}
+
+.site-header[data-brand-hero] {
+	overflow: visible;
+}
+
+.site-header[data-brand-hero] .header-nav {
+	overflow: visible;
+}
+
+.site-header[data-brand-hero] .brand-words {
+	position: absolute;
+	left: 50%;
+	top: calc((1 - var(--header-progress)) * 50vh + var(--header-progress) * (var(--eclipse-logo) + 10px));
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: baseline;
+	column-gap: calc((1 - var(--header-progress)) * 0.42em);
+	width: calc(var(--well-w) + (1 - var(--header-progress)) * (90vw - var(--well-w)));
+	max-width: calc(100vw - 2rem);
+	transform: translate(-50%, calc((1 - var(--header-progress)) * -50%));
+	text-shadow: 0 8px 28px rgb(8 13 20 / calc((1 - var(--header-progress)) * 0.55));
+}
+
+.site-header[data-brand-hero] .brand-solar,
+.site-header[data-brand-hero] .brand-sherpas {
+	flex: 0 0 auto;
+	font-family: var(--font-display);
+	font-weight: 500;
+	line-height: calc(1 - var(--header-progress) * 0.12);
+	white-space: nowrap;
+	-webkit-text-stroke: calc(var(--header-progress) * 0.4px);
+}
+
+.site-header[data-brand-hero] .brand-solar {
+	font-size: calc((1 - var(--header-progress)) * 5.7vw + var(--header-progress) * 0.78rem);
+	letter-spacing: calc((1 - var(--header-progress)) * 0.055em + var(--header-progress) * 0.16em);
+}
+
+.site-header[data-brand-hero] .brand-sherpas {
+	flex-basis: calc(var(--header-progress) * 100%);
+	margin-top: calc(var(--header-progress) * 0.14rem);
+	margin-left: calc((1 - var(--header-progress)) * 0.2em);
+	font-size: calc((1 - var(--header-progress)) * 5.7vw + var(--header-progress) * 0.66rem);
+	letter-spacing: calc((1 - var(--header-progress)) * 0.055em + var(--header-progress) * 0.22em);
 }
 
 .brand-eclipse-slot {
@@ -1343,6 +1397,18 @@ p {
 
 	.brand {
 		padding-top: calc(var(--eclipse-logo) + 6px);
+	}
+
+	.site-header[data-brand-hero] .brand-words {
+		flex-direction: column;
+		align-items: center;
+		column-gap: 0;
+		width: calc(var(--well-w) + (1 - var(--header-progress)) * (88vw - var(--well-w)));
+	}
+
+	.site-header[data-brand-hero] .brand-solar,
+	.site-header[data-brand-hero] .brand-sherpas {
+		font-size: calc((1 - var(--header-progress)) * 12vw + var(--header-progress) * 0.7rem);
 	}
 
 	.mobile-nav {

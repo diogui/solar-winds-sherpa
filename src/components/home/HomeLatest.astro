@@ -1,47 +1,21 @@
 ---
 import { Image } from 'astro:assets';
 import { homeOnlyPreview } from '../../data/site';
-import instruments from '../../assets/images/field/latest-instruments.jpg';
-import ridge from '../../assets/images/field/latest-ridge.jpg';
-import team from '../../assets/images/field/latest-team.jpg';
-
-const shots = [
-	{
-		image: instruments,
-		alt: 'Portable solar instruments and a field laptop on the Burgos ridge',
-		variant: 'instruments',
-	},
-	{
-		image: ridge,
-		alt: 'The Solar Wind Sherpas team in the field near Burgos, with telescopes, a camera tripod, and members at work',
-		variant: 'ridge',
-	},
-	{
-		image: team,
-		alt: 'Solar Wind Sherpas team members in purple expedition shirts gathered around a telescope in Burgos',
-		variant: 'team',
-	},
-] as const;
+import field from '../../assets/images/field/latest-camp.jpg';
 ---
 
 <section class="home-latest" id="latest-expedition" aria-labelledby="latest-heading">
-	<!-- Review: photographer credits — Václav Široký (ridge & instruments); team photograph to confirm -->
+	<!-- Review: photographer credit — Václav Široký -->
 	<div class="home-latest-frame">
-		<div class="home-latest-visual">
-			{
-				shots.map((shot) => (
-					<figure class:list={['home-latest-shot', `home-latest-shot--${shot.variant}`]}>
-						<Image
-							src={shot.image}
-							alt={shot.alt}
-							widths={[480, 800, 1200]}
-							sizes="(max-width: 900px) 30vw, 22vw"
-							class="home-latest-photo"
-						/>
-					</figure>
-				))
-			}
-		</div>
+		<figure class="home-latest-shot">
+			<Image
+				src={field}
+				alt="Green and grey tents, telescopes and the team at the Burgos field camp"
+				widths={[800, 1200, 1800]}
+				sizes="(max-width: 900px) 92vw, 70vw"
+				class="home-latest-photo"
+			/>
+		</figure>
 
 		<div class="home-latest-copy reveal">
 			<div class="home-latest-intro">

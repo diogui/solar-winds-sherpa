@@ -1,0 +1,61 @@
+---
+---
+
+<!--
+	Expedition points follow the numbered list on solarwindsherpas.com/expeditions (24 entries).
+	Some lines name two countries, so they appear as two markers. Coordinates are regional,
+	not instrument GPS. Review with Danilo: this is 24 numbered expeditions, not 30.
+	Visible totals match Who we are: 21 expeditions, 31 years.
+-->
+<section
+	class="home-expeditions"
+	id="expeditions"
+	data-expedition-section
+	aria-labelledby="expeditions-heading"
+>
+	<div
+		class="home-expeditions-map"
+		data-expedition-map
+		role="application"
+		aria-label="Globe of Solar Wind Sherpas eclipse expeditions"
+	>
+	</div>
+	<div class="home-expeditions-veil" aria-hidden="true"></div>
+
+	<div class="home-expeditions-inner">
+		<div class="home-expeditions-copy reveal">
+			<p class="label">Expeditions</p>
+			<h2 id="expeditions-heading">Eclipse Expeditions</h2>
+			<p>
+				Observing a total solar eclipse starts long before totality. We select observing sites,
+				prepare instruments and bring people and equipment into the field, ready to make the most of
+				a brief opportunity to study the corona.
+			</p>
+			<a class="cta cta--button" href="#support" data-expeditions-support>
+				Support our work <span class="cta-arrow" aria-hidden="true">→</span>
+			</a>
+			<dl class="home-expeditions-stats">
+				<div>
+					<dt>Expeditions</dt>
+					<dd>21</dd>
+				</div>
+				<div>
+					<dt>Years</dt>
+					<dd>31</dd>
+				</div>
+			</dl>
+		</div>
+	</div>
+</section>
+
+<script>
+	import '../../scripts/expedition-globe.ts';
+
+	const supportLink = document.querySelector<HTMLAnchorElement>('[data-expeditions-support]');
+	supportLink?.addEventListener('click', (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+		document.getElementById('support')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		history.replaceState(null, '', '#support');
+	});
+</script>

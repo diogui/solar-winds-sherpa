@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+import instruments from '../../../assets/images/field/latest-instruments.jpg';
+import ridge from '../../../assets/images/field/latest-ridge.jpg';
+import team from '../../../assets/images/field/latest-team.jpg';
+
+const shots = [
+	{
+		image: instruments,
+		alt: 'Portable solar instruments and a field laptop on the Burgos ridge',
+		variant: 'instruments',
+	},
+	{
+		image: ridge,
+		alt: 'The Solar Wind Sherpas team in the field near Burgos, with telescopes, a camera tripod, and members at work',
+		variant: 'ridge',
+	},
+	{
+		image: team,
+		alt: 'Solar Wind Sherpas team members in purple expedition shirts gathered around a telescope in Burgos',
+		variant: 'team',
+	},
+] as const;
+---
+
+<section class="home-latest" id="latest-expedition" aria-labelledby="latest-heading">
+	<!-- Review: photographer credits — Václav Široký (ridge & instruments); team photograph to confirm -->
+	<div class="home-latest-frame">
+		<div class="home-latest-visual">
+			{
+				shots.map((shot) => (
+					<figure class:list={['home-latest-shot', `home-latest-shot--${shot.variant}`]}>
+						<Image
+							src={shot.image}
+							alt={shot.alt}
+							widths={[480, 800, 1200]}
+							sizes="(max-width: 900px) 30vw, 22vw"
+							class="home-latest-photo"
+						/>
+					</figure>
+				))
+			}
+		</div>
+
+		<div class="home-latest-copy reveal">
+			<div class="home-latest-intro">
+				<p class="label">Latest expedition · 2026</p>
+				<h2 id="latest-heading">Burgos, Spain</h2>
+			</div>
+			<div class="home-latest-body">
+				<p>
+					In 2026, our pursuit of total solar eclipses brought us to Burgos, Spain. Discover the
+					setting, the preparation and the people behind this expedition, and the scientific questions
+					that brought us into the field.
+				</p>
+				<button type="button" class="cta cta--button" aria-disabled="true">
+					Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</section>
