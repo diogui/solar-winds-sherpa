@@ -1289,7 +1289,7 @@
 	}
 
 	.home-hero-name {
-		font-size: clamp(2.25rem, 10.5vw, 4.05rem);
+		font-size: clamp(2.7rem, 12.5vw, 4.6rem);
 	}
 
 	.home-hero[data-hero-compact='true'] .home-hero-name {
@@ -1297,7 +1297,7 @@
 	}
 
 	.home-hero-question {
-		font-size: clamp(1.05rem, 3.6vw, 1.28rem);
+		font-size: clamp(1.15rem, 4vw, 1.4rem);
 	}
 
 	.home-hero[data-hero-compact='true'] .home-hero-question {
@@ -1485,7 +1485,7 @@
 	}
 
 	.home-hero-name {
-		font-size: clamp(1.9rem, 11vw, 2.85rem);
+		font-size: clamp(2.45rem, 13.4vw, 3.5rem);
 	}
 
 	.home-hero[data-hero-compact='true'] .home-hero-name {
@@ -1493,7 +1493,7 @@
 	}
 
 	.home-hero-question {
-		font-size: clamp(1rem, 4.2vw, 1.2rem);
+		font-size: clamp(1.15rem, 4.8vw, 1.4rem);
 	}
 
 	.home-hero[data-hero-compact='true'] .home-hero-question {
