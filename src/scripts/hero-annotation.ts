@@ -16,6 +16,8 @@ export const OVERLAY_TIMING = {
 	fadeOutEnd: 7.6,
 } as const;
 
+export const NAME_COMPACT_AT = 3;
+
 type CoverMap = {
 	scale: number;
 	offsetX: number;
@@ -160,7 +162,8 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 		const maxWidth = mobile
 			? Math.min(340, Math.max(0, width - margin * 2))
 			: Math.min(HERO_SOURCE.boxWidth, Math.max(0, width - margin * 2));
-		card.style.width = `${maxWidth}px`;
+		card.style.width = 'max-content';
+		card.style.maxWidth = `${maxWidth}px`;
 		const cardH = card.offsetHeight;
 		const cardW = card.offsetWidth || maxWidth;
 
@@ -246,14 +249,14 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 		root.dataset.playing !== 'true' || !video.getAttribute('src') || video.readyState < 2;
 
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-	const setCopyClear = (time: number) => {
-		const clear = !showingPoster() && !reducedMotion.matches && time >= OVERLAY_TIMING.fadeInEnd;
-		if (clear) root.dataset.copyClear = 'true';
-		else delete root.dataset.copyClear;
+	const setHeroCompact = (time: number) => {
+		const compact = !showingPoster() && !reducedMotion.matches && time >= NAME_COMPACT_AT;
+		if (compact) root.dataset.heroCompact = 'true';
+		else delete root.dataset.heroCompact;
 	};
 
 	const sync = (time = video.currentTime) => {
-		setCopyClear(time);
+		setHeroCompact(time);
 		if (showingPoster()) {
 			hide();
 			return;
@@ -323,7 +326,7 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 	};
 	const onLoaded = () => sync();
 	const onEmptied = () => {
-		delete root.dataset.copyClear;
+		delete root.dataset.heroCompact;
 		hide();
 	};
 
@@ -355,7 +358,7 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 		video.removeEventListener('loadeddata', onLoaded);
 		video.removeEventListener('emptied', onEmptied);
 		video.removeEventListener('ended', onPause);
-		delete root.dataset.copyClear;
+		delete root.dataset.heroCompact;
 		hide();
 	};
 }

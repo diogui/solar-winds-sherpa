@@ -2,7 +2,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const hasVideo = existsSync(resolve('./public/media/hero/hero-clean.mp4'));
+const hasVideo = existsSync(resolve('./public/media/hero/hero-final.mp4'));
 ---
 
 <section class="home-hero" data-hero aria-label="Introduction">
@@ -24,15 +24,26 @@ const hasVideo = existsSync(resolve('./public/media/hero/hero-clean.mp4'));
 					class="home-hero-video"
 					data-hero-video
 					muted
-					loop
 					playsinline
 					preload="none"
 					disablepictureinpicture
 					aria-hidden="true"
 				></video>
+				<img
+					src="/media/hero/hero-ending.jpg"
+					width="1600"
+					height="900"
+					alt=""
+					class="home-hero-ending"
+					decoding="async"
+					aria-hidden="true"
+				/>
 			)
 		}
-		<div class="home-hero-shade" aria-hidden="true"></div>
+		<div class="home-hero-shade" aria-hidden="true">
+			<div class="home-hero-shade-open"></div>
+			<div class="home-hero-shade-compact"></div>
+		</div>
 		{
 			hasVideo && (
 				<div class="home-hero-annotation" data-hero-annotation hidden aria-hidden="true">
@@ -57,8 +68,10 @@ const hasVideo = existsSync(resolve('./public/media/hero/hero-clean.mp4'));
 
 	<div class="home-hero-copy">
 		<h1 class="home-hero-name">
-			<span>Solar</span>
-			<span>Wind</span>
+			<span class="home-hero-name-pair">
+				<span>Solar</span>
+				<span>Wind</span>
+			</span>
 			<span>Sherpas</span>
 		</h1>
 		<p class="home-hero-question">What are the origins of the solar wind?</p>
@@ -70,7 +83,13 @@ const hasVideo = existsSync(resolve('./public/media/hero/hero-clean.mp4'));
 	{
 		hasVideo && (
 			<button class="home-hero-pause" type="button" data-hero-pause aria-pressed="false">
-				Pause video
+				<span data-hero-pause-label>Pause video</span>
+				<span class="home-hero-pause-orbit" aria-hidden="true">
+					<svg>
+						<rect class="home-hero-pause-track" pathLength="100" />
+						<rect class="home-hero-pause-progress" pathLength="100" />
+					</svg>
+				</span>
 			</button>
 		)
 	}

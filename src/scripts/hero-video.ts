@@ -31,7 +31,7 @@ export function chooseHero({
 	if (reducedMotion || connection?.saveData || ['slow-2g', '2g'].includes(type ?? '')) {
 		return { file: null, poster, reason: 'poster' };
 	}
-	return { file: 'hero-clean.mp4', poster, reason: 'clean' };
+	return { file: 'hero-final.mp4', poster, reason: 'final' };
 }
 
 function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean) {
@@ -47,6 +47,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	const video = root.querySelector<HTMLVideoElement>('[data-hero-video], video');
 	const button = root.querySelector<HTMLButtonElement>('[data-hero-pause], [data-video-toggle]');
 	if (!video || !button) return null;
+	const label = button.querySelector<HTMLElement>('[data-hero-pause-label]') ?? button;
 
 	const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	const nav = navigator as Navigator & {
@@ -58,7 +59,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	const selection = currentChoice(connection, motion.matches);
 
 	video.muted = true;
-	video.loop = true;
+	video.loop = false;
 	video.playsInline = true;
 	video.preload = 'none';
 	video.poster = base + selection.poster;
@@ -66,20 +67,32 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 
 	let timeout: number | undefined;
 	let userPaused = false;
+	let ended = false;
 
-	const setPlayingUi = (playing: boolean) => {
-		root.dataset.playing = playing ? 'true' : 'false';
-		button.textContent = playing ? 'Pause video' : 'Play video';
+	const setButton = (playing: boolean) => {
+		root.dataset.playing = playing || ended ? 'true' : 'false';
+		if (ended) {
+			root.dataset.ended = 'true';
+			label.textContent = 'Restart video';
+			button.setAttribute('aria-pressed', 'true');
+			button.setAttribute('aria-label', 'Restart video');
+			return;
+		}
+		delete root.dataset.ended;
+		const copy = playing ? 'Pause video' : 'Play video';
+		label.textContent = copy;
 		button.setAttribute('aria-pressed', String(!playing));
+		button.setAttribute('aria-label', copy);
 	};
 
 	const idle = () => {
 		if (timeout !== undefined) window.clearTimeout(timeout);
 		timeout = undefined;
-		setPlayingUi(false);
+		if (!ended) setButton(false);
 	};
 
 	const stop = () => {
+		if (ended) return;
 		video.pause();
 		idle();
 	};
@@ -91,6 +104,10 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	};
 
 	const release = () => {
+		if (ended) {
+			video.pause();
+			return;
+		}
 		video.pause();
 		if (!video.getAttribute('src')) {
 			idle();
@@ -102,6 +119,12 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	};
 
 	const play = async (explicit = false) => {
+		if (ended && !explicit) return;
+		if (ended && explicit) {
+			ended = false;
+			delete root.dataset.ended;
+			video.currentTime = 0;
+		}
 		if (!video.getAttribute('src')) {
 			const selected =
 				explicit && !selection.file ? currentChoice(null, motion.matches) : selection;
@@ -122,14 +145,27 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	video.addEventListener('playing', () => {
 		if (timeout !== undefined) window.clearTimeout(timeout);
 		timeout = undefined;
-		setPlayingUi(true);
+		ended = false;
+		setButton(true);
+	});
+	video.addEventListener('ended', () => {
+		ended = true;
+		userPaused = true;
+		if (timeout !== undefined) window.clearTimeout(timeout);
+		timeout = undefined;
+		setButton(false);
 	});
 	video.addEventListener('waiting', () => {
+		if (ended) return;
 		if (timeout !== undefined) window.clearTimeout(timeout);
 		timeout = window.setTimeout(unload, 10000);
 	});
 	video.addEventListener('error', unload);
 	button.addEventListener('click', () => {
+		if (ended || video.ended) {
+			void play(true);
+			return;
+		}
 		if (video.paused) {
 			void play(true);
 		} else {
@@ -144,7 +180,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		if (connection.saveData || ['slow-2g', '2g'].includes(connection.effectiveType ?? '')) unload();
 	});
 	document.addEventListener('visibilitychange', () => {
-		if (document.hidden && !userPaused) stop();
+		if (document.hidden && !userPaused && !ended) stop();
 	});
 
 	idle();
@@ -152,7 +188,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	new IntersectionObserver(
 		([entry]) => {
 			if (entry?.isIntersecting && (entry.intersectionRatio ?? 0) >= 0.2) {
-				if (!userPaused && selection.file) void play();
+				if (!userPaused && !ended && selection.file) void play();
 				return;
 			}
 			release();
