@@ -174,12 +174,6 @@
 	line-height: 1.02;
 }
 
-.home-hero[data-hero-compact='true'] .home-hero-name-pair {
-	flex-direction: row;
-	flex-wrap: nowrap;
-	gap: 0.32em;
-}
-
 .home-hero-question {
 	max-width: 26rem;
 	margin: 1.15rem 0 0;
