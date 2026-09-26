@@ -10,8 +10,8 @@
 
 .home-work-intro h2 {
 	margin-top: 0.7rem;
-	max-width: 38rem;
-	font-size: clamp(1.55rem, 3vw, 2.15rem);
+	max-width: 40rem;
+	font-size: clamp(1.72rem, 3.4vw, 2.4rem);
 	line-height: 1.25;
 }
 
