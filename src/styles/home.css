@@ -39,6 +39,10 @@
 	height: 100%;
 }
 
+.home-hero-media {
+	overflow: hidden;
+}
+
 .home-hero-poster {
 	display: block;
 }
@@ -1471,7 +1475,19 @@
 	.home-hero-still,
 	.home-hero-video,
 	.home-hero-ending {
-		object-position: 54% 12%;
+		inset: auto;
+		top: 0;
+		left: 60%;
+		right: auto;
+		bottom: auto;
+		width: auto;
+		height: 148%;
+		max-width: none;
+		aspect-ratio: 16 / 9;
+		object-fit: fill;
+		object-position: 50% 50%;
+		transform-origin: 0 0;
+		transform: translate3d(-55.625%, 0, 0);
 	}
 
 	.home-hero-copy {
