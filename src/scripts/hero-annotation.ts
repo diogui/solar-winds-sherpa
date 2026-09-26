@@ -228,12 +228,18 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 	};
 
 	const layout = () => {
+		const mediaBox = media.getBoundingClientRect();
+		const videoBox = video.getBoundingClientRect();
 		const width = media.clientWidth;
 		const height = media.clientHeight;
-		if (width < 2 || height < 2) return;
+		if (width < 2 || height < 2 || videoBox.width < 2 || videoBox.height < 2) return;
 		const fit = getComputedStyle(video).objectFit || 'cover';
 		const { posX, posY } = parseObjectPosition(getComputedStyle(video).objectPosition);
-		const mapped = mapCoverPoint(width, height, posX, posY, fit);
+		const mapped = mapCoverPoint(videoBox.width, videoBox.height, posX, posY, fit);
+		mapped.offsetX += videoBox.left - mediaBox.left;
+		mapped.offsetY += videoBox.top - mediaBox.top;
+		mapped.cx += videoBox.left - mediaBox.left;
+		mapped.cy += videoBox.top - mediaBox.top;
 		const mobile = width < 768;
 		svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 		svg.setAttribute('width', String(width));
