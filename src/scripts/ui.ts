@@ -1,4 +1,5 @@
 import { mountHero } from './hero-video';
+import { mountLatestFilm } from './latest-video';
 
 function initMobileNav() {
 	const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -157,6 +158,13 @@ function initHeroVideo() {
 	mountHero(hero);
 }
 
+function initLatestFilm() {
+	if (isHomeArchive()) return;
+	const section = document.querySelector<HTMLElement>('[data-latest-film]');
+	if (!section) return;
+	mountLatestFilm(section);
+}
+
 function initWhyEclipses() {
 	if (isHomeArchive()) return;
 	const section = document.querySelector<HTMLElement>('[data-why-section]');
@@ -281,4 +289,5 @@ initNewsletterForm();
 initInnerHeader();
 initHomeHeader();
 initHeroVideo();
+initLatestFilm();
 initWhyEclipses();

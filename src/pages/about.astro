@@ -6,10 +6,10 @@ import WorkCards from '../components/WorkCards.astro';
 import HomeConnect from '../components/home/HomeConnect.astro';
 import { homeOnlyPreview, supportLinks } from '../data/site';
 import instruments from '../assets/images/field/latest-instruments.jpg';
-import shadia from '../assets/images/field/latest-ridge.jpg';
+import shadia from '../assets/images/field/shadia-habbal.jpg';
 import team from '../assets/images/field/latest-team.jpg';
 import totality from '../assets/images/field/burgos-totality.jpg';
-import fieldSetup from '../assets/images/work/expeditions.jpg';
+import fieldSetup from '../assets/images/field/burgos-workshop.jpg';
 import observer from '../assets/images/work/research.jpg';
 import burgosTeamLeft from '../assets/images/field/burgos-team-left.jpg';
 import burgosTeamCenter from '../assets/images/field/burgos-team-center.jpg';
@@ -58,9 +58,9 @@ const introMontage = [
 	},
 	{
 		image: fieldSetup,
-		alt: 'Portable observatories on a ridge at sunset during the Burgos expedition',
+		alt: 'Two team members assembling custom solar instruments at a work table',
 		area: 'setup',
-		position: '48% 60%',
+		position: '50% 42%',
 	},
 	{
 		image: instruments,
@@ -161,8 +161,8 @@ const introMontage = [
 				<div class="about-card-photo about-featured-photo">
 					<Image
 						src={shadia}
-						alt="Dr. Shadia Habbal in the field during the 2026 Burgos expedition"
-						widths={[640, 960, 1400]}
+						alt="Dr. Shadia Habbal smiling in the field"
+						widths={[640, 960, 1024]}
 						sizes="(max-width: 900px) 92vw, 42vw"
 						class="about-card-img about-featured-img"
 					/>

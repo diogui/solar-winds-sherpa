@@ -1,11 +1,26 @@
 ---
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { Image } from 'astro:assets';
 import { homeOnlyPreview } from '../../data/site';
 import field from '../../assets/images/field/latest-camp.jpg';
+
+const hasFilm = existsSync(resolve('./public/media/latest/burgos.mp4'));
+const videoSrc = '/media/latest/burgos.mp4';
+const videoSrcLight = '/media/latest/burgos-640.mp4';
+const posterSrc = '/media/latest/burgos-poster.jpg';
 ---
 
-<section class="home-latest" id="latest-expedition" aria-labelledby="latest-heading">
-	<!-- Review: photographer credit — Václav Široký -->
+<section
+	class="home-latest"
+	id="latest-expedition"
+	aria-labelledby="latest-heading"
+	data-latest-film={hasFilm ? '' : undefined}
+	data-latest-mode={hasFilm ? 'photos' : undefined}
+	data-latest-src={hasFilm ? videoSrc : undefined}
+	data-latest-src-light={hasFilm ? videoSrcLight : undefined}
+>
+	<!-- Review: photographer credit — Václav Široký; film by Santiago Marrodán Ciordia -->
 	<div class="home-latest-frame">
 		<figure class="home-latest-shot">
 			<Image
@@ -15,6 +30,48 @@ import field from '../../assets/images/field/latest-camp.jpg';
 				sizes="(max-width: 900px) 92vw, 70vw"
 				class="home-latest-photo"
 			/>
+			{
+				hasFilm && (
+					<>
+						<video
+							class="home-latest-video"
+							data-latest-video
+							muted
+							loop
+							playsinline
+							preload="none"
+							poster={posterSrc}
+							aria-label="Burgos expedition film"
+						></video>
+						<div class="home-latest-controls">
+							<button
+								type="button"
+								class="home-latest-switch"
+								data-latest-toggle
+								role="switch"
+								aria-checked="true"
+							>
+								<span>Film</span>
+								<span class="home-latest-switch-track" aria-hidden="true">
+									<span class="home-latest-switch-thumb"></span>
+								</span>
+								<span>Photos</span>
+							</button>
+							<div
+								class="home-latest-load"
+								data-latest-load
+								role="progressbar"
+								aria-label="Film download"
+								aria-valuemin="0"
+								aria-valuemax="100"
+								aria-valuenow="0"
+							>
+								<span class="home-latest-load-bar" data-latest-load-bar></span>
+							</div>
+						</div>
+					</>
+				)
+			}
 		</figure>
 
 		<div class="home-latest-copy reveal">
@@ -39,6 +96,7 @@ import field from '../../assets/images/field/latest-camp.jpg';
 						</a>
 					)
 				}
+				{hasFilm && <p class="home-latest-credit">Film by Santiago Marrodán Ciordia</p>}
 			</div>
 		</div>
 	</div>
