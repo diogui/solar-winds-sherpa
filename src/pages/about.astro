@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PartnerLogos from '../components/PartnerLogos.astro';
 import WorkCards from '../components/WorkCards.astro';
 import HomeConnect from '../components/home/HomeConnect.astro';
-import { homeOnlyPreview, supportLinks } from '../data/site';
+import { supportLinks } from '../data/site';
 import instruments from '../assets/images/field/latest-instruments.jpg';
 import shadia from '../assets/images/field/shadia-habbal.jpg';
 import team from '../assets/images/field/latest-team.jpg';
@@ -17,7 +17,7 @@ import burgosTeamRight from '../assets/images/field/burgos-team-right.jpg';
 import '../styles/work.css';
 import '../styles/about.css';
 
-const expeditionHref = homeOnlyPreview ? '/#latest-expedition' : '/expeditions/spain-2026';
+const expeditionHref = '/latest-expedition#team';
 
 const burgosTeamPanels = [
 	{

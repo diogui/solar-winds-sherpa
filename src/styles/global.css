@@ -335,6 +335,11 @@ p {
 
 .nav-cluster--left {
 	justify-content: flex-start;
+	gap: 1.25rem;
+}
+
+.nav-cluster--left .nav-link {
+	letter-spacing: 0.16em;
 }
 
 .nav-cluster--right {

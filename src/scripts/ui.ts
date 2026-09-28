@@ -1,5 +1,6 @@
 import { mountHero } from './hero-video';
 import { mountLatestFilm } from './latest-video';
+import { mountExpeditionSites } from './expedition-page';
 
 function initMobileNav() {
 	const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -165,6 +166,13 @@ function initLatestFilm() {
 	mountLatestFilm(section);
 }
 
+function initExpeditionPage() {
+	if (isHomeArchive()) return;
+	const section = document.querySelector<HTMLElement>('[data-site-switch]');
+	if (!section) return;
+	mountExpeditionSites(section);
+}
+
 function initWhyEclipses() {
 	if (isHomeArchive()) return;
 	const section = document.querySelector<HTMLElement>('[data-why-section]');
@@ -290,4 +298,5 @@ initInnerHeader();
 initHomeHeader();
 initHeroVideo();
 initLatestFilm();
+initExpeditionPage();
 initWhyEclipses();

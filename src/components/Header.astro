@@ -8,7 +8,13 @@ interface Props {
 }
 
 const { variant = 'page' } = Astro.props;
-const path = Astro.url.pathname;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+function isCurrent(href: string) {
+	if (href.includes('#')) return false;
+	const clean = href.replace(/\/$/, '') || '/';
+	return path === clean;
+}
 ---
 
 <header class="site-header" data-header data-variant={variant}>
@@ -35,7 +41,7 @@ const path = Astro.url.pathname;
 							<a
 								class="nav-link"
 								href={item.href}
-								aria-current={path === item.href ? 'page' : undefined}
+								aria-current={isCurrent(item.href) ? 'page' : undefined}
 							>
 								{item.label}
 							</a>
@@ -68,7 +74,7 @@ const path = Astro.url.pathname;
 							<a
 								class:list={['nav-link', item.label === 'Support' && 'nav-link--support']}
 								href={item.href}
-								aria-current={path === item.href ? 'page' : undefined}
+								aria-current={isCurrent(item.href) ? 'page' : undefined}
 							>
 								{item.label}
 							</a>
@@ -96,7 +102,7 @@ const path = Astro.url.pathname;
 						<a
 							href={item.href}
 							class={item.label === 'Support' ? 'is-support' : undefined}
-							aria-current={path === item.href ? 'page' : undefined}
+							aria-current={isCurrent(item.href) ? 'page' : undefined}
 						>
 							{item.label}
 						</a>

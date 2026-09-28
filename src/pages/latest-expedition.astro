@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PartnerLogos from '../components/PartnerLogos.astro';
+import HomeConnect from '../components/home/HomeConnect.astro';
+import { supportLinks } from '../data/site';
+import '../styles/home.css';
+import '../styles/expedition.css';
+
+const sites = [
+	{ id: 'padilla', label: 'Padilla' },
+	{ id: 'trigasa', label: 'Pico Trigasa' },
+] as const;
+
+const fieldBeats = [
+	{ label: 'Calibrate', note: 'Instruments being aligned and tested' },
+	{ label: 'Install', note: 'Setting up the field station' },
+	{ label: 'Observe', note: 'The minutes of totality' },
+	{ label: 'Close', note: 'Packing the site' },
+] as const;
+
+const teamSlots = Array.from({ length: 8 }, (_, index) => index + 1);
+
+const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
+---
+
+<BaseLayout
+	title="Last Expedition"
+	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla and Pico Trigasa."
+>
+	<article class="page exp">
+		<section class="exp-open" id="burgos-2026" aria-labelledby="exp-heading" data-site-switch data-active-site="padilla">
+			<div class="page-narrow">
+				<p class="label page-kicker">Last expedition · 2026</p>
+				<h1 id="exp-heading">Burgos, Spain</h1>
+				<p class="exp-facts">12 August 2026 · Padilla · Pico Trigasa</p>
+				<p>
+					Two observing sites, one totality. This page will hold the films, photographs and people of
+					the Burgos expedition — structure first, media and copy to confirm.
+				</p>
+			</div>
+
+			<div class="exp-hero">
+				<div class="exp-hero-frame">
+					{
+						sites.map((site) => (
+							<div class="exp-hero-well" data-site-panel={site.id}>
+								<p class="exp-well-label">Film / photo · {site.label}</p>
+							</div>
+						))
+					}
+					<div class="exp-hero-controls">
+						{
+							sites.map((site) => (
+								<button
+									type="button"
+									class="exp-site-btn"
+									data-site={site.id}
+									aria-pressed={site.id === 'padilla' ? 'true' : 'false'}
+								>
+									{site.label}
+								</button>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="exp-block" id="mission" aria-labelledby="mission-heading">
+			<div class="page-narrow">
+				<p class="label">The Mission</p>
+				<h2 id="mission-heading">Where we went, and what we went to study.</h2>
+				<p>
+					Padilla and Pico Trigasa were the two field stations. The aims for each site, the
+					instruments used, and the link into Science stay empty until Danilo confirms them.
+				</p>
+			</div>
+			<div class="exp-mission-grid">
+				<article class="exp-site-card">
+					<p class="label">Padilla</p>
+					<div class="exp-well exp-well--map">
+						<p class="exp-well-label">Site map / context</p>
+					</div>
+					<p>Why this site, what was observed here — to confirm.</p>
+				</article>
+				<article class="exp-site-card">
+					<p class="label">Pico Trigasa</p>
+					<div class="exp-well exp-well--map">
+						<p class="exp-well-label">Site map / context</p>
+					</div>
+					<p>Why this site, what was observed here — to confirm.</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="exp-block" id="in-the-field" aria-labelledby="field-heading">
+			<div class="page-narrow">
+				<p class="label">In the Field</p>
+				<h2 id="field-heading">Preparation and observation.</h2>
+				<p>
+					A short sequence from calibration to close. The first frames are the people aligning the
+					instruments.
+				</p>
+			</div>
+			<div class="exp-field-grid">
+				{
+					fieldBeats.map((beat) => (
+						<figure class="exp-field-shot">
+							<div class="exp-well exp-well--shot">
+								<p class="exp-well-label">{beat.label}</p>
+							</div>
+							<figcaption>
+								<strong>{beat.label}</strong>
+								{beat.note}
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="exp-block" id="team" aria-labelledby="team-heading">
+			<div class="page-narrow">
+				<p class="label">The Expedition Team</p>
+				<h2 id="team-heading">Who was in the field.</h2>
+				<p>
+					A portrait, a role, and a short line on what each person did. Names and functions stay
+					blank until the list is confirmed.
+				</p>
+			</div>
+			<ul class="exp-team-grid">
+				{
+					teamSlots.map((slot) => (
+						<li class="exp-team-card">
+							<div class="exp-well exp-well--portrait">
+								<p class="exp-well-label">Portrait {slot}</p>
+							</div>
+							<p class="exp-team-role">Role</p>
+							<h3>Name</h3>
+							<p>What they did on this expedition — to confirm.</p>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section class="exp-block exp-partners" id="made-possible-by" aria-labelledby="partners-heading">
+			<div class="page-narrow">
+				<p class="label">Made Possible By</p>
+				<h2 id="partners-heading">The support that put this expedition in the field.</h2>
+				<p>
+					Expeditions depend on the institutions, partners and people who fund the work between
+					totalities as much as the days on site.
+				</p>
+			</div>
+			<PartnerLogos />
+		</section>
+
+		<section class="exp-next" id="what-comes-next" aria-labelledby="next-heading">
+			<div class="page-narrow">
+				<p class="label">What Comes Next</p>
+				<h2 id="next-heading">The next totality is 2 August 2027.</h2>
+				<p>
+					Tunisia, the south of Spain, and Egypt. Support now funds the analysis of Burgos and the
+					instruments that have to be ready for that path.
+				</p>
+				<ul class="exp-next-places">
+					{nextPlaces.map((place) => <li>{place}</li>)}
+				</ul>
+				<div class="exp-next-cta">
+					{
+						supportLinks.map((link) => (
+							<a class="cta cta--button" href={link.href} rel="noopener noreferrer" target="_blank">
+								{link.label} <span class="cta-arrow" aria-hidden="true">→</span>
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<HomeConnect />
+	</article>
+</BaseLayout>

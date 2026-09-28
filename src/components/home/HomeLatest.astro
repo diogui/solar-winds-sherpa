@@ -2,7 +2,6 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { Image } from 'astro:assets';
-import { homeOnlyPreview } from '../../data/site';
 import field from '../../assets/images/field/latest-camp.jpg';
 
 const hasFilm = existsSync(resolve('./public/media/latest/burgos.mp4'));
@@ -85,17 +84,9 @@ const posterSrc = '/media/latest/burgos-poster.jpg';
 					setting, the preparation and the people behind this expedition, and the scientific questions
 					that brought us into the field.
 				</p>
-				{
-					homeOnlyPreview ? (
-						<button type="button" class="cta cta--button" aria-disabled="true">
-							Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
-						</button>
-					) : (
-						<a class="cta cta--button" href="/expeditions/spain-2026">
-							Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
-						</a>
-					)
-				}
+				<a class="cta cta--button" href="/latest-expedition">
+					Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
+				</a>
 				{hasFilm && <p class="home-latest-credit">Film by Santiago Marrodán Ciordia</p>}
 			</div>
 		</div>
