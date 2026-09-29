@@ -1173,7 +1173,8 @@ p {
 
 .footer-meta {
 	margin: 0;
-	max-width: 30rem;
+	max-width: 38rem;
+	text-wrap: pretty;
 }
 
 /* ——— Inner pages ——— */

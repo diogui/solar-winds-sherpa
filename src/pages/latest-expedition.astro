@@ -1,14 +1,26 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PartnerLogos from '../components/PartnerLogos.astro';
 import HomeConnect from '../components/home/HomeConnect.astro';
 import { supportLinks } from '../data/site';
+import adalbertDing from '../assets/images/team/adalbert-ding.jpg';
+import benBoe from '../assets/images/team/ben-boe.jpg';
+import daniloTorres from '../assets/images/team/danilo-torres.jpg';
+import janaStarhova from '../assets/images/team/jana-starhova.jpg';
+import jitkaStarhova from '../assets/images/team/jitka-starhova.jpg';
+import matejStarha from '../assets/images/team/matej-starha.jpg';
+import petrStarha from '../assets/images/team/petr-starha.jpg';
+import sageConstantinou from '../assets/images/team/sage-constantinou.jpg';
+import shadiaHabbal from '../assets/images/team/shadia-habbal.jpg';
+import tulinBedel from '../assets/images/team/tulin-bedel.jpg';
+import zacBailey from '../assets/images/team/zac-bailey.jpg';
 import '../styles/home.css';
 import '../styles/expedition.css';
 
 const sites = [
 	{ id: 'padilla', label: 'Padilla' },
-	{ id: 'trigasa', label: 'Pico Trigasa' },
+	{ id: 'trigaza', label: 'Pico Trigaza' },
 ] as const;
 
 const fieldBeats = [
@@ -18,21 +30,33 @@ const fieldBeats = [
 	{ label: 'Close', note: 'Packing the site' },
 ] as const;
 
-const teamSlots = Array.from({ length: 8 }, (_, index) => index + 1);
+const team = [
+	{ name: 'Shadia Habbal', photo: shadiaHabbal },
+	{ name: 'Adalbert Ding', photo: adalbertDing },
+	{ name: 'Ben Boe', photo: benBoe },
+	{ name: 'Danilo Torres', photo: daniloTorres },
+	{ name: 'Jana Starhova', photo: janaStarhova },
+	{ name: 'Jitka Starhova', photo: jitkaStarhova },
+	{ name: 'Matej Starha', photo: matejStarha },
+	{ name: 'Petr Starha', photo: petrStarha },
+	{ name: 'Sage Constantinou', photo: sageConstantinou },
+	{ name: 'Tulin Bedel', photo: tulinBedel },
+	{ name: 'Zac Bailey', photo: zacBailey },
+] as const;
 
 const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 ---
 
 <BaseLayout
-	title="Last Expedition"
-	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla and Pico Trigasa."
+	title="Latest Expedition"
+	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla and Pico Trigaza."
 >
 	<article class="page exp">
 		<section class="exp-open" id="burgos-2026" aria-labelledby="exp-heading" data-site-switch data-active-site="padilla">
 			<div class="page-narrow">
-				<p class="label page-kicker">Last expedition · 2026</p>
+				<p class="label page-kicker">Latest expedition · 2026</p>
 				<h1 id="exp-heading">Burgos, Spain</h1>
-				<p class="exp-facts">12 August 2026 · Padilla · Pico Trigasa</p>
+				<p class="exp-facts">12 August 2026 · Padilla · Pico Trigaza</p>
 				<p>
 					Two observing sites, one totality. This page will hold the films, photographs and people of
 					the Burgos expedition — structure first, media and copy to confirm.
@@ -71,7 +95,7 @@ const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 				<p class="label">The Mission</p>
 				<h2 id="mission-heading">Where we went, and what we went to study.</h2>
 				<p>
-					Padilla and Pico Trigasa were the two field stations. The aims for each site, the
+					Padilla and Pico Trigaza were the two field stations. The aims for each site, the
 					instruments used, and the link into Science stay empty until Danilo confirms them.
 				</p>
 			</div>
@@ -84,7 +108,7 @@ const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 					<p>Why this site, what was observed here — to confirm.</p>
 				</article>
 				<article class="exp-site-card">
-					<p class="label">Pico Trigasa</p>
+					<p class="label">Pico Trigaza</p>
 					<div class="exp-well exp-well--map">
 						<p class="exp-well-label">Site map / context</p>
 					</div>
@@ -123,21 +147,21 @@ const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 			<div class="page-narrow">
 				<p class="label">The Expedition Team</p>
 				<h2 id="team-heading">Who was in the field.</h2>
-				<p>
-					A portrait, a role, and a short line on what each person did. Names and functions stay
-					blank until the list is confirmed.
-				</p>
+				<p>The people who took part in the Burgos expedition.</p>
 			</div>
 			<ul class="exp-team-grid">
 				{
-					teamSlots.map((slot) => (
+					team.map((member) => (
 						<li class="exp-team-card">
 							<div class="exp-well exp-well--portrait">
-								<p class="exp-well-label">Portrait {slot}</p>
+								<Image
+									src={member.photo}
+									alt={member.name}
+									widths={[320, 480, 720]}
+									sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 22vw"
+								/>
 							</div>
-							<p class="exp-team-role">Role</p>
-							<h3>Name</h3>
-							<p>What they did on this expedition — to confirm.</p>
+							<h3>{member.name}</h3>
 						</li>
 					))
 				}
@@ -153,7 +177,7 @@ const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 					totalities as much as the days on site.
 				</p>
 			</div>
-			<PartnerLogos />
+			<PartnerLogos exclude={['nasa']} />
 		</section>
 
 		<section class="exp-next" id="what-comes-next" aria-labelledby="next-heading">

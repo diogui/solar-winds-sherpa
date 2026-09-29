@@ -2,6 +2,10 @@ import type { ConnectionLike } from './hero-video';
 
 const FILM = 'film';
 const PHOTOS = 'photos';
+/** Skip the opening black hold so playback starts on the fade-in from black. */
+const PLAY_START = 4;
+/** Matching black hold after the closing fade-out. */
+const TAIL_BLACK = 4;
 
 function network(): ConnectionLike | null {
 	const nav = navigator as Navigator & {
@@ -35,8 +39,24 @@ export function mountLatestFilm(root: HTMLElement) {
 	const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	let inView = false;
 	let warmed = false;
+	let seeking = false;
 
 	const mode = () => (root.dataset.latestMode === PHOTOS ? PHOTOS : FILM);
+
+	const loopEnd = () => {
+		const duration = video.duration;
+		if (!duration || !Number.isFinite(duration)) return Number.POSITIVE_INFINITY;
+		return Math.max(PLAY_START + 1, duration - TAIL_BLACK);
+	};
+
+	const skipBlackHold = () => {
+		if (seeking) return;
+		const time = video.currentTime;
+		if (time < PLAY_START - 0.05 || time >= loopEnd() - 0.05) {
+			seeking = true;
+			video.currentTime = PLAY_START;
+		}
+	};
 
 	const setLoad = (percent: number, state: 'idle' | 'loading' | 'ready') => {
 		const value = Math.max(0, Math.min(100, Math.round(percent)));
@@ -80,6 +100,7 @@ export function mountLatestFilm(root: HTMLElement) {
 	const play = () => {
 		if (mode() !== FILM || motion.matches) return;
 		warm(true);
+		skipBlackHold();
 		const playAttempt = video.play();
 		if (playAttempt) playAttempt.catch(() => undefined);
 	};
@@ -98,15 +119,31 @@ export function mountLatestFilm(root: HTMLElement) {
 
 	video.muted = true;
 	video.defaultMuted = true;
-	video.loop = true;
+	video.loop = false;
 	video.playsInline = true;
 
 	video.addEventListener('loadstart', () => setLoad(0, 'loading'));
 	video.addEventListener('progress', updateLoad);
-	video.addEventListener('loadedmetadata', updateLoad);
+	video.addEventListener('loadedmetadata', () => {
+		updateLoad();
+		skipBlackHold();
+	});
+	video.addEventListener('seeked', () => {
+		seeking = false;
+	});
+	video.addEventListener('timeupdate', skipBlackHold);
+	video.addEventListener('ended', () => {
+		seeking = true;
+		video.currentTime = PLAY_START;
+		if (inView && mode() === FILM && !motion.matches) {
+			const playAttempt = video.play();
+			if (playAttempt) playAttempt.catch(() => undefined);
+		}
+	});
 	video.addEventListener('canplay', () => {
 		updateLoad();
 		if (inView && mode() === FILM && !motion.matches) {
+			skipBlackHold();
 			const playAttempt = video.play();
 			if (playAttempt) playAttempt.catch(() => undefined);
 		}

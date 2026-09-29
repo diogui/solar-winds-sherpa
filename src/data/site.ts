@@ -17,7 +17,7 @@ export const homeOnlyPreview = true;
 export const navLeft = [
 	{ href: '/about', label: 'About', live: true },
 	{ href: '/science', label: 'Science', live: !homeOnlyPreview },
-	{ href: '/latest-expedition', label: 'Last Expedition', live: true },
+	{ href: '/latest-expedition', label: 'Latest Expedition', live: true },
 ];
 
 export const navRight = [

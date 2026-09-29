@@ -343,6 +343,10 @@ article.page.about h1 {
 	line-height: 1.6;
 }
 
+.about-support .page-narrow > p + p {
+	margin-top: 1rem;
+}
+
 .about-support-funds {
 	display: grid;
 	grid-template-columns: 1fr 1fr;

@@ -10,24 +10,36 @@ import aberystwyth from '../assets/images/partners/aberystwyth.png';
 import astelco from '../assets/images/partners/astelco.png';
 import berlin from '../assets/images/partners/berlin.png';
 
+interface Props {
+	exclude?: string[];
+}
+
+const { exclude = [] } = Astro.props;
+const skipped = new Set(exclude);
+
 const rowOne = [
-	{ src: nasa, alt: 'NASA' },
-	{ src: nsf, alt: 'National Science Foundation' },
-	{ src: wentworth, alt: 'Wentworth Institute of Technology' },
-	{ src: hawaii, alt: 'Institute for Astronomy, University of Hawaiʻi' },
-	{ src: msmt, alt: 'Ministry of Education, Youth and Sports of the Czech Republic' },
-];
+	{ id: 'nasa', src: nasa, alt: 'NASA' },
+	{ id: 'nsf', src: nsf, alt: 'National Science Foundation' },
+	{ id: 'wentworth', src: wentworth, alt: 'Wentworth Institute of Technology' },
+	{ id: 'hawaii', src: hawaii, alt: 'Institute for Astronomy, University of Hawaiʻi' },
+	{
+		id: 'msmt',
+		src: msmt,
+		alt: 'Ministry of Education, Youth and Sports of the Czech Republic',
+	},
+].filter((partner) => !skipped.has(partner.id));
 
 const rowTwo = [
 	{
+		id: 'brno',
 		src: brno,
 		alt: 'Brno University of Technology, Faculty of Mechanical Engineering',
 		variant: 'brno',
 	},
-	{ src: aberystwyth, alt: 'Aberystwyth University', variant: 'aberystwyth' },
-	{ src: astelco, alt: 'ASTELCO Systems' },
-	{ src: berlin, alt: 'Technische Universität Berlin' },
-];
+	{ id: 'aberystwyth', src: aberystwyth, alt: 'Aberystwyth University', variant: 'aberystwyth' },
+	{ id: 'astelco', src: astelco, alt: 'ASTELCO Systems' },
+	{ id: 'berlin', src: berlin, alt: 'Technische Universität Berlin' },
+].filter((partner) => !skipped.has(partner.id));
 ---
 
 <div class="home-partners-grid">
