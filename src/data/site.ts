@@ -15,6 +15,7 @@ export const supportLinks = [
 export const homeOnlyPreview = true;
 
 export const navLeft = [
+	{ href: '/', label: 'Home', live: true },
 	{ href: '/about', label: 'About', live: true },
 	{ href: '/science', label: 'Science', live: !homeOnlyPreview },
 	{ href: '/latest-expedition', label: 'Latest Expedition', live: true },
@@ -26,8 +27,9 @@ export const navRight = [
 ];
 
 export const footerLinks = [
-	{ href: navLeft[0].href, label: 'About', live: navLeft[0].live },
-	{ href: navLeft[1].href, label: 'Science', live: navLeft[1].live },
-	{ href: navLeft[2].href, label: navLeft[2].label, live: navLeft[2].live },
+	{ href: navLeft[0].href, label: 'Home', live: navLeft[0].live },
+	{ href: navLeft[1].href, label: 'About', live: navLeft[1].live },
+	{ href: navLeft[2].href, label: 'Science', live: navLeft[2].live },
+	{ href: navLeft[3].href, label: navLeft[3].label, live: navLeft[3].live },
 	{ href: navRight[1].href, label: 'Support', live: navRight[1].live },
 ];

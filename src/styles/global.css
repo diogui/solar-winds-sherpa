@@ -47,7 +47,7 @@
 	--line-quiet: rgba(245, 245, 243, 0.1);
 	--header-h: 88px;
 	--header-progress: 0;
-	--well-w: 248px;
+	--well-w: 196px;
 	--eclipse-logo: 52px;
 	--ease: cubic-bezier(0.22, 1, 0.36, 1);
 	--font-display: 'Oswald', 'Satoshi', sans-serif;
@@ -297,11 +297,11 @@ p {
 	left: 50%;
 	top: 0;
 	width: var(--well-w);
-	height: calc(var(--header-h) + (var(--header-progress) * 34px));
+	height: calc(var(--header-h) + (var(--header-progress) * 16px));
 	transform: translateX(-50%);
 	background: rgb(8 13 20 / 0.96);
 	border: 0;
-	border-radius: 0 0 66px 66px;
+	border-radius: 0 0 46px 46px;
 	opacity: var(--header-progress);
 	pointer-events: none;
 }
@@ -335,7 +335,7 @@ p {
 
 .nav-cluster--left {
 	justify-content: flex-start;
-	gap: 1.25rem;
+	gap: 1rem;
 }
 
 .nav-cluster--left .nav-link {
@@ -363,8 +363,8 @@ p {
 .brand-lockup {
 	display: block;
 	width: auto;
-	height: 80px;
-	max-width: calc(var(--well-w) - 8px);
+	height: 60px;
+	max-width: calc(var(--well-w) - 12px);
 	object-fit: contain;
 	filter: drop-shadow(0 1px 10px rgb(8 13 20 / 0.45));
 }
@@ -375,8 +375,14 @@ p {
 	align-items: center;
 }
 
-.site-header[data-variant='home']:not([data-brand-hero]) .brand {
+.site-header[data-variant='home'] .brand {
 	transform-origin: top center;
+	opacity: var(--header-progress);
+}
+
+.site-header[data-variant='home']:not(.is-scrolled) .brand {
+	visibility: hidden;
+	pointer-events: none;
 }
 
 .site-header[data-brand-hero] {
@@ -1357,7 +1363,7 @@ p {
 @media (max-width: 900px) {
 	:root {
 		--header-h: 72px;
-		--well-w: 208px;
+		--well-w: 164px;
 		--eclipse-logo: 44px;
 		--content: min(1120px, calc(100% - 2rem));
 	}
@@ -1386,7 +1392,7 @@ p {
 	}
 
 	.brand-lockup {
-		height: 64px;
+		height: 50px;
 	}
 
 	.site-header[data-brand-hero] .brand-words {

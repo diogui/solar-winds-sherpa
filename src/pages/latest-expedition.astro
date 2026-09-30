@@ -1,9 +1,12 @@
 ---
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PartnerLogos from '../components/PartnerLogos.astro';
 import HomeConnect from '../components/home/HomeConnect.astro';
-import { supportLinks } from '../data/site';
+import padillaCamp from '../assets/images/field/latest-camp.jpg';
+import trigazaRidge from '../assets/images/field/burgos-totality.jpg';
 import adalbertDing from '../assets/images/team/adalbert-ding.jpg';
 import benBoe from '../assets/images/team/ben-boe.jpg';
 import daniloTorres from '../assets/images/team/danilo-torres.jpg';
@@ -18,10 +21,20 @@ import zacBailey from '../assets/images/team/zac-bailey.jpg';
 import '../styles/home.css';
 import '../styles/expedition.css';
 
-const sites = [
-	{ id: 'padilla', label: 'Padilla' },
-	{ id: 'trigaza', label: 'Pico Trigaza' },
-] as const;
+const hasFull = existsSync(resolve('./public/media/latest/burgos.mp4'));
+const hasHero24 = existsSync(resolve('./public/media/hero/hero-final-24.mp4'));
+const hasQuick = hasHero24 || existsSync(resolve('./public/media/hero/hero-final.mp4'));
+const fullSrc = '/media/latest/burgos.mp4';
+const fullSrcLight = '/media/latest/burgos-640.mp4';
+const fullPoster = '/media/latest/burgos-open.jpg';
+const quickSrc = hasHero24 ? '/media/hero/hero-final-24.mp4?v=1' : '/media/hero/hero-final.mp4?v=8';
+const quickPoster = '/media/hero/hero-poster.jpg';
+
+const padillaMap = 'https://www.openstreetmap.org/?mlat=42.4078&mlon=-4.1767#map=13/42.4078/-4.1767';
+const trigazaMap = 'https://www.openstreetmap.org/?mlat=42.2678&mlon=-3.2573#map=14/42.2678/-3.2573';
+const druckmullerImages =
+	'http://www.zam.fme.vutbr.cz/~druck/eclipse/Ecl2026s/Trigaza/TSE_2026_530mm_DHS/0-info.htm';
+const fotoklubInstagram = 'https://www.instagram.com/fotoklubtechnikabrno';
 
 const fieldBeats = [
 	{ label: 'Calibrate', note: 'Instruments being aligned and tested' },
@@ -30,7 +43,7 @@ const fieldBeats = [
 	{ label: 'Close', note: 'Packing the site' },
 ] as const;
 
-const team = [
+const padillaTeam = [
 	{ name: 'Shadia Habbal', photo: shadiaHabbal },
 	{ name: 'Adalbert Ding', photo: adalbertDing },
 	{ name: 'Ben Boe', photo: benBoe },
@@ -44,49 +57,142 @@ const team = [
 	{ name: 'Zac Bailey', photo: zacBailey },
 ] as const;
 
-const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
+const trigazaTeam = [
+	{ name: 'Miloslav Druckmüller' },
+	{ name: 'Zuzana Druckmüllerova' },
+	{
+		name: 'Studentský Fotoklub Technika Brno',
+		note: 'Student photography club',
+		href: fotoklubInstagram,
+		linkLabel: 'Instagram',
+	},
+] as const;
+
+const nextPlaces = [
+	{ label: 'Egypt', status: 'Confirmed' },
+	{ label: 'South of Spain, near Tarifa', status: 'Confirmed' },
+	{ label: 'Tunisia', status: 'Location to confirm' },
+] as const;
 ---
 
 <BaseLayout
 	title="Latest Expedition"
-	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla and Pico Trigaza."
+	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla de Abajo and Pico Trigaza."
 >
 	<article class="page exp">
-		<section class="exp-open" id="burgos-2026" aria-labelledby="exp-heading" data-site-switch data-active-site="padilla">
+		<section class="exp-open" id="burgos-2026" aria-labelledby="exp-heading">
 			<div class="page-narrow">
 				<p class="label page-kicker">Latest expedition · 2026</p>
 				<h1 id="exp-heading">Burgos, Spain</h1>
-				<p class="exp-facts">12 August 2026 · Padilla · Pico Trigaza</p>
+				<p class="exp-facts">12 August 2026 · Padilla de Abajo · Pico Trigaza</p>
 				<p>
-					Two observing sites, one totality. This page will hold the films, photographs and people of
-					the Burgos expedition — structure first, media and copy to confirm.
+					The greatest challenge was observing an eclipse so low on the horizon — about eight degrees —
+					without interference from the landscape.
 				</p>
 			</div>
 
-			<div class="exp-hero">
+			<div class="exp-hero" data-cut-switch data-active-cut="full">
 				<div class="exp-hero-frame">
-					{
-						sites.map((site) => (
-							<div class="exp-hero-well" data-site-panel={site.id}>
-								<p class="exp-well-label">Film / photo · {site.label}</p>
-							</div>
-						))
-					}
-					<div class="exp-hero-controls">
+					<div
+						class="exp-hero-panel"
+						data-cut="full"
+						data-exp-src={hasFull ? fullSrc : undefined}
+						data-exp-src-light={hasFull ? fullSrcLight : undefined}
+						data-exp-skip-start={hasFull ? '4.2' : undefined}
+						data-exp-skip-tail={hasFull ? '4' : undefined}
+						data-exp-preload="auto"
+					>
 						{
-							sites.map((site) => (
-								<button
-									type="button"
-									class="exp-site-btn"
-									data-site={site.id}
-									aria-pressed={site.id === 'padilla' ? 'true' : 'false'}
-								>
-									{site.label}
-								</button>
-							))
+							hasFull ? (
+								<>
+									<video
+										class="exp-hero-video"
+										data-exp-video
+										playsinline
+										preload="auto"
+										poster={fullPoster}
+										aria-label="Burgos expedition film by Santiago Marrodán Ciordia"
+									></video>
+									<img
+										class="exp-hero-still"
+										src={fullPoster}
+										alt=""
+										width="1600"
+										height="900"
+										decoding="async"
+									/>
+									<button class="exp-play" type="button" data-exp-play aria-label="Play video">
+										<span data-exp-play-label>Play</span>
+									</button>
+									<div
+										class="exp-hero-load"
+										data-exp-load
+										role="progressbar"
+										aria-label="Film download"
+										aria-valuemin="0"
+										aria-valuemax="100"
+										aria-valuenow="0"
+									>
+										<span class="exp-hero-load-bar" data-exp-load-bar></span>
+									</div>
+								</>
+							) : (
+								<Image
+									src={padillaCamp}
+									alt="Two team members in purple expedition shirts at the Padilla de Abajo field camp, beside grey observation tents"
+									widths={[960, 1400, 1800]}
+									sizes="(max-width: 900px) 94vw, 88vw"
+									class="exp-hero-photo"
+								/>
+							)
 						}
 					</div>
+					{
+						hasQuick && (
+							<div
+								class="exp-hero-panel"
+								data-cut="quick"
+								data-exp-src={quickSrc}
+								data-exp-preload="none"
+								data-exp-muted="true"
+							>
+								<video
+									class="exp-hero-video exp-hero-video--quick"
+									data-exp-video
+									muted
+									playsinline
+									preload="none"
+									poster={quickPoster}
+									aria-label="Burgos expedition highlight"
+								></video>
+								<img
+									class="exp-hero-still exp-hero-still--quick"
+									src={quickPoster}
+									alt=""
+									width="1600"
+									height="900"
+									decoding="async"
+								/>
+								<button class="exp-play" type="button" data-exp-play aria-label="Play video">
+									<span data-exp-play-label>Play</span>
+								</button>
+							</div>
+						)
+					}
+					{
+						hasFull && hasQuick && (
+							<div class="exp-hero-controls">
+								<button type="button" class="exp-site-btn" data-cut="quick" aria-pressed="false">
+									Quick
+								</button>
+								<button type="button" class="exp-site-btn" data-cut="full" aria-pressed="true">
+									Full
+								</button>
+							</div>
+						)
+					}
 				</div>
+				{hasFull && <p class="exp-hero-credit">Film by Santiago Marrodán Ciordia</p>}
 			</div>
 		</section>
 
@@ -95,24 +201,51 @@ const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 				<p class="label">The Mission</p>
 				<h2 id="mission-heading">Where we went, and what we went to study.</h2>
 				<p>
-					Padilla and Pico Trigaza were the two field stations. The aims for each site, the
-					instruments used, and the link into Science stay empty until Danilo confirms them.
+					There is not usually a specific scientific goal for one expedition. The work is to build a
+					larger, cumulative body of observations.
+				</p>
+				<p>
+					Whenever possible, more than one observing site increases the chance of clear skies and the
+					total time spent in totality. The two teams made complementary observations. The distinct
+					instrumentation at each site is still to be confirmed.
 				</p>
 			</div>
 			<div class="exp-mission-grid">
 				<article class="exp-site-card">
-					<p class="label">Padilla</p>
-					<div class="exp-well exp-well--map">
-						<p class="exp-well-label">Site map / context</p>
-					</div>
-					<p>Why this site, what was observed here — to confirm.</p>
+					<p class="label">Padilla de Abajo</p>
+					<figure class="exp-site-photo">
+						<Image
+							src={padillaCamp}
+							alt="Observation tents and instruments at the Padilla de Abajo field camp"
+							widths={[720, 1100, 1400]}
+							sizes="(max-width: 900px) 92vw, 42vw"
+						/>
+					</figure>
+					<p>
+						Padilla de Abajo offered the space, infrastructure and privacy to set up safely with most
+						of the instruments.
+					</p>
+					<a class="exp-site-map" href={padillaMap} rel="noopener noreferrer" target="_blank">
+						View map <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
 				</article>
 				<article class="exp-site-card">
 					<p class="label">Pico Trigaza</p>
-					<div class="exp-well exp-well--map">
-						<p class="exp-well-label">Site map / context</p>
-					</div>
-					<p>Why this site, what was observed here — to confirm.</p>
+					<figure class="exp-site-photo exp-site-photo--ridge">
+						<Image
+							src={trigazaRidge}
+							alt="Total solar eclipse seen from Pico Trigaza, with cameras on the mountain ridge"
+							widths={[720, 1100, 1400]}
+							sizes="(max-width: 900px) 92vw, 42vw"
+						/>
+					</figure>
+					<p>
+						Pico Trigaza offered a high vantage that improved the chance of observing above the
+						clouds.
+					</p>
+					<a class="exp-site-map" href={trigazaMap} rel="noopener noreferrer" target="_blank">
+						View map <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
 				</article>
 			</div>
 		</section>
@@ -147,25 +280,56 @@ const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 			<div class="page-narrow">
 				<p class="label">The Expedition Team</p>
 				<h2 id="team-heading">Who was in the field.</h2>
-				<p>The people who took part in the Burgos expedition.</p>
+				<p>The people who took part in the Burgos expedition, listed by observing site.</p>
 			</div>
-			<ul class="exp-team-grid">
-				{
-					team.map((member) => (
-						<li class="exp-team-card">
-							<div class="exp-well exp-well--portrait">
-								<Image
-									src={member.photo}
-									alt={member.name}
-									widths={[320, 480, 720]}
-									sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 22vw"
-								/>
-							</div>
-							<h3>{member.name}</h3>
-						</li>
-					))
-				}
-			</ul>
+
+			<div class="exp-team-group">
+				<p class="label">Padilla de Abajo</p>
+				<ul class="exp-team-grid">
+					{
+						padillaTeam.map((member) => (
+							<li class="exp-team-card">
+								<div class="exp-well exp-well--portrait">
+									<Image
+										src={member.photo}
+										alt={member.name}
+										widths={[320, 480, 720]}
+										sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 22vw"
+									/>
+								</div>
+								<h3>{member.name}</h3>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div class="exp-team-group">
+				<p class="label">Pico Trigaza</p>
+				<ul class="exp-team-grid">
+					{
+						trigazaTeam.map((member) => (
+							<li class="exp-team-card">
+								<div class="exp-well exp-well--portrait exp-well--empty">
+									<p class="exp-well-label">Portrait</p>
+								</div>
+								<h3>{member.name}</h3>
+								{'note' in member && member.note ? <p class="exp-team-note">{member.note}</p> : null}
+								{'href' in member && member.href ? (
+									<a
+										class="exp-team-link"
+										href={member.href}
+										rel="noopener noreferrer"
+										target="_blank"
+									>
+										{member.linkLabel} <span class="cta-arrow" aria-hidden="true">→</span>
+									</a>
+								) : null}
+							</li>
+						))
+					}
+				</ul>
+			</div>
 		</section>
 
 		<section class="exp-block exp-partners" id="made-possible-by" aria-labelledby="partners-heading">
@@ -173,11 +337,11 @@ const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 				<p class="label">Made Possible By</p>
 				<h2 id="partners-heading">The support that put this expedition in the field.</h2>
 				<p>
-					Expeditions depend on the institutions, partners and people who fund the work between
-					totalities as much as the days on site.
+					The institutions and partners on this page are the same as those on the rest of the site.
+					Local supporters in Valmala will be added when the names are confirmed.
 				</p>
 			</div>
-			<PartnerLogos exclude={['nasa']} />
+			<PartnerLogos />
 		</section>
 
 		<section class="exp-next" id="what-comes-next" aria-labelledby="next-heading">
@@ -185,20 +349,29 @@ const nextPlaces = ['Tunisia', 'South of Spain', 'Egypt'] as const;
 				<p class="label">What Comes Next</p>
 				<h2 id="next-heading">The next totality is 2 August 2027.</h2>
 				<p>
-					Tunisia, the south of Spain, and Egypt. Support now funds the analysis of Burgos and the
-					instruments that have to be ready for that path.
+					Some images from Burgos have already been processed — they are published on{' '}
+					<a href={druckmullerImages} rel="noopener noreferrer" target="_blank">
+						Miloslav Druckmüller’s site</a
+					>. Reducing the rest of the data has begun, and will take months, if not years.
+				</p>
+				<p>
+					Egypt, the south of Spain near Tarifa, and Tunisia are confirmed for 2 August 2027. The
+					exact site in Tunisia is still to be set.
 				</p>
 				<ul class="exp-next-places">
-					{nextPlaces.map((place) => <li>{place}</li>)}
-				</ul>
-				<div class="exp-next-cta">
 					{
-						supportLinks.map((link) => (
-							<a class="cta cta--button" href={link.href} rel="noopener noreferrer" target="_blank">
-								{link.label} <span class="cta-arrow" aria-hidden="true">→</span>
-							</a>
+						nextPlaces.map((place) => (
+							<li>
+								<span>{place.label}</span>
+								<span class="exp-next-status">{place.status}</span>
+							</li>
 						))
 					}
+				</ul>
+				<div class="exp-next-cta">
+					<a class="cta cta--button" href="#contact">
+						Talk to us <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
 				</div>
 			</div>
 		</section>

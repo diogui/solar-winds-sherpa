@@ -8,7 +8,7 @@
 article.page.exp h1 {
 	font-size: clamp(1.7rem, 6.5vw, 2.85rem);
 	line-height: 1.12;
-	margin-bottom: 1rem;
+	margin-bottom: 1.55rem;
 	text-wrap: wrap;
 }
 
@@ -17,7 +17,7 @@ article.page.exp h1 {
 }
 
 .exp-facts {
-	margin: 0 0 1.1rem;
+	margin: 0.15rem 0 1.25rem;
 	color: var(--text);
 	font-family: var(--font-display);
 	font-size: 0.92rem;
@@ -45,48 +45,124 @@ article.page.exp h1 {
 	background: var(--bg-2);
 }
 
-.exp-hero-well {
+.exp-hero-panel {
 	position: absolute;
 	inset: 0;
-	display: grid;
-	place-items: center;
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
-	background:
-		linear-gradient(180deg, rgb(23 29 46 / 0.12), rgb(8 13 20 / 0.28)),
-		repeating-linear-gradient(
-			135deg,
-			rgb(245 245 243 / 0.03) 0 12px,
-			transparent 12px 24px
-		);
 }
 
-.exp-open[data-active-site='padilla'] .exp-hero-well[data-site-panel='padilla'],
-.exp-open[data-active-site='trigaza'] .exp-hero-well[data-site-panel='trigaza'] {
+.exp-hero[data-active-cut='full'] .exp-hero-panel[data-cut='full'],
+.exp-hero[data-active-cut='quick'] .exp-hero-panel[data-cut='quick'] {
 	opacity: 1;
 	visibility: visible;
+	pointer-events: auto;
 }
 
-.exp-well-label {
+.exp-hero-photo,
+.exp-hero-video {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border: 0;
+}
+
+.exp-hero-photo {
+	object-position: 38% 50%;
+}
+
+.exp-hero-video {
+	z-index: 1;
+	object-position: 50% 42%;
+	cursor: pointer;
+}
+
+.exp-hero-still {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 42%;
+	pointer-events: none;
+}
+
+.exp-hero-video--quick,
+.exp-hero-still--quick {
+	object-position: 50% 16%;
+}
+
+.exp-hero-panel.has-played .exp-hero-still {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.exp-play {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 3;
+	transform: translate(-50%, -50%);
 	margin: 0;
-	padding: 0.55rem 0.85rem;
-	border: 1px solid rgb(245 245 243 / 0.14);
+	padding: 0.72rem 1.25rem 0.68rem;
+	border: 1px solid rgb(245 245 243 / 0.22);
 	border-radius: 999px;
-	background: rgb(8 13 20 / 0.62);
+	background: rgb(8 13 20 / 0.78);
 	color: var(--text);
 	font-family: var(--font-display);
-	font-size: 0.62rem;
+	font-size: 0.72rem;
 	font-weight: 500;
-	letter-spacing: 0.16em;
+	letter-spacing: 0.18em;
 	text-transform: uppercase;
+	backdrop-filter: blur(10px);
+	cursor: pointer;
+}
+
+.exp-hero-panel.is-playing .exp-play {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.exp-hero-load {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 3;
+	height: 0.3rem;
+	overflow: hidden;
+	background: rgb(8 13 20 / 0.42);
+}
+
+.exp-hero-load-bar {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: var(--accent);
+	transform: scaleX(0);
+	transform-origin: left center;
+	transition: transform 0.28s linear;
+}
+
+.exp-hero-panel[data-exp-load='ready'] .exp-hero-load-bar {
+	transform: scaleX(1);
+}
+
+.exp-hero-panel[data-exp-load='ready'] .exp-hero-load {
+	opacity: 0;
+	transition: opacity 0.6s var(--ease);
 }
 
 .exp-hero-controls {
 	position: absolute;
 	right: 0.7rem;
-	bottom: 0.7rem;
-	z-index: 2;
+	bottom: 0.85rem;
+	z-index: 4;
 	display: flex;
 	gap: 0.35rem;
 }
@@ -112,6 +188,19 @@ article.page.exp h1 {
 	background: rgb(8 13 20 / 0.88);
 }
 
+.exp-hero[data-active-cut='quick'] .exp-hero-credit {
+	visibility: hidden;
+}
+
+.exp-hero-credit {
+	margin: 0.65rem 0 0;
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--text-mute);
+}
+
 .exp-block {
 	padding: 4.25rem 0 1rem;
 }
@@ -131,9 +220,39 @@ article.page.exp h1 {
 	line-height: 1.6;
 }
 
+.exp-block .page-narrow > p + p,
+.exp-next .page-narrow > p + p {
+	margin-top: 1rem;
+}
+
+.exp-next .page-narrow > p a {
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+	text-decoration-thickness: 1px;
+}
+
+.exp-next .page-narrow > p a:hover,
+.exp-next .page-narrow > p a:focus-visible {
+	color: var(--text);
+}
+
+.exp-well-label {
+	margin: 0;
+	padding: 0.55rem 0.85rem;
+	border: 1px solid rgb(245 245 243 / 0.14);
+	border-radius: 999px;
+	background: rgb(8 13 20 / 0.62);
+	color: var(--text);
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
 .exp-mission-grid,
-.exp-field-grid,
-.exp-team-grid {
+.exp-field-grid {
 	width: min(1320px, calc(100% - 3rem));
 	margin: 2rem auto 0;
 }
@@ -156,6 +275,53 @@ article.page.exp h1 {
 	color: var(--text-dim);
 }
 
+.exp-site-photo {
+	position: relative;
+	margin: 1rem 0 0;
+	aspect-ratio: 16 / 10;
+	overflow: hidden;
+	border-radius: 4px;
+	background: var(--bg);
+}
+
+.exp-site-photo img,
+.exp-site-photo picture {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.exp-site-photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 50%;
+}
+
+.exp-site-photo--ridge img {
+	object-position: 50% 28%;
+}
+
+.exp-site-map {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	margin-top: 0.9rem;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.exp-site-map:hover,
+.exp-site-map:focus-visible {
+	color: var(--text);
+}
+
 .exp-well {
 	display: grid;
 	place-items: center;
@@ -167,11 +333,6 @@ article.page.exp h1 {
 			transparent 10px 20px
 		);
 	border: 1px dashed rgb(245 245 243 / 0.12);
-}
-
-.exp-well--map {
-	margin-top: 1rem;
-	aspect-ratio: 16 / 9;
 }
 
 .exp-well--shot {
@@ -187,6 +348,19 @@ article.page.exp h1 {
 	background: var(--bg-2);
 }
 
+.exp-well--empty {
+	display: grid;
+	place-items: center;
+	border-style: dashed;
+	border-color: rgb(245 245 243 / 0.14);
+	background:
+		repeating-linear-gradient(
+			135deg,
+			rgb(245 245 243 / 0.035) 0 10px,
+			transparent 10px 20px
+		);
+}
+
 .exp-well--portrait img {
 	position: absolute;
 	inset: 0;
@@ -196,10 +370,24 @@ article.page.exp h1 {
 	object-position: 50% 40%;
 }
 
+.exp-team-group {
+	width: min(1320px, calc(100% - 3rem));
+	margin: 2rem auto 0;
+}
+
+.exp-team-group + .exp-team-group {
+	margin-top: 2.75rem;
+}
+
+.exp-team-group > .label {
+	margin: 0 0 1rem;
+}
+
 .exp-team-grid {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
 	gap: 1.15rem;
+	margin: 0;
 	padding: 0;
 	list-style: none;
 }
@@ -207,6 +395,29 @@ article.page.exp h1 {
 .exp-team-card h3 {
 	margin: 0.75rem 0 0;
 	font-size: 1.15rem;
+}
+
+.exp-team-note,
+.exp-team-link {
+	margin: 0.35rem 0 0;
+	color: var(--text-dim);
+	font-size: 0.92rem;
+}
+
+.exp-team-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.exp-team-link:hover,
+.exp-team-link:focus-visible {
+	color: var(--text);
 }
 
 .exp-field-grid {
@@ -237,6 +448,10 @@ article.page.exp h1 {
 	text-transform: uppercase;
 }
 
+.exp-partners {
+	padding: 6.5rem 0;
+}
+
 .exp-partners .home-partners-grid {
 	width: 100%;
 	max-width: 64rem;
@@ -263,10 +478,6 @@ article.page.exp h1 {
 	height: 3.8rem;
 }
 
-.exp-partners .home-partner-logo--aberystwyth {
-	height: 4.35rem;
-}
-
 .exp-partners .home-partners-row {
 	display: flex;
 	flex-wrap: wrap;
@@ -283,7 +494,7 @@ article.page.exp h1 {
 }
 
 .exp-next {
-	padding: 5rem 0 3.5rem;
+	padding: 6.5rem 0;
 	background: var(--hero-dusk, #171d2e);
 }
 
@@ -297,13 +508,22 @@ article.page.exp h1 {
 }
 
 .exp-next-places li {
-	padding: 0.42rem 0.8rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+	padding: 0.55rem 0.9rem 0.5rem;
 	border: 1px solid rgb(245 245 243 / 0.14);
-	border-radius: 999px;
+	border-radius: 6px;
 	font-family: var(--font-display);
-	font-size: 0.68rem;
-	letter-spacing: 0.14em;
+	font-size: 0.78rem;
+	letter-spacing: 0.1em;
 	text-transform: uppercase;
+}
+
+.exp-next-status {
+	color: var(--text-mute);
+	font-size: 0.62rem;
+	letter-spacing: 0.14em;
 }
 
 .exp-next-cta {
@@ -320,13 +540,26 @@ article.page.exp h1 {
 
 	.exp-mission-grid,
 	.exp-field-grid,
-	.exp-team-grid {
+	.exp-team-group {
 		width: min(1240px, calc(100% - 2.5rem));
+	}
+
+	.exp-mission-grid,
+	.exp-field-grid,
+	.exp-team-grid {
 		grid-template-columns: 1fr 1fr;
 	}
 
 	.exp-block {
 		padding: 3.4rem 0 0.6rem;
+	}
+
+	.exp-partners {
+		padding: 5.25rem 0;
+	}
+
+	.exp-next {
+		padding: 5.25rem 0;
 	}
 }
 

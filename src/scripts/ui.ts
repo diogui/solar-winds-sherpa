@@ -131,10 +131,12 @@ function initHomeHeader() {
 	let ticking = false;
 
 	const update = () => {
-		const range = Math.max(320, (hero?.offsetHeight ?? 640) * 0.48);
-		const progress = Math.min(1, window.scrollY / range);
+		const heroH = hero?.offsetHeight ?? 640;
+		const start = Math.max(0, heroH - header.offsetHeight);
+		const fade = 88;
+		const progress = Math.min(1, Math.max(0, (window.scrollY - start) / fade));
 		header.style.setProperty('--header-progress', String(progress));
-		header.classList.toggle('is-scrolled', window.scrollY > 20);
+		header.classList.toggle('is-scrolled', window.scrollY > start);
 	};
 
 	update();
@@ -168,7 +170,7 @@ function initLatestFilm() {
 
 function initExpeditionPage() {
 	if (isHomeArchive()) return;
-	const section = document.querySelector<HTMLElement>('[data-site-switch]');
+	const section = document.querySelector<HTMLElement>('[data-cut-switch]');
 	if (!section) return;
 	mountExpeditionSites(section);
 }

@@ -6,9 +6,9 @@ import wentworth from '../assets/images/partners/wentworth.png';
 import hawaii from '../assets/images/partners/hawaii.png';
 import msmt from '../assets/images/partners/msmt.png';
 import brno from '../assets/images/partners/brno.png';
-import aberystwyth from '../assets/images/partners/aberystwyth.png';
 import astelco from '../assets/images/partners/astelco.png';
 import berlin from '../assets/images/partners/berlin.png';
+import electricon from '../assets/images/partners/electricon.svg?url';
 
 interface Props {
 	exclude?: string[];
@@ -18,10 +18,10 @@ const { exclude = [] } = Astro.props;
 const skipped = new Set(exclude);
 
 const rowOne = [
-	{ id: 'nasa', src: nasa, alt: 'NASA' },
-	{ id: 'nsf', src: nsf, alt: 'National Science Foundation' },
-	{ id: 'wentworth', src: wentworth, alt: 'Wentworth Institute of Technology' },
 	{ id: 'hawaii', src: hawaii, alt: 'Institute for Astronomy, University of Hawaiʻi' },
+	{ id: 'wentworth', src: wentworth, alt: 'Wentworth Institute of Technology' },
+	{ id: 'nsf', src: nsf, alt: 'National Science Foundation' },
+	{ id: 'nasa', src: nasa, alt: 'NASA' },
 	{
 		id: 'msmt',
 		src: msmt,
@@ -36,9 +36,9 @@ const rowTwo = [
 		alt: 'Brno University of Technology, Faculty of Mechanical Engineering',
 		variant: 'brno',
 	},
-	{ id: 'aberystwyth', src: aberystwyth, alt: 'Aberystwyth University', variant: 'aberystwyth' },
-	{ id: 'astelco', src: astelco, alt: 'ASTELCO Systems' },
+	{ id: 'electricon', src: electricon, alt: 'Electrícon', variant: 'electricon' },
 	{ id: 'berlin', src: berlin, alt: 'Technische Universität Berlin' },
+	{ id: 'astelco', src: astelco, alt: 'ASTELCO Systems' },
 ].filter((partner) => !skipped.has(partner.id));
 ---
 
@@ -62,17 +62,35 @@ const rowTwo = [
 		{
 			rowTwo.map((partner) => (
 				<li>
-					<Image
-						src={partner.src}
-						alt={partner.alt}
-						widths={[240, 400, 560]}
-						sizes="200px"
-						class:list={[
-							'home-partner-logo',
-							'home-partner-logo--mark',
-							partner.variant && `home-partner-logo--${partner.variant}`,
-						]}
-					/>
+					{'src' in partner && partner.src ? (
+						typeof partner.src === 'string' ? (
+							<img
+								src={partner.src}
+								alt={partner.alt}
+								width="227"
+								height="95"
+								class:list={[
+									'home-partner-logo',
+									'home-partner-logo--mark',
+									partner.variant && `home-partner-logo--${partner.variant}`,
+								]}
+							/>
+						) : (
+							<Image
+								src={partner.src}
+								alt={partner.alt}
+								widths={[240, 400, 560]}
+								sizes="200px"
+								class:list={[
+									'home-partner-logo',
+									'home-partner-logo--mark',
+									partner.variant && `home-partner-logo--${partner.variant}`,
+								]}
+							/>
+						)
+					) : (
+						<span class="home-partner-pending">{partner.alt}</span>
+					)}
 				</li>
 			))
 		}

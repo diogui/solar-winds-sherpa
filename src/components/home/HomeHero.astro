@@ -2,7 +2,9 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const hasVideo = existsSync(resolve('./public/media/hero/hero-final.mp4'));
+const hasVideo =
+	existsSync(resolve('./public/media/hero/hero-final-24.mp4')) ||
+	existsSync(resolve('./public/media/hero/hero-final.mp4'));
 ---
 
 <section class="home-hero" data-hero aria-label="Introduction">

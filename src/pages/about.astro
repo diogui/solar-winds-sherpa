@@ -11,30 +11,25 @@ import team from '../assets/images/field/latest-team.jpg';
 import totality from '../assets/images/field/burgos-totality.jpg';
 import fieldSetup from '../assets/images/field/burgos-workshop.jpg';
 import observer from '../assets/images/work/research.jpg';
-import burgosTeamLeft from '../assets/images/field/burgos-team-left.jpg';
-import burgosTeamCenter from '../assets/images/field/burgos-team-center.jpg';
-import burgosTeamRight from '../assets/images/field/burgos-team-right.jpg';
 import '../styles/work.css';
 import '../styles/about.css';
 
 const expeditionHref = '/latest-expedition#team';
 
-const burgosTeamPanels = [
-	{
-		image: burgosTeamLeft,
-		area: 'left',
-		alt: 'Three Solar Wind Sherpas team members on the left of the Burgos group photograph',
-	},
-	{
-		image: burgosTeamCenter,
-		area: 'center',
-		alt: 'Dr. Shadia Habbal with two team members in the Burgos group photograph',
-	},
-	{
-		image: burgosTeamRight,
-		area: 'right',
-		alt: 'Two Solar Wind Sherpas team members on the right of the Burgos group photograph',
-	},
+const storyHighlights = [
+	{ id: 'lead', label: 'Highlight' },
+	{ id: 'a', label: 'Highlight' },
+	{ id: 'b', label: 'Highlight' },
+	{ id: 'c', label: 'Highlight' },
+] as const;
+
+const peopleFrames = [
+	{ id: 'hero', label: 'Portrait' },
+	{ id: 'a', label: 'Photo' },
+	{ id: 'b', label: 'Photo' },
+	{ id: 'c', label: 'Photo' },
+	{ id: 'd', label: 'Photo' },
+	{ id: 'e', label: 'Photo' },
 ] as const;
 
 const introMontage = [
@@ -127,36 +122,24 @@ const introMontage = [
 					Dr. Shadia Habbal founded Solar Wind Sherpas in 1995 and has led every expedition since.
 				</p>
 			</div>
-			<ol class="about-timeline">
-				<li>
-					<p class="about-timeline-year">1995</p>
-					<p>The collaboration begins. The first expedition is to India, on 24 October 1995.</p>
-				</li>
-				<li>
-					<p class="about-timeline-year">2006</p>
-					<p>
-						Libya. The first image of the corona in Fe XI opens a new observational path for eclipse
-						science.
-					</p>
-				</li>
-				<li>
-					<p class="about-timeline-year">2017</p>
-					<p>
-						Custom triple-channel spectrometers — designed for the 2015 Svalbard expedition — go
-						into the field in numbers, built to travel as carry-on.
-					</p>
-				</li>
-				<li>
-					<p class="about-timeline-year">2024</p>
-					<p>
-						The largest operation to date: more than forty people, four sites in the United States
-						and Mexico, and instruments flown on a NASA high-altitude aircraft.
-					</p>
-				</li>
-			</ol>
+			<div class="about-highlights" role="list" aria-label="Story highlights, awaiting copy">
+				{
+					storyHighlights.map((moment) => (
+						<article
+							class:list={['about-highlight', `about-highlight--${moment.id}`]}
+							role="listitem"
+						>
+							<p class="label">{moment.label}</p>
+							<p class="about-highlight-year">Year</p>
+							<span class="about-wire-line"></span>
+							<span class="about-wire-line about-wire-line--short"></span>
+						</article>
+					))
+				}
+			</div>
 		</section>
 
-		<section class="about-suite" id="people" aria-labelledby="people-heading">
+		<section class="about-founder" id="founder" aria-labelledby="founder-heading">
 			<article class="about-card about-featured reveal">
 				<div class="about-card-photo about-featured-photo">
 					<Image
@@ -169,7 +152,7 @@ const introMontage = [
 				</div>
 				<div class="about-card-copy">
 					<p class="label">Founder</p>
-					<h3>Dr. Shadia R. Habbal</h3>
+					<h3 id="founder-heading">Dr. Shadia R. Habbal</h3>
 					<p class="about-featured-affiliation">
 						Professor and Astronomer, Institute for Astronomy, University of Hawaiʻi
 					</p>
@@ -186,9 +169,11 @@ const introMontage = [
 					</p>
 				</div>
 			</article>
+		</section>
 
-			<div class="about-suite-block">
-				<header class="about-suite-head">
+		<section class="about-people" id="people" aria-labelledby="people-heading">
+			<div class="about-people-gallery">
+				<div class="about-people-copy">
 					<h2 id="people-heading">The People Behind the Sherpas</h2>
 					<p>
 						Each expedition brings together the scientists, engineers and observers needed for those
@@ -198,34 +183,22 @@ const introMontage = [
 					<a class="cta" href={expeditionHref}>
 						See who was in the field in Burgos <span class="cta-arrow" aria-hidden="true">→</span>
 					</a>
-				</header>
-				<figure class="about-suite-figure">
-					<div
-						class="about-suite-grid"
-						role="group"
-						aria-label="Solar Wind Sherpas team in Burgos, Spain, 2026"
-					>
-						{
-							burgosTeamPanels.map((panel) => (
-								<div class="about-card about-card--photo">
-									<div class="about-card-photo">
-										<Image
-											src={panel.image}
-											alt={panel.alt}
-											widths={[480, 800, 1200]}
-											sizes="(max-width: 900px) 30vw, 30vw"
-											class="about-card-img"
-										/>
-									</div>
-								</div>
-							))
-						}
-					</div>
-					<figcaption>Burgos, Spain · 2026</figcaption>
-				</figure>
+				</div>
+				{
+					peopleFrames.map((frame) => (
+						<div
+							class:list={['about-wire', 'about-people-frame', `about-people-frame--${frame.id}`]}
+							aria-hidden="true"
+						>
+							<span class="about-wire-label">{frame.label}</span>
+						</div>
+					))
+				}
 			</div>
+		</section>
 
-			<div class="about-suite-block" id="actions" aria-labelledby="actions-heading">
+		<section class="about-suite" id="actions" aria-labelledby="actions-heading">
+			<div class="about-suite-block">
 				<header class="about-suite-head">
 					<h2 id="actions-heading">Our Actions</h2>
 					<p>
@@ -250,7 +223,7 @@ const introMontage = [
 				<h2 id="about-support-heading">Help make eclipse science possible.</h2>
 				<p>
 					If you or your organization would like to help sustain future expeditions and scientific
-					research, we would welcome a conversation.
+					research, <a href="#contact">we would welcome a conversation</a>.
 				</p>
 				<p>
 					You can also support the project in a way that works for you: join us on Patreon for

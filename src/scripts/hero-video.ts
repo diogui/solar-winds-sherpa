@@ -31,7 +31,7 @@ export function chooseHero({
 	if (reducedMotion || connection?.saveData || ['slow-2g', '2g'].includes(type ?? '')) {
 		return { file: null, poster, reason: 'poster' };
 	}
-	return { file: 'hero-final.mp4?v=8', poster, reason: 'final' };
+	return { file: 'hero-final-24.mp4?v=1', poster, reason: 'final' };
 }
 
 function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean) {
