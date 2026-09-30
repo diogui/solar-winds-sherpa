@@ -2,10 +2,6 @@ import type { ConnectionLike } from './hero-video';
 
 const FILM = 'film';
 const PHOTOS = 'photos';
-/** Skip the opening black hold so playback starts on the fade-in from black. */
-const PLAY_START = 4;
-/** Matching black hold after the closing fade-out. */
-const TAIL_BLACK = 4;
 
 function network(): ConnectionLike | null {
 	const nav = navigator as Navigator & {
@@ -39,23 +35,12 @@ export function mountLatestFilm(root: HTMLElement) {
 	const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	let inView = false;
 	let warmed = false;
-	let seeking = false;
 
 	const mode = () => (root.dataset.latestMode === PHOTOS ? PHOTOS : FILM);
 
-	const loopEnd = () => {
-		const duration = video.duration;
-		if (!duration || !Number.isFinite(duration)) return Number.POSITIVE_INFINITY;
-		return Math.max(PLAY_START + 1, duration - TAIL_BLACK);
-	};
-
-	const skipBlackHold = () => {
-		if (seeking) return;
-		const time = video.currentTime;
-		if (time < PLAY_START - 0.05 || time >= loopEnd() - 0.05) {
-			seeking = true;
-			video.currentTime = PLAY_START;
-		}
+	const setReady = (ready: boolean) => {
+		if (ready && mode() === FILM && !video.paused) root.dataset.latestReady = 'true';
+		else delete root.dataset.latestReady;
 	};
 
 	const setLoad = (percent: number, state: 'idle' | 'loading' | 'ready') => {
@@ -100,13 +85,13 @@ export function mountLatestFilm(root: HTMLElement) {
 	const play = () => {
 		if (mode() !== FILM || motion.matches) return;
 		warm(true);
-		skipBlackHold();
 		const playAttempt = video.play();
-		if (playAttempt) playAttempt.catch(() => undefined);
+		if (playAttempt) playAttempt.then(() => setReady(true)).catch(() => setReady(false));
 	};
 
 	const pause = () => {
 		video.pause();
+		setReady(false);
 	};
 
 	const setMode = (next: typeof FILM | typeof PHOTOS) => {
@@ -114,7 +99,10 @@ export function mountLatestFilm(root: HTMLElement) {
 		toggle.setAttribute('aria-checked', String(next === PHOTOS));
 		if (next === PHOTOS) pause();
 		else if (inView) play();
-		else warm(true);
+		else {
+			setReady(false);
+			warm(true);
+		}
 	};
 
 	video.muted = true;
@@ -124,29 +112,28 @@ export function mountLatestFilm(root: HTMLElement) {
 
 	video.addEventListener('loadstart', () => setLoad(0, 'loading'));
 	video.addEventListener('progress', updateLoad);
-	video.addEventListener('loadedmetadata', () => {
-		updateLoad();
-		skipBlackHold();
+	video.addEventListener('loadedmetadata', updateLoad);
+	video.addEventListener('playing', () => setReady(true));
+	video.addEventListener('pause', () => {
+		if (mode() === PHOTOS || video.ended) setReady(false);
 	});
-	video.addEventListener('seeked', () => {
-		seeking = false;
-	});
-	video.addEventListener('timeupdate', skipBlackHold);
 	video.addEventListener('ended', () => {
-		seeking = true;
-		video.currentTime = PLAY_START;
 		if (inView && mode() === FILM && !motion.matches) {
-			const playAttempt = video.play();
-			if (playAttempt) playAttempt.catch(() => undefined);
+			const src = video.getAttribute('src');
+			if (src) {
+				warmed = false;
+				video.removeAttribute('src');
+				video.load();
+				attach(src);
+				play();
+				return;
+			}
 		}
+		setReady(false);
 	});
 	video.addEventListener('canplay', () => {
 		updateLoad();
-		if (inView && mode() === FILM && !motion.matches) {
-			skipBlackHold();
-			const playAttempt = video.play();
-			if (playAttempt) playAttempt.catch(() => undefined);
-		}
+		if (inView && mode() === FILM && !motion.matches) play();
 	});
 	video.addEventListener('canplaythrough', updateLoad);
 

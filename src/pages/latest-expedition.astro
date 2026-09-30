@@ -24,8 +24,8 @@ import '../styles/expedition.css';
 const hasFull = existsSync(resolve('./public/media/latest/burgos.mp4'));
 const hasHero24 = existsSync(resolve('./public/media/hero/hero-final-24.mp4'));
 const hasQuick = hasHero24 || existsSync(resolve('./public/media/hero/hero-final.mp4'));
-const fullSrc = '/media/latest/burgos.mp4';
-const fullSrcLight = '/media/latest/burgos-640.mp4';
+const fullSrc = '/media/latest/burgos.mp4?v=2';
+const fullSrcLight = '/media/latest/burgos-640.mp4?v=2';
 const fullPoster = '/media/latest/burgos-open.jpg';
 const quickSrc = hasHero24 ? '/media/hero/hero-final-24.mp4?v=1' : '/media/hero/hero-final.mp4?v=8';
 const quickPoster = '/media/hero/hero-poster.jpg';
@@ -98,8 +98,8 @@ const nextPlaces = [
 						data-cut="full"
 						data-exp-src={hasFull ? fullSrc : undefined}
 						data-exp-src-light={hasFull ? fullSrcLight : undefined}
-						data-exp-skip-start={hasFull ? '4.2' : undefined}
-						data-exp-skip-tail={hasFull ? '4' : undefined}
+						data-exp-skip-start={hasFull ? '0' : undefined}
+						data-exp-skip-tail={hasFull ? '0' : undefined}
 						data-exp-preload="auto"
 					>
 						{

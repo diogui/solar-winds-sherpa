@@ -33,19 +33,22 @@ function mountCut(panel: HTMLElement) {
 	};
 
 	const rewindToPoster = () => {
-		seeking = true;
-		video.currentTime = 0;
+		seeking = false;
+	};
+
+	const restartFromStart = () => {
+		const src = chooseSrc(panel);
+		if (!src) return;
+		attached = false;
+		video.removeAttribute('src');
+		video.load();
+		attach();
+		video.addEventListener('canplay', () => startPlayback(), { once: true });
 	};
 
 	const skipHold = () => {
-		if (seeking || !playing) return;
-		const time = video.currentTime;
-		if (skipStart > 0 && time < skipStart - 0.05) {
-			seeking = true;
-			video.currentTime = skipStart;
-			return;
-		}
-		if (skipTail > 0 && time >= loopEnd() - 0.05) {
+		if (!playing || skipTail <= 0) return;
+		if (video.currentTime >= loopEnd() - 0.05) {
 			video.pause();
 			setPlaying(false);
 			revealing = false;
@@ -145,20 +148,13 @@ function mountCut(panel: HTMLElement) {
 	};
 
 	const play = () => {
+		if (video.ended) {
+			restartFromStart();
+			return;
+		}
 		attach();
 		if (video.readyState < 1) {
 			video.addEventListener('loadedmetadata', () => play(), { once: true });
-			return;
-		}
-		if (skipStart > 0 && video.currentTime < skipStart - 0.05) {
-			seeking = true;
-			const onSeeked = () => {
-				video.removeEventListener('seeked', onSeeked);
-				seeking = false;
-				startPlayback();
-			};
-			video.addEventListener('seeked', onSeeked);
-			video.currentTime = skipStart;
 			return;
 		}
 		startPlayback();

@@ -834,12 +834,12 @@
 		visibility 0.35s var(--ease);
 }
 
-.home-latest[data-latest-mode='film'] .home-latest-video {
+.home-latest[data-latest-mode='film'][data-latest-ready] .home-latest-video {
 	opacity: 1;
 	visibility: visible;
 }
 
-.home-latest[data-latest-mode='film'] .home-latest-photo {
+.home-latest[data-latest-mode='film'][data-latest-ready] .home-latest-photo {
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
