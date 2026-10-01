@@ -2,18 +2,26 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+const heroDir = './public/media/hero';
 const hasVideo =
-	existsSync(resolve('./public/media/hero/hero-final-24.mp4')) ||
-	existsSync(resolve('./public/media/hero/hero-final.mp4'));
+	existsSync(resolve(`${heroDir}/hero-final-24.mp4`)) ||
+	existsSync(resolve(`${heroDir}/hero-final.mp4`)) ||
+	existsSync(resolve(`${heroDir}/hero-mobile-720.mp4`));
 ---
 
 <section class="home-hero" data-hero aria-label="Introduction">
 	<div class="home-hero-media">
 		<picture class="home-hero-poster">
-			<img
-				src="/media/hero/hero-poster.jpg"
+			<source
+				media="(min-width: 768px)"
+				srcset="/media/hero/hero-poster.jpg"
 				width="1600"
 				height="900"
+			/>
+			<img
+				src="/media/hero/hero-mobile-poster.jpg"
+				width="720"
+				height="1280"
 				alt="Total solar eclipse over the Burgos observing ridge at dusk"
 				class="home-hero-still"
 				fetchpriority="high"
@@ -32,11 +40,11 @@ const hasVideo =
 					aria-hidden="true"
 				></video>
 				<img
-					src="/media/hero/hero-ending.jpg"
-					width="1600"
-					height="900"
+					width="720"
+					height="1280"
 					alt=""
 					class="home-hero-ending"
+					data-hero-ending
 					decoding="async"
 					aria-hidden="true"
 				/>

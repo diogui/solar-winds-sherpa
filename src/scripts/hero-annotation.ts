@@ -9,6 +9,14 @@ export const HERO_SOURCE = {
 	boxWidth: 510,
 } as const;
 
+export const HERO_SOURCE_MOBILE = {
+	width: 720,
+	height: 1280,
+	centerX: 361,
+	centerY: 148,
+	radius: 51,
+} as const;
+
 export const OVERLAY_TIMING = {
 	fadeInStart: 3.2,
 	fadeInEnd: 3.5,
@@ -67,8 +75,9 @@ export function mapCoverPoint(
 	posX: number,
 	posY: number,
 	fit: string = 'cover',
+	source: { width: number; height: number; centerX: number; centerY: number; radius: number } = HERO_SOURCE,
 ): CoverMap {
-	const { width: srcW, height: srcH, centerX, centerY, radius } = HERO_SOURCE;
+	const { width: srcW, height: srcH, centerX, centerY, radius } = source;
 	const scale = (fit === 'contain' ? Math.min : Math.max)(width / srcW, height / srcH);
 	const offsetX = (width - srcW * scale) * posX;
 	const offsetY = (height - srcH * scale) * posY;
@@ -158,21 +167,35 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 	};
 
 	const placeCard = (mapped: CoverMap, width: number, height: number, mobile: boolean) => {
-		const margin = mobile ? 16 : 24;
-		const maxWidth = mobile
-			? Math.min(340, Math.max(0, width - margin * 2))
-			: Math.min(HERO_SOURCE.boxWidth, Math.max(0, width - margin * 2));
+		if (mobile) {
+			const side = 20;
+			const maxWidth = Math.min(320, Math.max(0, width - side * 2));
+			card.style.width = 'max-content';
+			card.style.maxWidth = `${maxWidth}px`;
+			const cardH = card.offsetHeight;
+			const cardW = card.offsetWidth || maxWidth;
+			const header = document.querySelector<HTMLElement>('[data-header]');
+			const mediaBox = media.getBoundingClientRect();
+			const menuBottom = header
+				? Math.max(0, header.getBoundingClientRect().bottom - mediaBox.top)
+				: 0;
+			const minTop = Math.max(side, menuBottom + 16);
+			const left = clamp((width - cardW) / 2, side, Math.max(side, width - cardW - side));
+			const top = Math.max(mapped.cy + mapped.radius + 16, minTop);
+			card.style.left = `${left}px`;
+			card.style.top = `${clamp(top, minTop, Math.max(minTop, height - cardH - side))}px`;
+			return { left, top, right: left + cardW, bottom: top + cardH };
+		}
+
+		const margin = 24;
+		const maxWidth = Math.min(HERO_SOURCE.boxWidth, Math.max(0, width - margin * 2));
 		card.style.width = 'max-content';
 		card.style.maxWidth = `${maxWidth}px`;
 		const cardH = card.offsetHeight;
 		const cardW = card.offsetWidth || maxWidth;
 
-		let left = mobile
-			? (width - cardW) / 2
-			: mapped.offsetX + HERO_SOURCE.boxX * mapped.scale;
-		let top = mobile
-			? mapped.cy + mapped.radius + 24
-			: mapped.offsetY + HERO_SOURCE.boxY * mapped.scale;
+		let left = mapped.offsetX + HERO_SOURCE.boxX * mapped.scale;
+		let top = mapped.offsetY + HERO_SOURCE.boxY * mapped.scale;
 
 		const minTop = margin;
 		const maxLeft = Math.max(margin, width - cardW - margin);
@@ -184,14 +207,7 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 			const box = { left, top, right: left + cardW, bottom: top + cardH };
 			for (const block of obstacles()) {
 				if (!rectsOverlap(box, block)) continue;
-		if (mobile) {
-					const belowCircle = mapped.cy + mapped.radius + 24;
-					if (belowCircle + cardH + 16 <= block.top) {
-						top = clamp(belowCircle, minTop, maxTop);
-					} else {
-						top = clamp(block.bottom + 16, minTop, maxTop);
-					}
-				} else if (block.left > mapped.cx) {
+				if (block.left > mapped.cx) {
 					left = clamp(block.left - cardW - 16, margin, maxLeft);
 				} else {
 					left = clamp(block.right + 16, margin, maxLeft);
@@ -235,12 +251,13 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 		if (width < 2 || height < 2 || videoBox.width < 2 || videoBox.height < 2) return;
 		const fit = getComputedStyle(video).objectFit || 'cover';
 		const { posX, posY } = parseObjectPosition(getComputedStyle(video).objectPosition);
-		const mapped = mapCoverPoint(videoBox.width, videoBox.height, posX, posY, fit);
+		const mobile = root.dataset.heroMobile === 'true' || width < 768;
+		const source = mobile ? HERO_SOURCE_MOBILE : HERO_SOURCE;
+		const mapped = mapCoverPoint(videoBox.width, videoBox.height, posX, posY, fit, source);
 		mapped.offsetX += videoBox.left - mediaBox.left;
 		mapped.offsetY += videoBox.top - mediaBox.top;
 		mapped.cx += videoBox.left - mediaBox.left;
 		mapped.cy += videoBox.top - mediaBox.top;
-		const mobile = width < 768;
 		svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 		svg.setAttribute('width', String(width));
 		svg.setAttribute('height', String(height));
@@ -252,7 +269,9 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 	};
 
 	const showingPoster = () =>
-		root.dataset.playing !== 'true' || !video.getAttribute('src') || video.readyState < 2;
+		!video.getAttribute('src') ||
+		video.readyState < 2 ||
+		(video.paused && video.currentTime < 0.05 && root.dataset.ended !== 'true');
 
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	const setHeroCompact = (time: number) => {
