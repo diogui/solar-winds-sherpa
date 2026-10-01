@@ -56,6 +56,10 @@ function markerElement(
 	wrap.className = 'globe-marker';
 	wrap.dataset.siteId = site.id;
 
+	const dot = document.createElement('span');
+	dot.className = 'globe-marker-dot';
+	dot.setAttribute('aria-hidden', 'true');
+
 	const hit = document.createElement('button');
 	hit.type = 'button';
 	hit.className = 'globe-marker-hit';
@@ -68,7 +72,7 @@ function markerElement(
 	});
 	hit.addEventListener('pointerenter', () => onHover(true));
 	hit.addEventListener('pointerleave', () => onHover(false));
-	wrap.appendChild(hit);
+	wrap.append(dot, hit);
 	return wrap;
 }
 
@@ -153,12 +157,21 @@ export function initExpeditionGlobe() {
 		});
 	};
 
+	const compact = () => holder.clientWidth < 900;
+	const viewAltitude = () => (compact() ? 1.78 : 2.05);
+	const pointRadius = (d: object) => {
+		const selected = (d as ExpeditionSite).id === selectedId;
+		if (compact()) return selected ? 1.85 : 1.45;
+		return selected ? 0.95 : 0.7;
+	};
+
 	const paint = () => {
 		if (!globe) return;
 		const selected = expeditionSites.find((site) => site.id === selectedId);
 		globe
 			.pointColor((d) => ((d as ExpeditionSite).id === selectedId ? '#f5f5f3' : accentHex))
-			.pointRadius((d) => ((d as ExpeditionSite).id === selectedId ? 0.95 : 0.7))
+			.pointRadius(pointRadius)
+			.pointAltitude(compact() ? 0.012 : 0.026)
 			.ringsData(selected ? [selected] : []);
 		paintMarkers();
 	};
@@ -170,7 +183,7 @@ export function initExpeditionGlobe() {
 		setLabel(section, site);
 		paint();
 		globe.pointOfView(
-			{ lat: site.lat, lng: site.lng, altitude: 2.05 },
+			{ lat: site.lat, lng: site.lng, altitude: viewAltitude() },
 			animate && !reduced ? 1100 : 0,
 		);
 	};
@@ -208,6 +221,7 @@ export function initExpeditionGlobe() {
 		globe.width(width).height(height);
 		const shift = width >= 900 ? Math.round(width * 0.18) : 0;
 		globe.globeOffset([shift, 0]);
+		paint();
 	};
 
 	const mount = async () => {
@@ -259,7 +273,7 @@ export function initExpeditionGlobe() {
 		const selected = expeditionSites.find((site) => site.id === selectedId) ?? start;
 		paint();
 		if (selected) {
-			globe.pointOfView({ lat: selected.lat, lng: selected.lng, altitude: 2.25 }, 0);
+			globe.pointOfView({ lat: selected.lat, lng: selected.lng, altitude: viewAltitude() }, 0);
 		}
 
 		let frames = 0;
