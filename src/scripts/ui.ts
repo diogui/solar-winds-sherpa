@@ -186,6 +186,7 @@ function initWhyEclipses() {
 	const photoTitles = ['', 'Solar corona', 'Prominences'];
 	const last = buttons.length - 1;
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const compact = window.matchMedia('(max-width: 900px)');
 	let index = 0;
 	let ticking = false;
 	let captionTimer: number | undefined;
@@ -230,7 +231,7 @@ function initWhyEclipses() {
 			const active = i === index;
 			button.classList.toggle('is-active', active);
 			button.classList.toggle('is-past', i < index);
-			button.classList.toggle('is-locked', !reduced && i > index);
+			button.classList.toggle('is-locked', !reduced && !compact.matches && i > index);
 			button.setAttribute('aria-pressed', String(active));
 		});
 	};
@@ -261,7 +262,7 @@ function initWhyEclipses() {
 			const next = Number(button.dataset.whyStep);
 			const stage = Number.isFinite(next) ? next : 0;
 			setStage(stage);
-			if (reduced) return;
+			if (reduced || compact.matches) return;
 			const progress = (stage + 0.4) / (last + 1);
 			window.scrollTo({ top: start + progress * range, behavior: 'auto' });
 		});
@@ -269,7 +270,7 @@ function initWhyEclipses() {
 
 	setStage(0);
 	measure();
-	if (reduced) {
+	if (reduced || compact.matches) {
 		section.style.setProperty('--why-progress', '1');
 		return;
 	}

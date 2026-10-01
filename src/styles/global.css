@@ -1501,7 +1501,17 @@ p {
 
 	.footer-orbit,
 	.footer-mark {
-		opacity: 0.5;
+		display: none;
+	}
+
+	.footer-logo-link {
+		width: min(12.25rem, 78%);
+	}
+
+	.footer-lockup {
+		width: 100%;
+		height: auto;
+		object-fit: contain;
 	}
 
 	.footer-base {

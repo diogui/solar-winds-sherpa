@@ -1252,6 +1252,35 @@
 	pointer-events: auto;
 }
 
+.home-expeditions-live {
+	display: none;
+}
+
+.home-expeditions-live [data-expedition-kicker],
+.home-expeditions-live [data-expedition-duration] {
+	margin: 0;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.72rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.home-expeditions-live [data-expedition-name] {
+	margin: 0;
+	color: #fff;
+	font-family: var(--font-display);
+	font-size: clamp(1.45rem, 6vw, 1.9rem);
+	font-weight: 500;
+	letter-spacing: -0.03em;
+	line-height: 1.12;
+}
+
+.home-expeditions-live [data-expedition-duration] {
+	color: rgb(245 245 243 / 0.78);
+}
+
 .home-expeditions-stats {
 	display: flex;
 	gap: 2.4rem;
@@ -1476,15 +1505,17 @@
 	}
 
 	.home-why {
-		height: 280vh;
+		height: auto;
 	}
 
 	.home-why-pin {
+		position: static;
+		height: auto;
 		grid-template-columns: 1fr;
-		gap: 1.15rem;
+		gap: 1.35rem;
 		align-content: start;
-		padding: 0.85rem 0 1.25rem;
-		overflow: auto;
+		padding: 1.15rem 0 3.25rem;
+		overflow: visible;
 	}
 
 	.home-why-visual {
@@ -1492,9 +1523,14 @@
 	}
 
 	.home-why-figure {
-		width: min(100%, 18rem);
-		max-height: 42vh;
+		width: min(100%, 22.5rem);
+		max-height: none;
 		margin: 0 auto;
+	}
+
+	.home-why-step.is-locked {
+		opacity: 1;
+		pointer-events: auto;
 	}
 
 	.home-papers-grid {
@@ -1518,28 +1554,80 @@
 	}
 
 	.home-expeditions {
-		min-height: 100svh;
-		padding: calc(var(--header-h) + 1.5rem) 0 3.25rem;
-	}
-
-	.home-expeditions-inner {
-		min-height: calc(100svh - var(--header-h) - 3.5rem);
-		justify-content: flex-end;
-		padding-top: 1.25rem;
-	}
-
-	.home-expeditions-veil {
-		background: linear-gradient(
-			180deg,
-			rgb(8 13 20 / 0.42) 0%,
-			rgb(8 13 20 / 0.28) 36%,
-			rgb(8 13 20 / 0.9) 100%
-		);
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+		padding: calc(var(--header-h) + 0.35rem) 0 3.25rem;
+		overflow: hidden;
 	}
 
 	.home-expeditions-map {
-		height: auto;
+		position: relative;
+		inset: auto;
+		flex: 0 0 auto;
+		z-index: 0;
+		width: 100%;
+		height: min(42vh, 17.5rem);
+		min-height: 14.5rem;
+		overflow: hidden;
+	}
+
+	.home-expeditions-veil {
+		display: none;
+	}
+
+	.home-expeditions-inner {
+		position: static;
+		z-index: auto;
 		min-height: 0;
+		justify-content: flex-start;
+		width: var(--content);
+		margin: 0 auto;
+		padding: 1.35rem 0 0;
+		background: #080d14;
+	}
+
+	.home-expeditions-copy {
+		z-index: auto;
+		max-width: none;
+		background: #080d14;
+	}
+
+	.home-expeditions-copy h2,
+	.home-expeditions-copy p:not(.label) {
+		text-shadow: none;
+	}
+
+	.home-expeditions-live {
+		display: grid;
+		gap: 0.2rem;
+		margin: 1.15rem 0 0;
+	}
+
+	.home-expeditions-stats {
+		gap: 1.6rem;
+		flex-wrap: wrap;
+	}
+
+	.home-vision-inner {
+		width: calc(100% - 2rem);
+	}
+
+	.home-vision h2 {
+		font-size: clamp(1.7rem, 8.4vw, 2.35rem);
+	}
+
+	.home-work-intro {
+		width: calc(100% - 2rem);
+	}
+
+	.home-partners-row {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.globe-caption {
+		display: none;
 	}
 
 	.home-support-funds {
@@ -1568,7 +1656,7 @@
 	}
 
 	.home-latest-shot {
-		aspect-ratio: 2.2 / 1;
+		aspect-ratio: 16 / 10;
 		min-height: 0;
 	}
 
