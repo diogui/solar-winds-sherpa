@@ -1629,7 +1629,9 @@
 	.home-expeditions-live {
 		display: grid;
 		gap: 0.25rem;
-		width: var(--content);
+		box-sizing: border-box;
+		width: max-content;
+		max-width: min(18rem, calc(100% - 3rem));
 		margin: 0.85rem auto 0;
 		padding: 0.85rem 1rem 0.95rem;
 		background: rgb(8 13 20 / 0.94);
