@@ -1232,6 +1232,11 @@
 	max-width: 36rem;
 }
 
+.home-expeditions-head {
+	max-width: 36rem;
+}
+
+.home-expeditions-head h2,
 .home-expeditions-copy h2 {
 	margin: 0.75rem 0 0;
 	font-size: clamp(1.9rem, 4vw, 3rem);
@@ -1582,17 +1587,22 @@
 	}
 
 	.home-expeditions {
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			'head'
+			'map'
+			'live'
+			'copy';
 		min-height: 0;
-		padding: calc(var(--header-h) + 0.35rem) 0 3.25rem;
+		padding: calc(var(--header-h) + 0.85rem) 0 3.25rem;
 		overflow: hidden;
 	}
 
 	.home-expeditions-map {
 		position: relative;
 		inset: auto;
-		flex: 0 0 auto;
+		grid-area: map;
 		z-index: 0;
 		width: 100%;
 		height: min(42vh, 17.5rem);
@@ -1605,19 +1615,26 @@
 	}
 
 	.home-expeditions-inner {
-		position: static;
-		z-index: auto;
-		min-height: 0;
-		justify-content: flex-start;
+		display: contents;
+	}
+
+	.home-expeditions-head {
+		grid-area: head;
 		width: var(--content);
-		margin: 0 auto;
-		padding: 1.35rem 0 0;
-		background: #080d14;
+		margin: 0 auto 0.35rem;
+	}
+
+	.home-expeditions-head h2 {
+		text-shadow: none;
 	}
 
 	.home-expeditions-copy {
+		grid-area: copy;
 		z-index: auto;
 		max-width: none;
+		width: var(--content);
+		margin: 0 auto;
+		padding-top: 1.15rem;
 		background: #080d14;
 	}
 
@@ -1628,6 +1645,7 @@
 
 	.home-expeditions-live {
 		display: grid;
+		grid-area: live;
 		gap: 0.25rem;
 		box-sizing: border-box;
 		width: max-content;
