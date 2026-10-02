@@ -262,7 +262,11 @@ function initWhyEclipses() {
 			const next = Number(button.dataset.whyStep);
 			const stage = Number.isFinite(next) ? next : 0;
 			setStage(stage);
-			if (reduced || compact.matches) return;
+			if (compact.matches) {
+				figure.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
+				return;
+			}
+			if (reduced) return;
 			const progress = (stage + 0.4) / (last + 1);
 			window.scrollTo({ top: start + progress * range, behavior: 'auto' });
 		});

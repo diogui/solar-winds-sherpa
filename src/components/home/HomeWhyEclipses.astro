@@ -29,13 +29,15 @@ const frames = [
 <section class="home-why" id="why-eclipses" data-why-section aria-labelledby="why-heading">
 	<div class="home-why-pin">
 		<div class="home-why-copy">
-			<p class="label">Why we follow eclipses</p>
-			<h2 id="why-heading">The Moon reveals what sunlight hides.</h2>
-			<p>
-				The corona is the Sun’s outer atmosphere. Its faint visible light is usually lost in the
-				glare of the solar surface. During a total solar eclipse, the Moon blocks that glare, giving
-				us a rare opportunity to study the corona from Earth.
-			</p>
+			<div class="home-why-lead">
+				<p class="label">Why we follow eclipses</p>
+				<h2 id="why-heading">The Moon reveals what sunlight hides.</h2>
+				<p>
+					The corona is the Sun’s outer atmosphere. Its faint visible light is usually lost in the
+					glare of the solar surface. During a total solar eclipse, the Moon blocks that glare, giving
+					us a rare opportunity to study the corona from Earth.
+				</p>
+			</div>
 
 			<div class="home-why-steps" data-why-steps>
 				<div class="home-why-progress" aria-hidden="true">
@@ -70,7 +72,7 @@ const frames = [
 				Eclipse observations complement measurements from spacecraft and instruments that study the
 				corona throughout the year.
 			</p>
-			<a class="cta" href="#expeditions">
+			<a class="cta home-why-cta" href="#expeditions">
 				See our expeditions <span class="cta-arrow cta-arrow--down" aria-hidden="true">↓</span>
 			</a>
 		</div>
@@ -84,7 +86,7 @@ const frames = [
 								src={frame.image}
 								alt={frame.alt}
 								widths={[640, 960, 1400]}
-								sizes="(max-width: 900px) 80vw, 28rem"
+								sizes="(max-width: 900px) 15rem, 28rem"
 								class:list={['why-photo', `why-photo--${frame.variant}`]}
 								data-why-frame={frame.stage}
 								loading={frame.stage === '0' ? 'eager' : 'lazy'}
