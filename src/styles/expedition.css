@@ -203,6 +203,7 @@ article.page.exp h1 {
 
 .exp-block {
 	padding: 4.25rem 0 1rem;
+	scroll-margin-top: calc(var(--header-h) + 0.75rem);
 }
 
 .exp-block h2,
@@ -225,6 +226,8 @@ article.page.exp h1 {
 	margin-top: 1rem;
 }
 
+.exp-block .page-narrow > p a,
+.exp-podcast-copy p a,
 .exp-next .page-narrow > p a {
 	color: var(--accent);
 	text-decoration: underline;
@@ -232,8 +235,123 @@ article.page.exp h1 {
 	text-decoration-thickness: 1px;
 }
 
+.exp-block .page-narrow > p a:hover,
+.exp-block .page-narrow > p a:focus-visible,
+.exp-podcast-copy p a:hover,
+.exp-podcast-copy p a:focus-visible,
 .exp-next .page-narrow > p a:hover,
 .exp-next .page-narrow > p a:focus-visible {
+	color: var(--text);
+}
+
+.exp-podcast {
+	padding: 5.5rem 0 3.75rem;
+}
+
+.exp-podcast-layout {
+	display: grid;
+	grid-template-columns: minmax(11rem, 13.5rem) minmax(0, 1fr);
+	grid-template-areas:
+		'portrait copy'
+		'portrait langs'
+		'portrait player'
+		'portrait listen';
+	gap: 0 3rem;
+	align-items: start;
+	width: min(1120px, calc(100% - 3rem));
+	margin: 0 auto;
+}
+
+.exp-podcast-portrait {
+	grid-area: portrait;
+	margin: 0;
+}
+
+.exp-podcast-portrait picture {
+	display: block;
+	background: transparent;
+}
+
+.exp-podcast-portrait img {
+	display: block;
+	width: 100%;
+	height: auto;
+	object-fit: contain;
+	object-position: center top;
+}
+
+.exp-podcast-copy {
+	grid-area: copy;
+	padding-bottom: 1.15rem;
+}
+
+.exp-podcast-copy h2 {
+	margin: 0.2rem 0 1.15rem;
+}
+
+.exp-podcast-copy p:not(.label) {
+	margin: 0;
+	max-width: 40rem;
+	color: rgb(245 245 243 / 0.92);
+	font-size: 1.08rem;
+	line-height: 1.6;
+}
+
+.exp-podcast-copy p + p {
+	margin-top: 1rem;
+}
+
+.exp-podcast-langs {
+	grid-area: langs;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+	margin: 0;
+	max-width: 40rem;
+}
+
+.exp-podcast-langs .exp-site-btn {
+	position: static;
+	background: rgb(8 13 20 / 0.55);
+}
+
+.exp-podcast-player {
+	grid-area: player;
+	margin: 0.85rem 0 0;
+	max-width: 40rem;
+	overflow: hidden;
+	border-radius: 6px;
+	background: #121212;
+}
+
+.exp-podcast-player iframe {
+	display: block;
+	width: 100%;
+	height: 152px;
+	border: 0;
+}
+
+.exp-podcast-listen {
+	grid-area: listen;
+	margin: 0.9rem 0 0;
+	max-width: 40rem;
+}
+
+.exp-podcast-listen a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.exp-podcast-listen a:hover,
+.exp-podcast-listen a:focus-visible {
 	color: var(--text);
 }
 
@@ -554,6 +672,38 @@ article.page.exp h1 {
 		padding: 3.4rem 0 0.6rem;
 	}
 
+	.exp-podcast {
+		padding: 3.75rem 0 2.5rem;
+	}
+
+	.exp-podcast-layout {
+		grid-template-columns: 8.6rem minmax(0, 1fr);
+		grid-template-areas:
+			'portrait copy'
+			'langs langs'
+			'player player'
+			'listen listen';
+		gap: 1.15rem 1.25rem;
+		width: min(1240px, calc(100% - 2.5rem));
+		align-items: start;
+	}
+
+	.exp-podcast-copy {
+		padding-bottom: 0;
+	}
+
+	.exp-podcast-copy h2 {
+		font-size: clamp(1.45rem, 6vw, 2rem);
+	}
+
+	.exp-podcast-copy p:not(.label) {
+		font-size: 1rem;
+	}
+
+	.exp-podcast-langs {
+		margin-top: 0.2rem;
+	}
+
 	.exp-partners {
 		padding: 5.25rem 0;
 	}
@@ -567,5 +717,20 @@ article.page.exp h1 {
 	.exp-field-grid,
 	.exp-mission-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.exp-podcast-layout {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			'portrait'
+			'copy'
+			'langs'
+			'player'
+			'listen';
+	}
+
+	.exp-podcast-portrait {
+		width: min(16.5rem, 72vw);
+		margin: 0 auto;
 	}
 }

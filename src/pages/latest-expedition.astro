@@ -18,6 +18,7 @@ import sageConstantinou from '../assets/images/team/sage-constantinou.jpg';
 import shadiaHabbal from '../assets/images/team/shadia-habbal.jpg';
 import tulinBedel from '../assets/images/team/tulin-bedel.jpg';
 import zacBailey from '../assets/images/team/zac-bailey.jpg';
+import ignacioAmigo from '../assets/images/team/ignacio-amigo-cutout.png';
 import '../styles/home.css';
 import '../styles/expedition.css';
 
@@ -73,6 +74,30 @@ const nextPlaces = [
 	{ label: 'South of Spain, near Tarifa', status: 'Confirmed' },
 	{ label: 'Tunisia', status: 'Location to confirm' },
 ] as const;
+
+const podcast = {
+	title: 'Ver el Sol de noche',
+	author: 'Ignacio Amigo',
+	authorUrl: 'https://ignacioamigo.com',
+	languages: [
+		{
+			id: 'en',
+			label: 'English',
+			episodeId: '1guLK11F1MHIH6VIVq8yxn',
+			spotifyUrl: 'https://open.spotify.com/episode/1guLK11F1MHIH6VIVq8yxn',
+			iframeTitle: 'Spotify: Ver el Sol de Noche (English)',
+		},
+		{
+			id: 'es',
+			label: 'Español',
+			episodeId: '0dct76LVlB3Z9jHQvvz2dW',
+			spotifyUrl: 'https://open.spotify.com/episode/0dct76LVlB3Z9jHQvvz2dW',
+			iframeTitle: 'Spotify: Ver el Sol de noche (Español)',
+		},
+	],
+} as const;
+
+const podcastDefault = podcast.languages[0];
 ---
 
 <BaseLayout
@@ -329,6 +354,74 @@ const nextPlaces = [
 						))
 					}
 				</ul>
+			</div>
+		</section>
+
+		<section class="exp-block exp-podcast" id="podcast" aria-labelledby="podcast-heading" data-podcast>
+			<div class="exp-podcast-layout">
+				<figure class="exp-podcast-portrait">
+					<Image
+						src={ignacioAmigo}
+						alt="Ignacio Amigo, smiling with arms crossed"
+						widths={[320, 480, 720]}
+						sizes="(max-width: 900px) 42vw, 13.5rem"
+					/>
+				</figure>
+
+				<div class="exp-podcast-copy">
+					<p class="label">Podcast</p>
+					<h2 id="podcast-heading">{podcast.title}</h2>
+					<p>
+						<a href={podcast.authorUrl} rel="noopener noreferrer" target="_blank">{podcast.author}</a> is
+						a science writer and strategic communications expert. A biochemist by training, he holds a
+						PhD in molecular biology and a degree in science journalism.
+					</p>
+					<p>
+						He spent several days in Padilla de Abajo with the expedition — interviewing the scientists,
+						recording sound, and gathering each researcher’s account of the 2026 eclipse.
+					</p>
+				</div>
+
+				<div class="exp-podcast-langs" data-podcast-langs>
+					{
+						podcast.languages.map((language, index) => (
+							<button
+								type="button"
+								class="exp-site-btn"
+								data-podcast-lang={language.id}
+								data-episode={language.episodeId}
+								data-spotify={language.spotifyUrl}
+								data-iframe-title={language.iframeTitle}
+								aria-pressed={index === 0 ? 'true' : 'false'}
+							>
+								{language.label}
+							</button>
+						))
+					}
+				</div>
+
+				<div class="exp-podcast-player">
+					<iframe
+						data-podcast-frame
+						src={`https://open.spotify.com/embed/episode/${podcastDefault.episodeId}?utm_source=generator&theme=0`}
+						title={podcastDefault.iframeTitle}
+						width="100%"
+						height="152"
+						allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+						allowfullscreen
+						loading="lazy"
+					></iframe>
+				</div>
+				<p class="exp-podcast-listen">
+					<a
+						data-podcast-listen
+						href={podcastDefault.spotifyUrl}
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						Listen on Spotify <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
+				</p>
 			</div>
 		</section>
 

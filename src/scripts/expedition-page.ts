@@ -1,5 +1,29 @@
 type CutId = 'quick' | 'full';
 
+export function mountPodcastLang(root: HTMLElement) {
+	const frame = root.querySelector<HTMLIFrameElement>('[data-podcast-frame]');
+	const listen = root.querySelector<HTMLAnchorElement>('[data-podcast-listen]');
+	const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-podcast-lang]')];
+	if (!frame || !listen || !buttons.length) return;
+
+	const setLang = (button: HTMLButtonElement) => {
+		const episode = button.dataset.episode;
+		const spotify = button.dataset.spotify;
+		const title = button.dataset.iframeTitle;
+		if (!episode || !spotify) return;
+		frame.src = `https://open.spotify.com/embed/episode/${episode}?utm_source=generator&theme=0`;
+		if (title) frame.title = title;
+		listen.href = spotify;
+		for (const item of buttons) {
+			item.setAttribute('aria-pressed', String(item === button));
+		}
+	};
+
+	for (const button of buttons) {
+		button.addEventListener('click', () => setLang(button));
+	}
+}
+
 function chooseSrc(panel: HTMLElement) {
 	const full = panel.dataset.expSrc;
 	const light = panel.dataset.expSrcLight;
