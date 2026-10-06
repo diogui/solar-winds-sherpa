@@ -1,12 +1,11 @@
 ---
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { Image } from 'astro:assets';
 import field from '../../assets/images/field/latest-camp.jpg';
+import { burgosFilm } from '../../data/media';
 
-const hasFilm = existsSync(resolve('./public/media/latest/burgos.mp4'));
-const videoSrc = '/media/latest/burgos.mp4?v=3';
-const videoSrcLight = '/media/latest/burgos-640.mp4?v=3';
+const hasFilm = true;
+const videoSrc = burgosFilm.full;
+const videoSrcLight = burgosFilm.light;
 const posterSrc = '/media/latest/burgos-poster.jpg';
 ---
 

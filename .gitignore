@@ -26,3 +26,8 @@ pnpm-debug.log*
 # local photo review scratch
 .photo-review/
 .photo-venv/
+
+# local R2 staging encodes (not shipped via Pages)
+.r2-staging/
+.wrangler/
+.wrangler/

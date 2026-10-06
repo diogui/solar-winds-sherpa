@@ -13,8 +13,8 @@ function network(): ConnectionLike | null {
 }
 
 function chooseSrc(root: HTMLElement, force = false): string | null {
-	const full = root.dataset.latestSrc ?? '/media/latest/burgos.mp4';
-	const light = root.dataset.latestSrcLight ?? '/media/latest/burgos-640.mp4';
+	const full = root.dataset.latestSrc ?? '';
+	const light = root.dataset.latestSrcLight ?? full;
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const connection = network();
 	const type = connection?.effectiveType;
