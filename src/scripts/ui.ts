@@ -1,6 +1,7 @@
 import { mountHero } from './hero-video';
 import { mountLatestFilm } from './latest-video';
 import { mountExpeditionSites, mountPodcastLang } from './expedition-page';
+import { mountAboutLightbox } from './about-lightbox';
 
 function initMobileNav() {
 	const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -308,3 +309,4 @@ initHeroVideo();
 initLatestFilm();
 initExpeditionPage();
 initWhyEclipses();
+mountAboutLightbox();
