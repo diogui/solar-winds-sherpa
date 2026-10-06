@@ -156,6 +156,55 @@ function isPortraitMobile() {
 	return window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
 }
 
+function isLandscapeMobile() {
+	return window.matchMedia('(max-width: 900px) and (orientation: landscape)').matches;
+}
+
+type NativeFsVideo = HTMLVideoElement & {
+	webkitEnterFullscreen?: () => void;
+	webkitExitFullscreen?: () => void;
+	webkitDisplayingFullscreen?: boolean;
+};
+
+function isNativeFullscreen(video: HTMLVideoElement) {
+	const v = video as NativeFsVideo;
+	if (v.webkitDisplayingFullscreen) return true;
+	return document.fullscreenElement === video;
+}
+
+async function enterNativeFullscreen(video: HTMLVideoElement) {
+	if (!isLandscapeMobile() || isNativeFullscreen(video)) return;
+	const v = video as NativeFsVideo;
+	try {
+		// iOS Safari: only the video element's native player covers browser chrome
+		if (typeof v.webkitEnterFullscreen === 'function') {
+			v.webkitEnterFullscreen();
+			return;
+		}
+		if (typeof video.requestFullscreen === 'function') {
+			await video.requestFullscreen();
+		}
+	} catch {
+		// Gesture / policy may reject — CSS immersive remains the fallback
+	}
+}
+
+async function exitNativeFullscreen(video: HTMLVideoElement) {
+	if (!isNativeFullscreen(video)) return;
+	const v = video as NativeFsVideo;
+	try {
+		if (v.webkitDisplayingFullscreen && typeof v.webkitExitFullscreen === 'function') {
+			v.webkitExitFullscreen();
+			return;
+		}
+		if (document.fullscreenElement === video && typeof document.exitFullscreen === 'function') {
+			await document.exitFullscreen();
+		}
+	} catch {
+		// ignore
+	}
+}
+
 function syncRotateHint(open: HTMLElement) {
 	const hint = open.querySelector<HTMLElement>('[data-exp-rotate-hint]');
 	if (!hint) return;
@@ -351,6 +400,7 @@ function mountCut(panel: HTMLElement) {
 
 	const endPlayback = async (keepFrame = false) => {
 		setPlaybackUi(false);
+		await exitNativeFullscreen(video);
 		const atFrame =
 			keepFrame && !video.ended && video.currentTime > Math.max(skipStart, 0.05);
 		panel.classList.toggle('has-played', atFrame);
@@ -392,6 +442,9 @@ function mountCut(panel: HTMLElement) {
 			}
 		}
 
+		// Native FS must stay in the gesture window when already landscape
+		if (started) void enterNativeFullscreen(video);
+
 		if (started && skipStart > 0 && (video.currentTime < skipStart - 0.05 || video.ended)) {
 			await seekTo(skipStart, narrow ? 1200 : 2500);
 			if (playing) panel.classList.add('has-played');
@@ -402,6 +455,8 @@ function mountCut(panel: HTMLElement) {
 
 		if (!started) {
 			await endPlayback(video.currentTime > Math.max(skipStart, 0.05));
+		} else if (playing) {
+			void enterNativeFullscreen(video);
 		}
 	};
 
@@ -453,6 +508,16 @@ function mountCut(panel: HTMLElement) {
 	});
 	video.addEventListener('canplay', updateLoad);
 	video.addEventListener('canplaythrough', updateLoad);
+	video.addEventListener('webkitendfullscreen', () => {
+		// Leaving the native player — collapse back to the page chrome
+		if (playing) void endPlayback(true);
+	});
+	document.addEventListener('fullscreenchange', () => {
+		// System UI exited fullscreen for this video
+		if (playing && !document.fullscreenElement && !isNativeFullscreen(video)) {
+			void endPlayback(true);
+		}
+	});
 	playButton.addEventListener('click', (event) => {
 		event.stopPropagation();
 		togglePlay();
@@ -467,12 +532,19 @@ function mountCut(panel: HTMLElement) {
 		video.defaultMuted = next;
 	};
 
+	const syncNativeFullscreen = () => {
+		if (!playing) return;
+		if (isLandscapeMobile()) void enterNativeFullscreen(video);
+		else void exitNativeFullscreen(video);
+	};
+
 	return {
 		play,
 		pause,
 		attach: () => attach(!isNarrowViewport()),
 		setMuted,
 		isMuted: () => video.muted,
+		syncNativeFullscreen,
 	};
 }
 
@@ -540,11 +612,19 @@ export function mountExpeditionSites(root: HTMLElement) {
 		let exitingScroll = false;
 		let touchStartY = 0;
 
-		window.matchMedia('(max-width: 767px) and (orientation: portrait)').addEventListener('change', () => {
+		const syncLandscapeFullscreen = () => {
 			syncRotateHint(open);
+			cuts.get(activeCut())?.syncNativeFullscreen();
+		};
+
+		window.matchMedia('(max-width: 767px) and (orientation: portrait)').addEventListener('change', () => {
+			syncLandscapeFullscreen();
+		});
+		window.matchMedia('(max-width: 900px) and (orientation: landscape)').addEventListener('change', () => {
+			syncLandscapeFullscreen();
 		});
 		window.addEventListener('orientationchange', () => {
-			window.setTimeout(() => syncRotateHint(open), 120);
+			window.setTimeout(syncLandscapeFullscreen, 120);
 		});
 
 		const revealControls = () => {
