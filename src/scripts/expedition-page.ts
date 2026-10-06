@@ -1,4 +1,5 @@
 type CutId = 'quick' | 'full';
+type GalleryFilter = 'all' | 'padilla' | 'trigaza';
 
 export function mountPodcastLang(root: HTMLElement) {
 	const frame = root.querySelector<HTMLIFrameElement>('[data-podcast-frame]');
@@ -24,12 +25,172 @@ export function mountPodcastLang(root: HTMLElement) {
 	}
 }
 
-function chooseSrc(panel: HTMLElement) {
+export function mountBurgosGalleryFilter(root: HTMLElement) {
+	const gallery = root.querySelector<HTMLElement>('[data-burgos-gallery]');
+	const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-gallery-filter]')];
+	if (!gallery || !buttons.length) return;
+
+	const shots = [...gallery.querySelectorAll<HTMLElement>('.exp-burgos-shot')];
+	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+	let filter: GalleryFilter = 'all';
+	let busy = false;
+
+	const wait = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+
+	const rectsOf = (els: HTMLElement[]) => {
+		const map = new Map<HTMLElement, DOMRect>();
+		for (const el of els) {
+			if (!el.hidden) map.set(el, el.getBoundingClientRect());
+		}
+		return map;
+	};
+
+	const apply = async (next: GalleryFilter) => {
+		if (busy || next === filter) return;
+		busy = true;
+		filter = next;
+
+		for (const button of buttons) {
+			button.setAttribute('aria-pressed', String(button.dataset.galleryFilter === next));
+		}
+
+		const keep = shots.filter((shot) => next === 'all' || shot.dataset.site === next);
+		const drop = shots.filter((shot) => !keep.includes(shot));
+		const first = rectsOf(keep);
+
+		if (!reduced.matches) {
+			const exiting = drop.filter((shot) => !shot.hidden);
+			for (const shot of exiting) shot.classList.add('is-exiting');
+			if (exiting.length) await wait(320);
+		}
+
+		for (const shot of drop) {
+			shot.hidden = true;
+			shot.classList.remove('is-exiting', 'is-entering');
+		}
+
+		const appearing = keep.filter((shot) => shot.hidden);
+		for (const shot of appearing) {
+			shot.hidden = false;
+			if (!reduced.matches) shot.classList.add('is-entering');
+		}
+
+		// Force layout before FLIP / enter
+		void gallery.offsetHeight;
+
+		if (!reduced.matches) {
+			for (const shot of keep) {
+				const last = shot.getBoundingClientRect();
+				const prev = first.get(shot);
+				if (prev) {
+					const dx = prev.left - last.left;
+					const dy = prev.top - last.top;
+					if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+						shot.animate(
+							[{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0, 0)' }],
+							{ duration: 480, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+						);
+					}
+				} else if (shot.classList.contains('is-entering')) {
+					shot.animate(
+						[
+							{ opacity: 0, transform: 'scale(0.9)' },
+							{ opacity: 1, transform: 'scale(1)' },
+						],
+						{ duration: 420, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+					);
+				}
+			}
+			await wait(40);
+		}
+
+		for (const shot of keep) shot.classList.remove('is-entering');
+		busy = false;
+	};
+
+	for (const button of buttons) {
+		button.addEventListener('click', () => {
+			const id = button.dataset.galleryFilter;
+			if (id === 'all' || id === 'padilla' || id === 'trigaza') void apply(id);
+		});
+	}
+}
+
+function chooseSrc(panel: HTMLElement, preferFull = false) {
 	const full = panel.dataset.expSrc;
 	const light = panel.dataset.expSrcLight;
 	if (!full) return '';
-	if (light && window.innerWidth < 768) return light;
+	if (!preferFull && light && window.innerWidth < 768) return light;
 	return full;
+}
+
+function flipHero(hero: HTMLElement, first: DOMRect, duration: number) {
+	const last = hero.getBoundingClientRect();
+	const dx = first.left - last.left;
+	const dy = first.top - last.top;
+	const sx = first.width / Math.max(last.width, 1);
+	const sy = first.height / Math.max(last.height, 1);
+	if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 && Math.abs(sx - 1) < 0.01 && Math.abs(sy - 1) < 0.01) {
+		return Promise.resolve();
+	}
+	const anim = hero.animate(
+		[
+			{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})` },
+			{ transform: 'translate(0, 0) scale(1)' },
+		],
+		{
+			duration,
+			easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+			fill: 'none',
+		},
+	);
+	return anim.finished.catch(() => undefined);
+}
+
+function isPortraitMobile() {
+	return window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
+}
+
+function syncRotateHint(open: HTMLElement) {
+	const hint = open.querySelector<HTMLElement>('[data-exp-rotate-hint]');
+	if (!hint) return;
+	const show = open.classList.contains('is-immersive') && isPortraitMobile();
+	hint.hidden = !show;
+}
+
+async function setOpenImmersive(open: HTMLElement, on: boolean) {
+	const hero = open.querySelector<HTMLElement>('.exp-hero');
+	const intro = open.querySelector<HTMLElement>('.exp-open-copy');
+	if (!hero) return;
+
+	const was = open.classList.contains('is-immersive');
+	if (was === on) return;
+
+	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	if (on) {
+		open.scrollIntoView({ block: 'start', behavior: 'auto' });
+		const first = hero.getBoundingClientRect();
+		open.classList.add('is-immersive', 'is-controls-visible');
+		document.documentElement.classList.add('is-exp-immersive');
+		intro?.setAttribute('aria-hidden', 'true');
+		if (!reduced) {
+			void hero.offsetWidth;
+			await flipHero(hero, first, 1450);
+		}
+		syncRotateHint(open);
+		return;
+	}
+
+	const first = hero.getBoundingClientRect();
+	open.classList.remove('is-immersive', 'is-controls-visible');
+	document.documentElement.classList.remove('is-exp-immersive');
+	intro?.setAttribute('aria-hidden', 'false');
+	syncRotateHint(open);
+	if (!reduced) {
+		void hero.offsetWidth;
+		await flipHero(hero, first, 1000);
+	}
 }
 
 function mountCut(panel: HTMLElement) {
@@ -61,22 +222,21 @@ function mountCut(panel: HTMLElement) {
 	};
 
 	const restartFromStart = () => {
-		const src = chooseSrc(panel);
+		const src = chooseSrc(panel, true);
 		if (!src) return;
 		attached = false;
 		video.removeAttribute('src');
 		video.load();
-		attach();
-		video.addEventListener('canplay', () => startPlayback(), { once: true });
+		attach(true);
+		void expandThenPlay();
 	};
 
 	const skipHold = () => {
 		if (!playing || skipTail <= 0) return;
 		if (video.currentTime >= loopEnd() - 0.05) {
 			video.pause();
-			setPlaying(false);
+			void endPlayback(false);
 			revealing = false;
-			panel.classList.remove('has-played');
 			rewindToPoster();
 		}
 	};
@@ -147,28 +307,73 @@ function mountCut(panel: HTMLElement) {
 		setLoad(percent, percent >= 99.5 ? 'ready' : 'loading');
 	};
 
-	const setPlaying = (next: boolean) => {
+	const setPlaybackUi = (next: boolean) => {
 		playing = next;
 		panel.classList.toggle('is-playing', next);
 		if (next) waitForStartFrame();
-		const copy = next ? 'Pause' : 'Play';
-		if (playLabel) playLabel.textContent = copy;
+		const label = next ? 'Pause' : 'Play';
+		if (playLabel) playLabel.textContent = label;
 		playButton.setAttribute('aria-label', next ? 'Pause video' : 'Play video');
 		playButton.setAttribute('aria-pressed', String(next));
 		playButton.setAttribute('aria-hidden', String(next));
 		playButton.tabIndex = next ? -1 : 0;
 	};
 
-	const pause = () => {
-		video.pause();
-		setPlaying(false);
+	const seekTo = (time: number) =>
+		new Promise<void>((resolve) => {
+			if (!Number.isFinite(time) || Math.abs(video.currentTime - time) < 0.04) {
+				resolve();
+				return;
+			}
+			seeking = true;
+			const done = () => {
+				seeking = false;
+				resolve();
+			};
+			video.addEventListener('seeked', done, { once: true });
+			try {
+				video.currentTime = time;
+			} catch {
+				done();
+			}
+		});
+
+	const endPlayback = async (keepFrame = false) => {
+		setPlaybackUi(false);
+		const atFrame =
+			keepFrame && !video.ended && video.currentTime > Math.max(skipStart, 0.05);
+		panel.classList.toggle('has-played', atFrame);
+		const open = panel.closest<HTMLElement>('.exp-open');
+		if (open) await setOpenImmersive(open, false);
 	};
 
-	const startPlayback = () => {
-		const attempt = video.play();
-		if (attempt) {
-			attempt.then(() => setPlaying(true)).catch(() => setPlaying(false));
+	const expandThenPlay = async () => {
+		const open = panel.closest<HTMLElement>('.exp-open');
+		panel.classList.add('is-expanding');
+		attach(true);
+		if (video.readyState < 2) {
+			await new Promise<void>((resolve) => {
+				video.addEventListener('canplay', () => resolve(), { once: true });
+			});
 		}
+		// Jump past leading black so play feels instant (not like a load hang)
+		if (skipStart > 0 && (video.currentTime < skipStart - 0.05 || video.ended)) {
+			await seekTo(skipStart);
+			panel.classList.add('has-played');
+		}
+		if (open) await setOpenImmersive(open, true);
+		panel.classList.remove('is-expanding');
+		try {
+			await video.play();
+			setPlaybackUi(true);
+		} catch {
+			await endPlayback(video.currentTime > Math.max(skipStart, 0.05));
+		}
+	};
+
+	const pause = () => {
+		video.pause();
+		return endPlayback(true);
 	};
 
 	const play = () => {
@@ -176,12 +381,7 @@ function mountCut(panel: HTMLElement) {
 			restartFromStart();
 			return;
 		}
-		attach();
-		if (video.readyState < 1) {
-			video.addEventListener('loadedmetadata', () => play(), { once: true });
-			return;
-		}
-		startPlayback();
+		void expandThenPlay();
 	};
 
 	const togglePlay = () => {
@@ -189,9 +389,10 @@ function mountCut(panel: HTMLElement) {
 		else play();
 	};
 
-	const attach = () => {
-		const src = chooseSrc(panel);
-		if (!src || attached) return;
+	const attach = (preferFull = false) => {
+		const src = chooseSrc(panel, preferFull);
+		if (!src) return;
+		if (attached && video.getAttribute('src') === src) return;
 		attached = true;
 		video.muted = muted;
 		video.defaultMuted = muted;
@@ -210,38 +411,57 @@ function mountCut(panel: HTMLElement) {
 	});
 	video.addEventListener('timeupdate', skipHold);
 	video.addEventListener('ended', () => {
-		setPlaying(false);
 		revealing = false;
-		panel.classList.remove('has-played');
+		void endPlayback(false);
 		rewindToPoster();
 	});
 	video.addEventListener('canplay', updateLoad);
 	video.addEventListener('canplaythrough', updateLoad);
-	video.addEventListener('pause', () => {
-		if (!seeking) setPlaying(false);
-	});
-	video.addEventListener('playing', () => setPlaying(true));
 	playButton.addEventListener('click', (event) => {
 		event.stopPropagation();
 		togglePlay();
 	});
 	video.addEventListener('click', togglePlay);
 
-	setPlaying(false);
-	if (preload === 'auto') attach();
+	setPlaybackUi(false);
+	if (preload === 'auto') attach(true);
 
-	return { play, pause, attach };
+	const setMuted = (next: boolean) => {
+		video.muted = next;
+		video.defaultMuted = next;
+	};
+
+	return {
+		play,
+		pause,
+		attach: () => attach(true),
+		setMuted,
+		isMuted: () => video.muted,
+	};
 }
 
 export function mountExpeditionSites(root: HTMLElement) {
 	const buttons = [...root.querySelectorAll<HTMLButtonElement>('button.exp-site-btn[data-cut]')];
 	const cuts = new Map<CutId, ReturnType<typeof mountCut>>();
+	const open = root.closest<HTMLElement>('.exp-open');
+	const closeBtn = root.querySelector<HTMLButtonElement>('[data-exp-close]');
+	const muteBtn = root.querySelector<HTMLButtonElement>('[data-exp-mute]');
 
 	for (const panel of root.querySelectorAll<HTMLElement>('.exp-hero-panel[data-cut]')) {
 		const id = panel.dataset.cut;
 		if (id !== 'quick' && id !== 'full') continue;
 		cuts.set(id, mountCut(panel));
 	}
+
+	const activeCut = (): CutId => (root.dataset.activeCut === 'quick' ? 'quick' : 'full');
+
+	const syncMuteUi = () => {
+		const player = cuts.get(activeCut());
+		const muted = player?.isMuted() ?? false;
+		if (!muteBtn) return;
+		muteBtn.setAttribute('aria-pressed', String(muted));
+		muteBtn.setAttribute('aria-label', muted ? 'Unmute sound' : 'Mute sound');
+	};
 
 	const setCut = (id: CutId) => {
 		root.dataset.activeCut = id;
@@ -252,12 +472,111 @@ export function mountExpeditionSites(root: HTMLElement) {
 			if (cutId === id) player?.attach();
 			else player?.pause();
 		}
+		syncMuteUi();
 	};
 
 	for (const button of buttons) {
 		button.addEventListener('click', () => {
 			const id = button.dataset.cut;
 			if (id === 'quick' || id === 'full') setCut(id);
+		});
+	}
+
+	const pauseActive = () => cuts.get(activeCut())?.pause() ?? Promise.resolve();
+
+	closeBtn?.addEventListener('click', (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+		void pauseActive();
+	});
+
+	muteBtn?.addEventListener('click', (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+		const player = cuts.get(activeCut());
+		if (!player) return;
+		player.setMuted(!player.isMuted());
+		syncMuteUi();
+	});
+
+	if (open) {
+		let hideTimer = 0;
+		let exitingScroll = false;
+		let touchStartY = 0;
+
+		window.matchMedia('(max-width: 767px) and (orientation: portrait)').addEventListener('change', () => {
+			syncRotateHint(open);
+		});
+		window.addEventListener('orientationchange', () => {
+			window.setTimeout(() => syncRotateHint(open), 120);
+		});
+
+		const revealControls = () => {
+			if (!open.classList.contains('is-immersive')) return;
+			open.classList.add('is-controls-visible');
+			window.clearTimeout(hideTimer);
+			hideTimer = window.setTimeout(() => {
+				open.classList.remove('is-controls-visible');
+			}, 2200);
+		};
+
+		const exitImmersiveAndScroll = (deltaY: number) => {
+			if (!open.classList.contains('is-immersive') || exitingScroll) return;
+			exitingScroll = true;
+			void pauseActive().finally(() => {
+				exitingScroll = false;
+			});
+			// Class removal is sync; scroll as soon as the page can move again
+			window.scrollBy({ top: Math.max(deltaY, 96), behavior: 'auto' });
+		};
+
+		root.addEventListener('mousemove', revealControls);
+		root.addEventListener('pointerdown', revealControls);
+
+		document.addEventListener(
+			'wheel',
+			(event) => {
+				if (!open.classList.contains('is-immersive')) return;
+				if (event.deltaY <= 0) return;
+				event.preventDefault();
+				exitImmersiveAndScroll(event.deltaY);
+			},
+			{ passive: false },
+		);
+
+		document.addEventListener(
+			'touchstart',
+			(event) => {
+				if (!open.classList.contains('is-immersive')) return;
+				touchStartY = event.touches[0]?.clientY ?? 0;
+			},
+			{ passive: true },
+		);
+
+		document.addEventListener(
+			'touchmove',
+			(event) => {
+				if (!open.classList.contains('is-immersive')) return;
+				const y = event.touches[0]?.clientY ?? touchStartY;
+				const delta = touchStartY - y;
+				if (delta < 28) return;
+				event.preventDefault();
+				exitImmersiveAndScroll(delta);
+			},
+			{ passive: false },
+		);
+
+		document.addEventListener('keydown', (event) => {
+			if (!open.classList.contains('is-immersive')) return;
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				void pauseActive();
+				return;
+			}
+			if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+				event.preventDefault();
+				exitImmersiveAndScroll(event.key === 'PageDown' ? 420 : 140);
+			}
 		});
 	}
 

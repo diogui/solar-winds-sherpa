@@ -6,7 +6,52 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PartnerLogos from '../components/PartnerLogos.astro';
 import HomeConnect from '../components/home/HomeConnect.astro';
 import padillaCamp from '../assets/images/field/latest-camp.jpg';
-import trigazaRidge from '../assets/images/field/burgos-totality.jpg';
+import fieldAssemble from '../assets/images/expedition/field/field-assemble.jpg';
+import fieldCamp from '../assets/images/expedition/field/field-camp.jpg';
+import fieldInstall from '../assets/images/expedition/field/field-install.jpg';
+import fieldCalibrate from '../assets/images/expedition/field/field-calibrate.jpg';
+import fieldRidge from '../assets/images/expedition/field/field-ridge.jpg';
+import fieldNight from '../assets/images/expedition/field/field-night.jpg';
+import fieldData from '../assets/images/expedition/field/field-data.jpg';
+import fieldObserve from '../assets/images/expedition/field/field-observe.jpg';
+import burgosInstrumentBear from '../assets/images/expedition/burgos/burgos-instrument-bear.jpg';
+import burgosTeamLaugh from '../assets/images/expedition/burgos/burgos-team-laugh.jpg';
+import burgosDarkTent from '../assets/images/expedition/burgos/burgos-dark-tent.jpg';
+import burgosVillageInstruments from '../assets/images/expedition/burgos/burgos-village-instruments.jpg';
+import burgosArray from '../assets/images/expedition/burgos/burgos-array.jpg';
+import burgosGroupPadilla from '../assets/images/expedition/burgos/burgos-group-padilla.jpg';
+import burgosChurch from '../assets/images/expedition/burgos/burgos-church.jpg';
+import burgosTalk from '../assets/images/expedition/burgos/burgos-talk.jpg';
+import burgosFieldWide from '../assets/images/expedition/burgos/burgos-field-wide.jpg';
+import burgosTrigazaSummit from '../assets/images/expedition/burgos/burgos-trigaza-summit.jpg';
+import burgosVan from '../assets/images/expedition/burgos/burgos-van.jpg';
+import burgosAssembleDetail from '../assets/images/expedition/burgos/burgos-assemble-detail.jpg';
+import burgosTrigazaRig from '../assets/images/expedition/burgos/burgos-trigaza-rig.jpg';
+import burgosAdjust from '../assets/images/expedition/burgos/burgos-adjust.jpg';
+import burgosPortraitTrigaza from '../assets/images/expedition/burgos/burgos-portrait-trigaza.jpg';
+import burgosTeamTrigaza from '../assets/images/expedition/burgos/burgos-team-trigaza.jpg';
+import burgosHorizon from '../assets/images/expedition/burgos/burgos-horizon.jpg';
+import burgosLenses from '../assets/images/expedition/burgos/burgos-lenses.jpg';
+import burgosTrigazaSlope from '../assets/images/expedition/burgos/burgos-trigaza-slope.jpg';
+import burgosDiagram from '../assets/images/expedition/burgos/burgos-diagram.jpg';
+import burgosTree from '../assets/images/expedition/burgos/burgos-tree.jpg';
+import burgosOutdoorLaptop from '../assets/images/expedition/burgos/burgos-outdoor-laptop.jpg';
+import burgosMeal from '../assets/images/expedition/burgos/burgos-meal.jpg';
+import burgosAdjustPadilla from '../assets/images/expedition/burgos/burgos-adjust-padilla.jpg';
+import burgosCables from '../assets/images/expedition/burgos/burgos-cables.jpg';
+import burgosPointing from '../assets/images/expedition/burgos/burgos-pointing.jpg';
+import burgosArcade from '../assets/images/expedition/burgos/burgos-arcade.jpg';
+import burgosTentWide from '../assets/images/expedition/burgos/burgos-tent-wide.jpg';
+import burgosPacking from '../assets/images/expedition/burgos/burgos-packing.jpg';
+import burgosAssembleTable from '../assets/images/expedition/burgos/burgos-assemble-table.jpg';
+import burgosRigAlt from '../assets/images/expedition/burgos/burgos-rig-alt.jpg';
+import burgosLaptopRidge from '../assets/images/expedition/burgos/burgos-laptop-ridge.jpg';
+import burgosValley from '../assets/images/expedition/burgos/burgos-valley.jpg';
+import burgosGroundCal from '../assets/images/expedition/burgos/burgos-ground-cal.jpg';
+import burgosCandid from '../assets/images/expedition/burgos/burgos-candid.jpg';
+import burgosGearGround from '../assets/images/expedition/burgos/burgos-gear-ground.jpg';
+import burgosTeamAlt from '../assets/images/expedition/burgos/burgos-team-alt.jpg';
+import burgosPeterRig from '../assets/images/expedition/burgos/burgos-peter-rig.jpg';
 import adalbertDing from '../assets/images/team/adalbert-ding.jpg';
 import benBoe from '../assets/images/team/ben-boe.jpg';
 import daniloTorres from '../assets/images/team/danilo-torres.jpg';
@@ -18,30 +63,433 @@ import sageConstantinou from '../assets/images/team/sage-constantinou.jpg';
 import shadiaHabbal from '../assets/images/team/shadia-habbal.jpg';
 import tulinBedel from '../assets/images/team/tulin-bedel.jpg';
 import zacBailey from '../assets/images/team/zac-bailey.jpg';
-import ignacioAmigo from '../assets/images/team/ignacio-amigo-cutout.png';
+import ignacioAmigo from '../assets/images/team/ignacio-amigo.jpg';
 import '../styles/home.css';
 import '../styles/expedition.css';
 
 const hasFull = existsSync(resolve('./public/media/latest/burgos.mp4'));
 const hasHero24 = existsSync(resolve('./public/media/hero/hero-final-24.mp4'));
 const hasQuick = hasHero24 || existsSync(resolve('./public/media/hero/hero-final.mp4'));
-const fullSrc = '/media/latest/burgos.mp4?v=2';
-const fullSrcLight = '/media/latest/burgos-640.mp4?v=2';
+const fullSrc = '/media/latest/burgos.mp4?v=3';
+const fullSrcLight = '/media/latest/burgos-640.mp4?v=3';
 const fullPoster = '/media/latest/burgos-open.jpg';
 const quickSrc = hasHero24 ? '/media/hero/hero-final-24.mp4?v=1' : '/media/hero/hero-final.mp4?v=8';
 const quickPoster = '/media/hero/hero-poster.jpg';
 
-const padillaMap = 'https://www.openstreetmap.org/?mlat=42.4078&mlon=-4.1767#map=13/42.4078/-4.1767';
-const trigazaMap = 'https://www.openstreetmap.org/?mlat=42.2678&mlon=-3.2573#map=14/42.2678/-3.2573';
 const druckmullerImages =
 	'http://www.zam.fme.vutbr.cz/~druck/eclipse/Ecl2026s/Trigaza/TSE_2026_530mm_DHS/0-info.htm';
 const fotoklubInstagram = 'https://www.instagram.com/fotoklubtechnikabrno';
 
 const fieldBeats = [
-	{ label: 'Calibrate', note: 'Instruments being aligned and tested' },
-	{ label: 'Install', note: 'Setting up the field station' },
-	{ label: 'Observe', note: 'The minutes of totality' },
-	{ label: 'Close', note: 'Packing the site' },
+	{
+		label: 'Assemble',
+		note: 'Building the camera array',
+		image: fieldAssemble,
+		alt: 'Two researchers assembling a multi-camera instrument array on a wooden table',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 45%',
+	},
+	{
+		label: 'Camp',
+		note: 'The field station at Padilla de Abajo',
+		image: fieldCamp,
+		alt: 'Grey observation tents lined up in a dry field under a clear sky',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 50%',
+	},
+	{
+		label: 'Install',
+		note: 'Instruments into the field',
+		image: fieldInstall,
+		alt: 'Team members setting up telescopes and camera rigs in open grassland',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 45%',
+	},
+	{
+		label: 'Calibrate',
+		note: 'Aligning before totality',
+		image: fieldCalibrate,
+		alt: 'A researcher adjusting a large instrument mounted on a tripod',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '48% 40%',
+	},
+	{
+		label: 'Ridge',
+		note: 'Setup on Pico Trigaza',
+		image: fieldRidge,
+		alt: 'Multi-telescope instrument array on the rocky ridge at Pico Trigaza',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 45%',
+	},
+	{
+		label: 'Night',
+		note: 'Work under red light',
+		image: fieldNight,
+		alt: 'Researchers working on instruments at night under deep red light',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 50%',
+	},
+	{
+		label: 'Data',
+		note: 'Checking the first frames',
+		image: fieldData,
+		alt: 'Laptop on a wooden table showing a processed image of the solar corona',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 50%',
+	},
+	{
+		label: 'Observe',
+		note: 'At the instrument',
+		image: fieldObserve,
+		alt: 'A researcher looking through a large white scientific instrument in the field',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 40%',
+	},
+] as const;
+
+const burgosGallery = [
+	{
+		area: 'lead',
+		site: 'padilla',
+		size: 'hero',
+		image: burgosFieldWide,
+		alt: 'Wide view of the Padilla de Abajo observing site with tents and people',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 50%',
+	},
+	{
+		area: 'b',
+		site: 'padilla',
+		size: 'wide',
+		image: burgosTeamLaugh,
+		alt: 'Four team members laughing together around a screen',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 35%',
+	},
+	{
+		area: 'c',
+		site: 'padilla',
+		size: 'tall',
+		image: burgosDarkTent,
+		alt: 'Inside a green dark tent with laptops and monitors',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 50%',
+	},
+	{
+		area: 'd',
+		site: 'padilla',
+		size: 'std',
+		image: burgosInstrumentBear,
+		alt: 'Close-up of a multi-lens camera array with a small teddy bear attached',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 40%',
+	},
+	{
+		area: 'e',
+		site: 'padilla',
+		size: 'tall',
+		image: burgosVillageInstruments,
+		alt: 'Instruments set up near stone buildings in Padilla de Abajo',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '45% 50%',
+	},
+	{
+		area: 'g',
+		site: 'padilla',
+		size: 'std',
+		image: burgosArray,
+		alt: 'Close-up of a multi-camera scientific array',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 45%',
+	},
+	{
+		area: 'h',
+		site: 'padilla',
+		size: 'tall',
+		image: burgosGroupPadilla,
+		alt: 'Seven Solar Wind Sherpas team members in purple shirts in a field',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 40%',
+	},
+	{
+		area: 'i',
+		site: 'padilla',
+		size: 'wide',
+		image: burgosDiagram,
+		alt: 'Hand-drawn eclipse geometry diagram on graph paper',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 50%',
+	},
+	{
+		area: 'k',
+		site: 'padilla',
+		size: 'wide',
+		image: burgosChurch,
+		alt: 'Stone church tower in Padilla de Abajo',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 28%',
+	},
+	{
+		area: 'l',
+		site: 'padilla',
+		size: 'wide',
+		image: burgosTalk,
+		alt: 'Outdoor public talk with a projection screen and local audience',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 50%',
+	},
+	{
+		area: 'm',
+		site: 'padilla',
+		size: 'tall',
+		image: burgosTree,
+		alt: 'A lone tree beside a tripod setup in open grassland',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 45%',
+	},
+	{
+		area: 'n',
+		site: 'padilla',
+		size: 'std',
+		image: burgosOutdoorLaptop,
+		alt: 'Researcher working at two laptops outdoors beside the instruments',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 40%',
+	},
+	{
+		area: 'o',
+		site: 'padilla',
+		size: 'tall',
+		image: burgosMeal,
+		alt: 'Team sharing a meal at a long outdoor table',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 45%',
+	},
+	{
+		area: 'p',
+		site: 'padilla',
+		size: 'std',
+		image: burgosCables,
+		alt: 'Cables and field computers connected on an outdoor table',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 50%',
+	},
+	{
+		area: 'q',
+		site: 'padilla',
+		size: 'std',
+		image: burgosPointing,
+		alt: 'Team member pointing toward the sky while two others look on',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 40%',
+	},
+	{
+		area: 'r',
+		site: 'padilla',
+		size: 'std',
+		image: burgosTentWide,
+		alt: 'Wide shot of grey observation tents in a dry field',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 50%',
+	},
+	{
+		area: 's',
+		site: 'padilla',
+		size: 'std',
+		image: burgosArcade,
+		alt: 'Stone arcade building in Padilla de Abajo',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 45%',
+	},
+	{
+		area: 't',
+		site: 'padilla',
+		size: 'wide',
+		image: burgosAdjustPadilla,
+		alt: 'Researcher adjusting a camera rig in sunglasses',
+		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		position: '50% 40%',
+	},
+	{
+		area: 'lead',
+		site: 'trigaza',
+		size: 'hero',
+		image: burgosTrigazaSummit,
+		alt: 'Rocky summit at Pico Trigaza with radio towers and a stone building',
+		caption: 'Pico Trigaza · Martin Šebek',
+		position: '50% 42%',
+	},
+	{
+		area: 'a',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosVan,
+		alt: 'Expedition van with the Solar Wind Sherpas logo at the ridge',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 50%',
+	},
+	{
+		area: 'b',
+		site: 'trigaza',
+		size: 'wide',
+		image: burgosLenses,
+		alt: 'Team member standing on rocks holding two large telephoto lenses',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 32%',
+	},
+	{
+		area: 'c',
+		site: 'trigaza',
+		size: 'tall',
+		image: burgosPacking,
+		alt: 'Team loading equipment into the expedition van',
+		caption: 'Pico Trigaza · Martin Šebek',
+		position: '50% 50%',
+	},
+	{
+		area: 'd',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosTrigazaSlope,
+		alt: 'Tripods and telescopes on a sloping ridge overlooking distant mountains',
+		caption: 'Pico Trigaza · Peter Urgoš',
+		position: '50% 45%',
+	},
+	{
+		area: 'e',
+		site: 'trigaza',
+		size: 'tall',
+		image: burgosPortraitTrigaza,
+		alt: 'Researcher in a purple shirt beside the telescope array on the ridge',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 28%',
+	},
+	{
+		area: 'g',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosAssembleDetail,
+		alt: 'Hands assembling optical equipment on an outdoor table',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 40%',
+	},
+	{
+		area: 'h',
+		site: 'trigaza',
+		size: 'tall',
+		image: burgosTrigazaRig,
+		alt: 'Complex multi-telescope rig on the Pico Trigaza ridge',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 48%',
+	},
+	{
+		area: 'i',
+		site: 'trigaza',
+		size: 'wide',
+		image: burgosHorizon,
+		alt: 'Tripods silhouetted against a low sun over a wide valley',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 55%',
+	},
+	{
+		area: 'j',
+		site: 'trigaza',
+		size: 'wide',
+		image: burgosTeamTrigaza,
+		alt: 'Expedition group posing on rocky terrain at Pico Trigaza',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 40%',
+	},
+	{
+		area: 'k',
+		site: 'trigaza',
+		size: 'wide',
+		image: burgosValley,
+		alt: 'Panoramic view from the Pico Trigaza ridge across the valley',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 50%',
+	},
+	{
+		area: 'l',
+		site: 'trigaza',
+		size: 'wide',
+		image: burgosAdjust,
+		alt: 'Researcher carefully adjusting lenses on a multi-camera array',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 40%',
+	},
+	{
+		area: 'm',
+		site: 'trigaza',
+		size: 'tall',
+		image: burgosLaptopRidge,
+		alt: 'Researchers gathered around laptops beside the ridge instruments',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 45%',
+	},
+	{
+		area: 'n',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosCandid,
+		alt: 'Team members talking beside the instruments on the ridge',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 40%',
+	},
+	{
+		area: 'o',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosGearGround,
+		alt: 'Large telephoto lenses and a field electronics case on the ground',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 50%',
+	},
+	{
+		area: 'p',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosTeamAlt,
+		alt: 'Group of expedition members on rocky ground at Pico Trigaza',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 40%',
+	},
+	{
+		area: 'q',
+		site: 'trigaza',
+		size: 'wide',
+		image: burgosPeterRig,
+		alt: 'Instrument array on the Pico Trigaza slope with mountains beyond',
+		caption: 'Pico Trigaza · Peter Urgoš',
+		position: '50% 45%',
+	},
+	{
+		area: 'r',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosAssembleTable,
+		alt: 'Team assembling lenses and filters on a field table',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 45%',
+	},
+	{
+		area: 's',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosRigAlt,
+		alt: 'Multi-telescope setup against the Pico Trigaza skyline',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 45%',
+	},
+	{
+		area: 't',
+		site: 'trigaza',
+		size: 'std',
+		image: burgosGroundCal,
+		alt: 'Researcher lying on the ground to calibrate a tripod-mounted camera',
+		caption: 'Pico Trigaza · Václav Široký',
+		position: '50% 50%',
+	},
 ] as const;
 
 const padillaTeam = [
@@ -106,7 +554,7 @@ const podcastDefault = podcast.languages[0];
 >
 	<article class="page exp">
 		<section class="exp-open" id="burgos-2026" aria-labelledby="exp-heading">
-			<div class="page-narrow">
+			<div class="page-narrow exp-open-copy">
 				<p class="label page-kicker">Latest expedition · 2026</p>
 				<h1 id="exp-heading">Burgos, Spain</h1>
 				<p class="exp-facts">12 August 2026 · Padilla de Abajo · Pico Trigaza</p>
@@ -117,14 +565,47 @@ const podcastDefault = podcast.languages[0];
 			</div>
 
 			<div class="exp-hero" data-cut-switch data-active-cut="full">
+				<div class="exp-hero-chrome">
+					<button type="button" class="exp-hero-mute" data-exp-mute aria-label="Mute sound" aria-pressed="false">
+						<span class="exp-hero-mute-icon" data-exp-mute-icon aria-hidden="true">
+							<svg class="exp-hero-mute-on" viewBox="0 0 24 24" width="18" height="18" fill="none">
+								<path
+									d="M4 10.5v3h3.2L11 17V7L7.2 10.5H4Z"
+									fill="currentColor"></path>
+								<path
+									d="M14.2 9.2a3.6 3.6 0 0 1 0 5.6M16.6 7a6.4 6.4 0 0 1 0 10"
+									stroke="currentColor"
+									stroke-width="1.7"
+									stroke-linecap="round"></path>
+							</svg>
+							<svg class="exp-hero-mute-off" viewBox="0 0 24 24" width="18" height="18" fill="none">
+								<path
+									d="M4 10.5v3h3.2L11 17V7L7.2 10.5H4Z"
+									fill="currentColor"></path>
+								<path
+									d="M15 9.5 20 14.5M20 9.5 15 14.5"
+									stroke="currentColor"
+									stroke-width="1.7"
+									stroke-linecap="round"></path>
+							</svg>
+						</span>
+					</button>
+					<button type="button" class="exp-hero-close" data-exp-close aria-label="Exit film">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<p class="exp-rotate-hint" data-exp-rotate-hint hidden>
+					<span class="exp-rotate-hint-icon" aria-hidden="true">↻</span>
+					<span class="exp-rotate-hint-text">Rotate your phone to watch the film in full screen.</span>
+				</p>
 				<div class="exp-hero-frame">
 					<div
 						class="exp-hero-panel"
 						data-cut="full"
 						data-exp-src={hasFull ? fullSrc : undefined}
 						data-exp-src-light={hasFull ? fullSrcLight : undefined}
-						data-exp-skip-start={hasFull ? '0' : undefined}
-						data-exp-skip-tail={hasFull ? '0' : undefined}
+						data-exp-skip-start={hasFull ? '5' : undefined}
+						data-exp-skip-tail={hasFull ? '4.3' : undefined}
 						data-exp-preload="auto"
 					>
 						{
@@ -221,57 +702,74 @@ const podcastDefault = podcast.languages[0];
 			</div>
 		</section>
 
-		<section class="exp-block" id="mission" aria-labelledby="mission-heading">
+		<section class="exp-block exp-sites" id="mission" aria-labelledby="mission-heading" data-burgos-filter>
 			<div class="page-narrow">
-				<p class="label">The Mission</p>
-				<h2 id="mission-heading">Where we went, and what we went to study.</h2>
+				<p class="label">Two observing sites</p>
+				<h2 id="mission-heading">Two sites, one eclipse.</h2>
 				<p>
 					There is not usually a specific scientific goal for one expedition. The work is to build a
-					larger, cumulative body of observations.
+					larger, cumulative body of observations. Whenever possible, more than one observing site
+					increases the chance of clear skies and the total time spent in totality.
 				</p>
 				<p>
-					Whenever possible, more than one observing site increases the chance of clear skies and the
-					total time spent in totality. The two teams made complementary observations. The distinct
-					instrumentation at each site is still to be confirmed.
+					In Burgos the teams worked from two places — Padilla de Abajo in the valley, and Pico Trigaza
+					on the ridge. The photographs below are from both sites; each caption names the place and the
+					photographer. Use the filters to see one site at a time.
 				</p>
 			</div>
-			<div class="exp-mission-grid">
-				<article class="exp-site-card">
-					<p class="label">Padilla de Abajo</p>
-					<figure class="exp-site-photo">
-						<Image
-							src={padillaCamp}
-							alt="Observation tents and instruments at the Padilla de Abajo field camp"
-							widths={[720, 1100, 1400]}
-							sizes="(max-width: 900px) 92vw, 42vw"
-						/>
-					</figure>
-					<p>
-						Padilla de Abajo offered the space, infrastructure and privacy to set up safely with most
-						of the instruments.
-					</p>
-					<a class="exp-site-map" href={padillaMap} rel="noopener noreferrer" target="_blank">
-						View map <span class="cta-arrow" aria-hidden="true">→</span>
-					</a>
-				</article>
-				<article class="exp-site-card">
-					<p class="label">Pico Trigaza</p>
-					<figure class="exp-site-photo exp-site-photo--ridge">
-						<Image
-							src={trigazaRidge}
-							alt="Total solar eclipse seen from Pico Trigaza, with cameras on the mountain ridge"
-							widths={[720, 1100, 1400]}
-							sizes="(max-width: 900px) 92vw, 42vw"
-						/>
-					</figure>
-					<p>
-						Pico Trigaza offered a high vantage that improved the chance of observing above the
-						clouds.
-					</p>
-					<a class="exp-site-map" href={trigazaMap} rel="noopener noreferrer" target="_blank">
-						View map <span class="cta-arrow" aria-hidden="true">→</span>
-					</a>
-				</article>
+
+			<div class="exp-gallery-toolbar" role="group" aria-label="Filter photographs by site">
+				<button type="button" class="exp-site-btn" data-gallery-filter="all" aria-pressed="true">
+					All
+				</button>
+				<button type="button" class="exp-site-btn" data-gallery-filter="padilla" aria-pressed="false">
+					Padilla de Abajo
+				</button>
+				<button type="button" class="exp-site-btn" data-gallery-filter="trigaza" aria-pressed="false">
+					Pico Trigaza
+				</button>
+			</div>
+
+			<div
+				class="exp-burgos-gallery"
+				data-lightbox-gallery
+				data-burgos-gallery
+				role="list"
+				aria-label="Burgos expedition photographs from Padilla de Abajo and Pico Trigaza"
+			>
+				{
+					burgosGallery.map((shot) => (
+						<figure
+							class:list={['exp-burgos-shot', `exp-burgos-shot--${shot.size}`]}
+							role="listitem"
+							data-site={shot.site}
+							style={`--shot-pos: ${shot.position}`}
+						>
+							<button
+								type="button"
+								class="exp-burgos-shot-open"
+								data-lightbox-trigger
+								aria-label={`View larger: ${shot.caption}`}
+							>
+								<Image
+									src={shot.image}
+									alt={shot.alt}
+									widths={[480, 800, 1200, 1600]}
+									sizes={
+										shot.size === 'hero' || shot.size === 'wide'
+											? '(max-width: 900px) 94vw, 48vw'
+											: '(max-width: 900px) 46vw, 28vw'
+									}
+									loading="lazy"
+									class="exp-burgos-photo"
+								/>
+							</button>
+							<figcaption class="exp-burgos-caption" data-lightbox-caption-text>
+								{shot.caption}
+							</figcaption>
+						</figure>
+					))
+				}
 			</div>
 		</section>
 
@@ -280,20 +778,35 @@ const podcastDefault = podcast.languages[0];
 				<p class="label">In the Field</p>
 				<h2 id="field-heading">Preparation and observation.</h2>
 				<p>
-					A short sequence from calibration to close. The first frames are the people aligning the
-					instruments.
+					From assembling the instruments to the minutes on site — Padilla de Abajo and Pico Trigaza,
+					side by side.
 				</p>
 			</div>
-			<div class="exp-field-grid">
+			<div class="exp-field-grid" data-lightbox-gallery aria-label="Preparation and observation photographs">
 				{
 					fieldBeats.map((beat) => (
-						<figure class="exp-field-shot">
-							<div class="exp-well exp-well--shot">
-								<p class="exp-well-label">{beat.label}</p>
-							</div>
+						<figure class="exp-field-shot" style={`--shot-pos: ${beat.position}`}>
+							<button
+								type="button"
+								class="exp-field-shot-open"
+								data-lightbox-trigger
+								aria-label={`View larger: ${beat.label}. ${beat.caption}`}
+							>
+								<Image
+									src={beat.image}
+									alt={beat.alt}
+									widths={[480, 800, 1200]}
+									sizes="(max-width: 900px) 46vw, 22vw"
+									loading="lazy"
+									class="exp-field-photo"
+								/>
+							</button>
 							<figcaption>
 								<strong>{beat.label}</strong>
-								{beat.note}
+								<span>{beat.note}</span>
+								<span class="exp-field-credit" data-lightbox-caption-text>
+									{beat.caption}
+								</span>
 							</figcaption>
 						</figure>
 					))
@@ -357,28 +870,42 @@ const podcastDefault = podcast.languages[0];
 			</div>
 		</section>
 
+		<section class="exp-block exp-partners" id="made-possible-by" aria-labelledby="partners-heading">
+			<div class="page-narrow">
+				<p class="label">Made Possible By</p>
+				<h2 id="partners-heading">The support that put this expedition in the field.</h2>
+				<p>
+					The institutions and partners on this page are the same as those on the rest of the site.
+					Local supporters in Valmala will be added when the names are confirmed.
+				</p>
+			</div>
+			<PartnerLogos />
+		</section>
+
 		<section class="exp-block exp-podcast" id="podcast" aria-labelledby="podcast-heading" data-podcast>
 			<div class="exp-podcast-layout">
-				<figure class="exp-podcast-portrait">
-					<Image
-						src={ignacioAmigo}
-						alt="Ignacio Amigo, smiling with arms crossed"
-						widths={[320, 480, 720]}
-						sizes="(max-width: 900px) 42vw, 13.5rem"
-					/>
-				</figure>
-
 				<div class="exp-podcast-copy">
 					<p class="label">Podcast</p>
 					<h2 id="podcast-heading">{podcast.title}</h2>
+					<div class="exp-podcast-byline">
+						<figure class="exp-podcast-byline-photo">
+							<Image
+								src={ignacioAmigo}
+								alt="Ignacio Amigo"
+								widths={[96, 160, 240]}
+								sizes="60px"
+							/>
+						</figure>
+						<p class="exp-podcast-byline-text">
+							A conversation recorded by{' '}
+							<a href={podcast.authorUrl} rel="noopener noreferrer" target="_blank">{podcast.author}</a>
+							, science writer, who spent several days with the expedition in Padilla de Abajo.
+						</p>
+					</div>
 					<p>
-						<a href={podcast.authorUrl} rel="noopener noreferrer" target="_blank">{podcast.author}</a> is
-						a science writer and strategic communications expert. A biochemist by training, he holds a
-						PhD in molecular biology and a degree in science journalism.
-					</p>
-					<p>
-						He spent several days in Padilla de Abajo with the expedition — interviewing the scientists,
-						recording sound, and gathering each researcher’s account of the 2026 eclipse.
+						A biochemist by training, he holds a PhD in molecular biology and a degree in science
+						journalism. On site he interviewed the scientists, recorded sound, and gathered each
+						researcher’s account of the 2026 eclipse.
 					</p>
 				</div>
 
@@ -425,18 +952,6 @@ const podcastDefault = podcast.languages[0];
 			</div>
 		</section>
 
-		<section class="exp-block exp-partners" id="made-possible-by" aria-labelledby="partners-heading">
-			<div class="page-narrow">
-				<p class="label">Made Possible By</p>
-				<h2 id="partners-heading">The support that put this expedition in the field.</h2>
-				<p>
-					The institutions and partners on this page are the same as those on the rest of the site.
-					Local supporters in Valmala will be added when the names are confirmed.
-				</p>
-			</div>
-			<PartnerLogos />
-		</section>
-
 		<section class="exp-next" id="what-comes-next" aria-labelledby="next-heading">
 			<div class="page-narrow">
 				<p class="label">What Comes Next</p>
@@ -470,5 +985,34 @@ const podcastDefault = podcast.languages[0];
 		</section>
 
 		<HomeConnect />
+
+		<dialog class="about-lightbox" data-about-lightbox aria-label="Photo gallery">
+			<button type="button" class="about-lightbox-close" data-lightbox-close aria-label="Close gallery">
+				<span aria-hidden="true">×</span>
+			</button>
+			<button
+				type="button"
+				class="about-lightbox-nav about-lightbox-nav--prev"
+				data-lightbox-prev
+				aria-label="Previous photo"
+			>
+				<span aria-hidden="true">‹</span>
+			</button>
+			<button
+				type="button"
+				class="about-lightbox-nav about-lightbox-nav--next"
+				data-lightbox-next
+				aria-label="Next photo"
+			>
+				<span aria-hidden="true">›</span>
+			</button>
+			<div class="about-lightbox-stage" data-lightbox-stage>
+				<img class="about-lightbox-image" data-lightbox-image alt="" />
+				<div class="about-lightbox-meta">
+					<p class="about-lightbox-caption" data-lightbox-caption></p>
+					<p class="about-lightbox-counter" data-lightbox-counter></p>
+				</div>
+			</div>
+		</dialog>
 	</article>
 </BaseLayout>

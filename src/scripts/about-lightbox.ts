@@ -22,18 +22,23 @@ function largestSrc(img: HTMLImageElement): string {
 }
 
 function slidesFromGallery(gallery: HTMLElement): Slide[] {
-	return [...gallery.querySelectorAll<HTMLElement>('[data-lightbox-trigger]')].map((trigger) => {
-		const frame = trigger.closest('figure') ?? trigger;
-		const img = trigger.querySelector<HTMLImageElement>('img');
-		const cap =
-			frame.querySelector('[data-lightbox-caption-text]') ??
-			frame.querySelector('.about-story-caption, .about-people-caption');
-		return {
-			src: img ? largestSrc(img) : '',
-			alt: img?.alt ?? '',
-			caption: cap?.textContent?.trim() ?? '',
-		};
-	});
+	return [...gallery.querySelectorAll<HTMLElement>('[data-lightbox-trigger]')]
+		.filter((trigger) => {
+			const frame = trigger.closest('figure');
+			return !!frame && !frame.hasAttribute('hidden');
+		})
+		.map((trigger) => {
+			const frame = trigger.closest('figure') ?? trigger;
+			const img = trigger.querySelector<HTMLImageElement>('img');
+			const cap =
+				frame.querySelector('[data-lightbox-caption-text]') ??
+				frame.querySelector('.about-story-caption, .about-people-caption');
+			return {
+				src: img ? largestSrc(img) : '',
+				alt: img?.alt ?? '',
+				caption: cap?.textContent?.trim() ?? '',
+			};
+		});
 }
 
 export function mountAboutLightbox() {
@@ -120,10 +125,18 @@ export function mountAboutLightbox() {
 
 	galleries.forEach((gallery) => {
 		const label = gallery.getAttribute('aria-label') || 'Photo gallery';
-		gallery.querySelectorAll<HTMLElement>('[data-lightbox-trigger]').forEach((trigger, i) => {
+		gallery.querySelectorAll<HTMLElement>('[data-lightbox-trigger]').forEach((trigger) => {
 			trigger.addEventListener('click', (event) => {
 				event.preventDefault();
-				open(gallery, i, label);
+				const visible = [...gallery.querySelectorAll<HTMLElement>('[data-lightbox-trigger]')].filter(
+					(item) => {
+						const frame = item.closest('figure');
+						return !!frame && !frame.hasAttribute('hidden');
+					},
+				);
+				const start = visible.indexOf(trigger);
+				if (start < 0) return;
+				open(gallery, start, label);
 			});
 		});
 	});
