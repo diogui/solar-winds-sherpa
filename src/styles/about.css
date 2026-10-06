@@ -412,6 +412,7 @@ article.page.about h1 {
 
 html.has-lightbox-open {
 	overflow: hidden;
+	scroll-behavior: auto;
 }
 
 html.has-lightbox-open body {

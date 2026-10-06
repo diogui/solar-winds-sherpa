@@ -11,13 +11,13 @@ export const supportLinks = [
 	{ href: 'https://buymeacoffee.com/solarwindsherpas', label: 'Buy Me a Coffee' },
 ] as const;
 
-/** Science, Expeditions and Join redirect to Home while this is true. About is live. Drop `public/_redirects` when opening the rest. */
+/** Expeditions index and Join redirect to Home while this is true. About and Science are live. */
 export const homeOnlyPreview = true;
 
 export const navLeft = [
 	{ href: '/', label: 'Home', live: true },
 	{ href: '/about', label: 'About', live: true },
-	{ href: '/science', label: 'Science', live: !homeOnlyPreview },
+	{ href: '/science', label: 'Science', live: true },
 	{ href: '/latest-expedition', label: 'Latest Expedition', live: true },
 ];
 

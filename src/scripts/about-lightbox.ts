@@ -69,6 +69,14 @@ export function mountAboutLightbox() {
 		nextBtn.disabled = slides.length < 2;
 	};
 
+	const jumpTo = (y: number) => {
+		const root = document.documentElement;
+		const previous = root.style.scrollBehavior;
+		root.style.scrollBehavior = 'auto';
+		window.scrollTo(0, y);
+		root.style.scrollBehavior = previous;
+	};
+
 	const lockScroll = () => {
 		lockedScrollY = window.scrollY;
 		document.documentElement.classList.add('has-lightbox-open');
@@ -77,15 +85,19 @@ export function mountAboutLightbox() {
 
 	const unlockScroll = () => {
 		document.documentElement.classList.remove('has-lightbox-open');
-		document.body.style.top = '';
-		window.scrollTo(0, lockedScrollY);
+		document.body.style.removeProperty('top');
+		jumpTo(lockedScrollY);
 	};
 
 	const close = () => {
 		if (!dialog.open) return;
+		const returnTo = lastFocus;
 		dialog.close();
 		unlockScroll();
-		lastFocus?.focus({ preventScroll: true });
+		// Defer focus so it cannot fight the scroll restore / smooth-scroll styles.
+		window.requestAnimationFrame(() => {
+			returnTo?.focus({ preventScroll: true });
+		});
 	};
 
 	const step = (delta: number) => {
