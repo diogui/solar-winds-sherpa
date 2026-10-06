@@ -101,6 +101,19 @@ article.page.exp h1 {
 	visibility: visible;
 }
 
+.exp-open.is-inline-playing .exp-rotate-hint {
+	bottom: 0.85rem;
+	z-index: 8;
+	width: min(20rem, calc(100% - 1.5rem));
+}
+
+.exp-open.is-inline-playing .exp-hero-chrome {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: none;
+}
+
 .exp-open.is-immersive .exp-rotate-hint {
 	position: fixed;
 	left: 50%;

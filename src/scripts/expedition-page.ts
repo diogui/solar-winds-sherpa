@@ -208,8 +208,17 @@ async function exitNativeFullscreen(video: HTMLVideoElement) {
 function syncRotateHint(open: HTMLElement) {
 	const hint = open.querySelector<HTMLElement>('[data-exp-rotate-hint]');
 	if (!hint) return;
-	const show = open.classList.contains('is-immersive') && isPortraitMobile();
+	const inlineOrImmersive =
+		open.classList.contains('is-inline-playing') || open.classList.contains('is-immersive');
+	const show = inlineOrImmersive && isPortraitMobile();
 	hint.hidden = !show;
+}
+
+function setInlinePlaying(open: HTMLElement | null, on: boolean) {
+	if (!open) return;
+	open.classList.toggle('is-inline-playing', on);
+	open.classList.toggle('is-controls-visible', on);
+	syncRotateHint(open);
 }
 
 async function setOpenImmersive(open: HTMLElement, on: boolean) {
@@ -405,12 +414,14 @@ function mountCut(panel: HTMLElement) {
 			keepFrame && !video.ended && video.currentTime > Math.max(skipStart, 0.05);
 		panel.classList.toggle('has-played', atFrame);
 		const open = panel.closest<HTMLElement>('.exp-open');
+		setInlinePlaying(open, false);
 		if (open) await setOpenImmersive(open, false);
 	};
 
 	const expandThenPlay = async () => {
 		const open = panel.closest<HTMLElement>('.exp-open');
 		const narrow = isNarrowViewport();
+		const portraitMobile = isPortraitMobile();
 		panel.classList.add('is-expanding');
 		// On mobile use the light encode; full 1080p is too heavy to start playback reliably
 		attach(!narrow);
@@ -450,7 +461,13 @@ function mountCut(panel: HTMLElement) {
 			if (playing) panel.classList.add('has-played');
 		}
 
-		if (open) await setOpenImmersive(open, true);
+		// Portrait mobile: keep the frame in place + rotate hint. Desktop expands.
+		if (started && portraitMobile) {
+			setInlinePlaying(open, true);
+		} else if (started && open && !isLandscapeMobile()) {
+			await setOpenImmersive(open, true);
+		}
+
 		panel.classList.remove('is-expanding');
 
 		if (!started) {
