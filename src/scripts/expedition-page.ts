@@ -1,4 +1,3 @@
-type CutId = 'quick' | 'full';
 type GalleryFilter = 'all' | 'padilla' | 'trigaza';
 
 export function mountPodcastLang(root: HTMLElement) {
@@ -588,48 +587,20 @@ function mountCut(panel: HTMLElement) {
 }
 
 export function mountExpeditionSites(root: HTMLElement) {
-	const buttons = [...root.querySelectorAll<HTMLButtonElement>('button.exp-site-btn[data-cut]')];
-	const cuts = new Map<CutId, ReturnType<typeof mountCut>>();
 	const open = root.closest<HTMLElement>('.exp-open');
 	const closeBtn = root.querySelector<HTMLButtonElement>('[data-exp-close]');
 	const muteBtn = root.querySelector<HTMLButtonElement>('[data-exp-mute]');
-
-	for (const panel of root.querySelectorAll<HTMLElement>('.exp-hero-panel[data-cut]')) {
-		const id = panel.dataset.cut;
-		if (id !== 'quick' && id !== 'full') continue;
-		cuts.set(id, mountCut(panel));
-	}
-
-	const activeCut = (): CutId => (root.dataset.activeCut === 'quick' ? 'quick' : 'full');
+	const panel = root.querySelector<HTMLElement>('.exp-hero-panel');
+	const player = panel ? mountCut(panel) : null;
 
 	const syncMuteUi = () => {
-		const player = cuts.get(activeCut());
 		const muted = player?.isMuted() ?? false;
 		if (!muteBtn) return;
 		muteBtn.setAttribute('aria-pressed', String(muted));
 		muteBtn.setAttribute('aria-label', muted ? 'Unmute sound' : 'Mute sound');
 	};
 
-	const setCut = (id: CutId) => {
-		root.dataset.activeCut = id;
-		for (const button of buttons) {
-			button.setAttribute('aria-pressed', String(button.dataset.cut === id));
-		}
-		for (const [cutId, player] of cuts) {
-			if (cutId === id) player?.attach();
-			else player?.pause();
-		}
-		syncMuteUi();
-	};
-
-	for (const button of buttons) {
-		button.addEventListener('click', () => {
-			const id = button.dataset.cut;
-			if (id === 'quick' || id === 'full') setCut(id);
-		});
-	}
-
-	const pauseActive = () => cuts.get(activeCut())?.pause() ?? Promise.resolve();
+	const pauseActive = () => player?.pause() ?? Promise.resolve();
 
 	closeBtn?.addEventListener('click', (event) => {
 		event.preventDefault();
@@ -640,11 +611,13 @@ export function mountExpeditionSites(root: HTMLElement) {
 	muteBtn?.addEventListener('click', (event) => {
 		event.preventDefault();
 		event.stopPropagation();
-		const player = cuts.get(activeCut());
 		if (!player) return;
 		player.setMuted(!player.isMuted());
 		syncMuteUi();
 	});
+
+	player?.attach();
+	syncMuteUi();
 
 	if (open) {
 		let hideTimer = 0;
@@ -653,7 +626,7 @@ export function mountExpeditionSites(root: HTMLElement) {
 
 		const syncLandscapeFullscreen = () => {
 			syncRotateHint(open);
-			cuts.get(activeCut())?.syncNativeFullscreen();
+			player?.syncNativeFullscreen();
 		};
 
 		window.matchMedia('(max-width: 767px) and (orientation: portrait)').addEventListener('change', () => {
@@ -734,7 +707,4 @@ export function mountExpeditionSites(root: HTMLElement) {
 			}
 		});
 	}
-
-	const initial = root.dataset.activeCut === 'quick' ? 'quick' : 'full';
-	setCut(initial);
 }

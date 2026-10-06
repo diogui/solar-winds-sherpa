@@ -1,6 +1,4 @@
 ---
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PartnerLogos from '../components/PartnerLogos.astro';
@@ -69,13 +67,9 @@ import '../styles/expedition.css';
 import { burgosFilm } from '../data/media';
 
 const hasFull = true;
-const hasHero24 = existsSync(resolve('./public/media/hero/hero-final-24.mp4'));
-const hasQuick = hasHero24 || existsSync(resolve('./public/media/hero/hero-final.mp4'));
 const fullSrc = burgosFilm.full;
 const fullSrcLight = burgosFilm.light;
 const fullPoster = '/media/latest/burgos-open.jpg';
-const quickSrc = hasHero24 ? '/media/hero/hero-final-24.mp4?v=1' : '/media/hero/hero-final.mp4?v=8';
-const quickPoster = '/media/hero/hero-poster.jpg';
 
 const druckmullerImages =
 	'http://www.zam.fme.vutbr.cz/~druck/eclipse/Ecl2026s/Trigaza/TSE_2026_530mm_DHS/0-info.htm';
@@ -565,7 +559,7 @@ const podcastDefault = podcast.languages[0];
 				</p>
 			</div>
 
-			<div class="exp-hero" data-cut-switch data-active-cut="full">
+			<div class="exp-hero" data-cut-switch>
 				<div class="exp-hero-chrome">
 					<button type="button" class="exp-hero-mute" data-exp-mute aria-label="Mute sound" aria-pressed="false">
 						<span class="exp-hero-mute-icon" data-exp-mute-icon aria-hidden="true">
@@ -602,7 +596,6 @@ const podcastDefault = podcast.languages[0];
 				<div class="exp-hero-frame">
 					<div
 						class="exp-hero-panel"
-						data-cut="full"
 						data-exp-src={hasFull ? fullSrc : undefined}
 						data-exp-src-light={hasFull ? fullSrcLight : undefined}
 						data-exp-skip-start={hasFull ? '5' : undefined}
@@ -655,50 +648,6 @@ const podcastDefault = podcast.languages[0];
 							)
 						}
 					</div>
-					{
-						hasQuick && (
-							<div
-								class="exp-hero-panel"
-								data-cut="quick"
-								data-exp-src={quickSrc}
-								data-exp-preload="none"
-								data-exp-muted="true"
-							>
-								<video
-									class="exp-hero-video exp-hero-video--quick"
-									data-exp-video
-									muted
-									playsinline
-									preload="none"
-									poster={quickPoster}
-									aria-label="Burgos expedition highlight"
-								></video>
-								<img
-									class="exp-hero-still exp-hero-still--quick"
-									src={quickPoster}
-									alt=""
-									width="1600"
-									height="900"
-									decoding="async"
-								/>
-								<button class="exp-play" type="button" data-exp-play aria-label="Play video">
-									<span data-exp-play-label>Play</span>
-								</button>
-							</div>
-						)
-					}
-					{
-						hasFull && hasQuick && (
-							<div class="exp-hero-controls">
-								<button type="button" class="exp-site-btn" data-cut="quick" aria-pressed="false">
-									Quick
-								</button>
-								<button type="button" class="exp-site-btn" data-cut="full" aria-pressed="true">
-									Full
-								</button>
-							</div>
-						)
-					}
 				</div>
 				{hasFull && <p class="exp-hero-credit">Film by Santiago Marrodán Ciordia</p>}
 			</div>
