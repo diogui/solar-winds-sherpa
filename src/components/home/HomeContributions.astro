@@ -3,8 +3,6 @@ import { Image } from 'astro:assets';
 import freezeIn from '../../assets/images/papers/card-freeze.jpg';
 import structures from '../../assets/images/papers/card-structures.jpg';
 import ironLine from '../../assets/images/papers/card-archive.jpg';
-import { homeOnlyPreview } from '../../data/site';
-
 const papers = [
 	{
 		kicker: 'Boe et al. · 2018 · ApJ',
@@ -36,7 +34,7 @@ const papers = [
 		title: 'The corona, in a few minutes of night',
 		text: 'Our observations combine high-resolution white-light imaging of the corona with narrow-band filters centred on forbidden emission lines of highly ionized iron, including Fe XI and Fe XIV.',
 		cta: 'Explore the science',
-		href: homeOnlyPreview ? '/#why-eclipses' : '/science',
+		href: '/science',
 		external: false,
 		image: ironLine,
 		alt: 'Narrow-band eclipse image of the solar corona in Fe XI emission',
@@ -55,9 +53,7 @@ const papers = [
 <section class="home-papers" aria-labelledby="papers-heading">
 	<div class="home-papers-head reveal">
 		<p class="label">Scientific contributions</p>
-		{!homeOnlyPreview && (
-			<a class="home-papers-all" href="/science">View all</a>
-		)}
+		<a class="home-papers-all" href="/science#publications">View all</a>
 		<h2 id="papers-heading">From eclipse observations to scientific knowledge.</h2>
 	</div>
 

@@ -1,76 +1,330 @@
 ---
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import milkyWay from '../assets/images/milky-way.jpg';
-import { homeOnlyPreview } from '../data/site';
+import HomeConnect from '../components/home/HomeConnect.astro';
+import {
+	eclipseFrames,
+	featuredIds,
+	hero,
+	instruments,
+	nextStep,
+	pipeline,
+	pipelineIntro,
+	publications,
+	questions,
+	whyParagraphs,
+	type ScienceImage,
+} from '../data/science';
+import coronaWhite from '../assets/images/papers/corona-structures.jpg';
+import sun from '../assets/images/why/sun.jpg';
+import corona from '../assets/images/why/corona.jpg';
+import prominences from '../assets/images/why/prominences.jpg';
+import camerasTotality from '../assets/images/field/burgos-totality.jpg';
+import filterRig from '../assets/images/field/latest-instruments.jpg';
+import fieldStation from '../assets/images/about/story/computers-night.jpg';
+import faroeCamp from '../assets/images/about/story/group-field-2015.jpg';
+import boeFig1 from '../assets/images/papers/boe-2018-fig1.png';
+import feComposite from '../assets/images/papers/fe-composite.jpg';
+import '../styles/science.css';
 
-if (homeOnlyPreview) return Astro.redirect('/');
+const photos: Record<ScienceImage, ImageMetadata> = {
+	'corona-white': coronaWhite,
+	sun,
+	corona,
+	prominences,
+	'cameras-totality': camerasTotality,
+	'filter-rig': filterRig,
+	'field-station': fieldStation,
+	'faroe-camp': faroeCamp,
+	'boe-fig1': boeFig1,
+	'fe-composite': feComposite,
+};
+
+const featured = featuredIds.map((id) => {
+	const paper = publications.find((item) => item.id === id);
+	if (!paper) throw new Error(`Missing science publication: ${id}`);
+	return paper;
+});
 ---
 
 <BaseLayout
 	title="Science"
-	description="During totality we image the solar corona in white light and in forbidden emission lines to diagnose temperature, magnetic structure, and the origin of the solar wind."
+	description="What Solar Wind Sherpas investigates in the solar corona, how totality is used to record it, and the papers that follow from those observations."
 >
-	<article class="page">
-		<div class="page-narrow">
+	<article class="page science">
+		<header class="science-intro" id="questions">
 			<p class="label page-kicker">Science</p>
-			<h1>The corona, in a few minutes of night</h1>
+			<h1 id="questions-heading">The questions we explore</h1>
 			<p class="lead">
-				A total solar eclipse is a laboratory. The Moon occults the photosphere so completely that
-				the faint outer atmosphere of the Sun — and the region where the solar wind begins — can be
-				measured from the ground.
+				A total solar eclipse gives a few minutes when the Sun’s outer atmosphere can be studied
+				from the ground. These are the questions that work is built around.
 			</p>
-		</div>
+		</header>
 
-		<div class="page-hero-image reveal">
-			<Image
-				src={milkyWay}
-				alt="The Milky Way stretching across a dark night sky, dense with stars and dust lanes"
-				widths={[900, 1400, 2000]}
-				sizes="(max-width: 1120px) 100vw, 1120px"
-				loading="eager"
-			/>
-		</div>
+		<figure class="science-hero">
+			<div class="science-hero-frame">
+				<Image
+					src={photos[hero.image]}
+					alt={hero.alt}
+					widths={[800, 1400, 2000]}
+					sizes="(max-width: 1120px) 100vw, 1120px"
+					loading="eager"
+				/>
+			</div>
+			<figcaption class="science-caption">
+				{hero.caption}
+				<span class="science-credit">{hero.credit}</span>
+			</figcaption>
+		</figure>
 
-		<div class="page-narrow prose">
-			<p>
-				Our observations combine high-resolution white-light imaging of the corona with narrow-band
-				filters centred on forbidden emission lines of highly ionized iron, including Fe XI and Fe
-				XIV. Those lines retain the diagnostic power of extreme-ultraviolet spectroscopy, but they
-				can be recorded at much larger heights during the darkness of totality.
-			</p>
-			<p>
-				From those data we construct maps of electron temperature, ion charge state, and magnetic
-				topology in the acceleration region of the solar wind — a zone that remains difficult to
-				observe any other way. Occasional coronal mass ejections caught in the field of view become
-				experiments of their own.
-			</p>
-		</div>
-
-		<ol class="question-list page-wide">
-			<li class="reveal">
-				<h2>Why is the corona so hot?</h2>
-				<p>
-					The photosphere is about 5,800 K. A few thousand kilometres above it, the corona exceeds a
-					million. Totality lets us see how that heat is distributed with height and how it relates
-					to magnetic structure.
-				</p>
-			</li>
-			<li class="reveal">
-				<h2>Where does the solar wind originate?</h2>
-				<p>
-					The continuous outflow that fills the heliosphere is launched in the inner corona. Emission
-					lines of heavy ions mark the freeze-in of charge states and the rise of outflow speed.
-				</p>
-			</li>
-			<li class="reveal">
-				<h2>What holds magnetic structures in place?</h2>
-				<p>
-					Streamers, prominences, and the large-scale field of the corona evolve over the solar
-					cycle. Eclipse imaging records their geometry at a resolution and inner height that
-					coronagraphs cannot match.
-				</p>
-			</li>
+		<ol class="science-questions" aria-labelledby="questions-heading">
+			{
+				questions.map((question) => (
+					<li class="science-question" id={question.id}>
+						<span class="science-question-index">{question.index}</span>
+						<div>
+							<h2>{question.title}</h2>
+							<p>{question.text}</p>
+						</div>
+					</li>
+				))
+			}
 		</ol>
+
+		<section class="science-section" id="eclipses" aria-labelledby="eclipses-heading">
+			<p class="label">Why eclipses</p>
+			<h2 id="eclipses-heading">Why total eclipses matter</h2>
+			<div class="science-why">
+				<div class="science-prose">
+					{whyParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+				</div>
+				<ul class="science-compare">
+					{
+						eclipseFrames.map((frame) => (
+							<li>
+								<figure>
+									<div class="science-compare-frame" style={`--shot-pos: ${frame.position}`}>
+										<Image
+											src={photos[frame.image]}
+											alt={frame.alt}
+											widths={[480, 800, 1200]}
+											sizes="(max-width: 900px) 92vw, 28rem"
+											loading="lazy"
+										/>
+									</div>
+									<figcaption>
+										<span class="science-credit">{frame.caption}</span>
+										<span class="science-caption">{frame.detail}</span>
+									</figcaption>
+								</figure>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section class="science-section" id="instruments" aria-labelledby="instruments-heading">
+			<p class="label">In the field</p>
+			<h2 id="instruments-heading">Equipment &amp; instruments</h2>
+			<div class="science-prose">
+				<p>
+					The expeditions travel with white-light cameras, narrow-band filters, and spectrometers.
+					They are set up on site and used together during totality. The photographs show that work
+					in the field.
+				</p>
+			</div>
+
+			{
+				instruments.map((instrument) => (
+					<article class="science-instrument">
+						<figure class="science-instrument-photo">
+							<div class="science-instrument-frame" style={`--shot-pos: ${instrument.position}`}>
+								<Image
+									src={photos[instrument.image]}
+									alt={instrument.alt}
+									widths={[640, 960, 1400]}
+									sizes="(max-width: 900px) 92vw, 36rem"
+									loading="lazy"
+								/>
+							</div>
+							<figcaption class="science-caption">
+								{instrument.caption}
+								<span class="science-credit">{instrument.credit}</span>
+							</figcaption>
+						</figure>
+						<div>
+							<h3>{instrument.name}</h3>
+							<dl class="science-facts">
+								<div>
+									<dt>Measures</dt>
+									<dd>{instrument.measures}</dd>
+								</div>
+								<div>
+									<dt>Question</dt>
+									<dd>{instrument.question}</dd>
+								</div>
+							</dl>
+						</div>
+					</article>
+				))
+			}
+		</section>
+
+		<section class="science-section" id="method" aria-labelledby="method-heading">
+			<p class="label">How the work proceeds</p>
+			<h2 id="method-heading">From observations to knowledge</h2>
+			<div class="science-prose">
+				<p>{pipelineIntro}</p>
+			</div>
+			<ol class="science-steps">
+				{
+					pipeline.map((step) => (
+						<li class:list={['science-step', !('image' in step) && 'science-step--text']}>
+							<span class="science-step-index">{step.index}</span>
+							<div class="science-step-copy">
+								<h3>{step.title}</h3>
+								<p>{step.text}</p>
+								{'legend' in step && (
+									<ul class="science-legend">
+										{step.legend.map((item) => (
+											<li>
+												<span
+													class:list={['science-swatch', `science-swatch--${item.swatch}`]}
+													aria-hidden="true"
+												/>
+												<span>
+													<strong>{item.label}.</strong> {item.text}
+												</span>
+											</li>
+										))}
+									</ul>
+								)}
+								{'link' in step && (
+									<a class="cta" href={step.link.href} rel="noopener noreferrer">
+										{step.link.label} <span class="cta-arrow" aria-hidden="true">→</span>
+									</a>
+								)}
+							</div>
+							{'image' in step && (
+								<figure>
+									<div class:list={['science-step-frame', step.image === 'boe-fig1' && 'science-step-frame--trim']}>
+										<Image
+											src={photos[step.image]}
+											alt={step.alt}
+											widths={[640, 1000, 1600]}
+											sizes="(max-width: 900px) 92vw, 34rem"
+											loading="lazy"
+										/>
+									</div>
+									<figcaption class="science-caption">
+										{step.caption}
+										<span class="science-credit">{step.credit}</span>
+									</figcaption>
+								</figure>
+							)}
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<section class="science-section" id="publications" aria-labelledby="publications-heading">
+			<p class="label">Results</p>
+			<h2 id="publications-heading">Scientific contributions &amp; publications</h2>
+			<div class="science-prose">
+				<p>
+					Two published papers are highlighted below. The list that follows is the reference for
+					each one.
+				</p>
+			</div>
+
+			<div class="science-features">
+				{
+					featured.map((paper) => (
+						<article class:list={['science-feature', !paper.image && 'science-feature--text']}>
+							{paper.image && paper.imageAlt && paper.imageCaption && paper.imageCredit && (
+								<figure class="science-feature-photo">
+									<div class="science-feature-frame">
+										<Image
+											src={photos[paper.image]}
+											alt={paper.imageAlt}
+											widths={[640, 1000, 1400]}
+											sizes="(max-width: 900px) 92vw, 32rem"
+											loading="lazy"
+										/>
+									</div>
+									<figcaption class="science-caption">
+										{paper.imageCaption}
+										<span class="science-credit">{paper.imageCredit}</span>
+									</figcaption>
+								</figure>
+							)}
+							<div>
+								<p class="science-status">Published · {paper.year}</p>
+								<h3>
+									<a href={paper.href} rel="noopener noreferrer">
+										{paper.accessibleTitle}
+										<span class="cta-arrow" aria-hidden="true">→</span>
+									</a>
+								</h3>
+								<p>{paper.summary}</p>
+								<p class="science-official">{paper.title}</p>
+								<a class="cta" href={paper.href} rel="noopener noreferrer">
+									View publication <span class="cta-arrow" aria-hidden="true">→</span>
+								</a>
+							</div>
+						</article>
+					))
+				}
+			</div>
+
+			<p class="label science-pub-label" id="selected-publications">Selected publications</p>
+			<ol class="science-pubs">
+				{
+					publications.map((paper) => (
+						<li class="science-pub" id={`publication-${paper.id}`}>
+							<p class="science-status">Published</p>
+							<h3>{paper.accessibleTitle}</h3>
+							<p class="science-official">{paper.title}</p>
+							<p class="science-pub-meta">{paper.authors}</p>
+							<p class="science-pub-meta">
+								{paper.year} · {paper.journal} · Vol. {paper.volume}, Issue {paper.issue}, p.{' '}
+								{paper.page}
+							</p>
+							<p class="science-pub-links">
+								<a class="science-doi" href={paper.href} rel="noopener noreferrer">
+									doi.org/{paper.doi}
+								</a>
+								{paper.fullTextHref && paper.fullTextLabel && (
+									<a class="cta" href={paper.fullTextHref} rel="noopener noreferrer">
+										{paper.fullTextLabel} <span class="cta-arrow" aria-hidden="true">→</span>
+									</a>
+								)}
+							</p>
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<section class="science-next" id="next" aria-labelledby="next-heading">
+			<div class="science-next-inner">
+				<p class="label">What comes next</p>
+				<h2 id="next-heading">{nextStep.title}</h2>
+				<p>{nextStep.text}</p>
+				<div class="science-next-links">
+					<a class="cta cta--button" href={nextStep.expeditionHref}>
+						{nextStep.expeditionLabel} <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
+					<a class="cta cta--button" href={nextStep.supportHref}>
+						{nextStep.supportLabel} <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<HomeConnect />
 	</article>
 </BaseLayout>

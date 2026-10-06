@@ -13,7 +13,6 @@ export default defineConfig({
 	},
 	redirects: homeOnlyPreview
 		? {
-				'/science': '/',
 				'/join': '/',
 				'/expeditions': '/',
 			}
