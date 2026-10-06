@@ -324,18 +324,24 @@ function mountCut(panel: HTMLElement) {
 		playButton.tabIndex = next ? -1 : 0;
 	};
 
-	const seekTo = (time: number) =>
+	const seekTo = (time: number, timeoutMs = 1500) =>
 		new Promise<void>((resolve) => {
 			if (!Number.isFinite(time) || Math.abs(video.currentTime - time) < 0.04) {
 				resolve();
 				return;
 			}
 			seeking = true;
+			let settled = false;
 			const done = () => {
+				if (settled) return;
+				settled = true;
 				seeking = false;
+				window.clearTimeout(timer);
+				video.removeEventListener('seeked', done);
 				resolve();
 			};
-			video.addEventListener('seeked', done, { once: true });
+			const timer = window.setTimeout(done, timeoutMs);
+			video.addEventListener('seeked', done);
 			try {
 				video.currentTime = time;
 			} catch {
@@ -354,31 +360,16 @@ function mountCut(panel: HTMLElement) {
 
 	const expandThenPlay = async () => {
 		const open = panel.closest<HTMLElement>('.exp-open');
+		const narrow = isNarrowViewport();
 		panel.classList.add('is-expanding');
 		// On mobile use the light encode; full 1080p is too heavy to start playback reliably
-		attach(!isNarrowViewport());
+		attach(!narrow);
 		video.playsInline = true;
 		video.setAttribute('playsinline', '');
 		video.setAttribute('webkit-playsinline', '');
 
-		if (video.readyState < 2) {
-			await Promise.race([
-				new Promise<void>((resolve) => {
-					video.addEventListener('canplay', () => resolve(), { once: true });
-				}),
-				new Promise<void>((resolve) => {
-					window.setTimeout(resolve, 4000);
-				}),
-			]);
-		}
-		// Jump past leading black so play feels instant (not like a load hang)
-		if (skipStart > 0 && (video.currentTime < skipStart - 0.05 || video.ended)) {
-			await seekTo(skipStart);
-			panel.classList.add('has-played');
-		}
-
-		// Start play before / alongside expand — waiting for the FLIP first loses the
-		// iOS/Android user-gesture token and unmuted play() is rejected.
+		// Start play before canplay/seek/expand — waiting loses the iOS/Android
+		// user-gesture token, and seeking an under-buffered R2 file can hang forever.
 		let started = false;
 		try {
 			await video.play();
@@ -399,6 +390,11 @@ function mountCut(panel: HTMLElement) {
 					video.muted = muted;
 				}
 			}
+		}
+
+		if (started && skipStart > 0 && (video.currentTime < skipStart - 0.05 || video.ended)) {
+			await seekTo(skipStart, narrow ? 1200 : 2500);
+			if (playing) panel.classList.add('has-played');
 		}
 
 		if (open) await setOpenImmersive(open, true);

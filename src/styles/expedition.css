@@ -929,6 +929,11 @@ html.is-exp-immersive .site-header .brand-lockup {
 	will-change: transform, opacity;
 }
 
+/* Author `display: block` above overrides the UA [hidden] rule — keep filtered shots out. */
+.exp-burgos-shot[hidden] {
+	display: none;
+}
+
 .exp-burgos-shot--hero,
 .exp-burgos-shot--wide,
 .exp-burgos-shot--tall,
