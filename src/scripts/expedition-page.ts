@@ -120,8 +120,13 @@ function chooseSrc(panel: HTMLElement, preferFull = false) {
 	const full = panel.dataset.expSrc;
 	const light = panel.dataset.expSrcLight;
 	if (!full) return '';
+	// Mobile / narrow screens: prefer the lighter encode for faster start
 	if (!preferFull && light && window.innerWidth < 768) return light;
 	return full;
+}
+
+function isNarrowViewport() {
+	return window.innerWidth < 768;
 }
 
 function flipHero(hero: HTMLElement, first: DOMRect, duration: number) {
@@ -222,12 +227,12 @@ function mountCut(panel: HTMLElement) {
 	};
 
 	const restartFromStart = () => {
-		const src = chooseSrc(panel, true);
+		const src = chooseSrc(panel, !isNarrowViewport());
 		if (!src) return;
 		attached = false;
 		video.removeAttribute('src');
 		video.load();
-		attach(true);
+		attach(!isNarrowViewport());
 		void expandThenPlay();
 	};
 
@@ -350,23 +355,56 @@ function mountCut(panel: HTMLElement) {
 	const expandThenPlay = async () => {
 		const open = panel.closest<HTMLElement>('.exp-open');
 		panel.classList.add('is-expanding');
-		attach(true);
+		// On mobile use the light encode; full 1080p is too heavy to start playback reliably
+		attach(!isNarrowViewport());
+		video.playsInline = true;
+		video.setAttribute('playsinline', '');
+		video.setAttribute('webkit-playsinline', '');
+
 		if (video.readyState < 2) {
-			await new Promise<void>((resolve) => {
-				video.addEventListener('canplay', () => resolve(), { once: true });
-			});
+			await Promise.race([
+				new Promise<void>((resolve) => {
+					video.addEventListener('canplay', () => resolve(), { once: true });
+				}),
+				new Promise<void>((resolve) => {
+					window.setTimeout(resolve, 4000);
+				}),
+			]);
 		}
 		// Jump past leading black so play feels instant (not like a load hang)
 		if (skipStart > 0 && (video.currentTime < skipStart - 0.05 || video.ended)) {
 			await seekTo(skipStart);
 			panel.classList.add('has-played');
 		}
-		if (open) await setOpenImmersive(open, true);
-		panel.classList.remove('is-expanding');
+
+		// Start play before / alongside expand — waiting for the FLIP first loses the
+		// iOS/Android user-gesture token and unmuted play() is rejected.
+		let started = false;
 		try {
 			await video.play();
+			started = true;
 			setPlaybackUi(true);
 		} catch {
+			// Fall back to muted start (still within/near the gesture), then unmute
+			if (!muted) {
+				video.muted = true;
+				try {
+					await video.play();
+					started = true;
+					setPlaybackUi(true);
+					window.setTimeout(() => {
+						if (playing) video.muted = false;
+					}, 120);
+				} catch {
+					video.muted = muted;
+				}
+			}
+		}
+
+		if (open) await setOpenImmersive(open, true);
+		panel.classList.remove('is-expanding');
+
+		if (!started) {
 			await endPlayback(video.currentTime > Math.max(skipStart, 0.05));
 		}
 	};
@@ -398,6 +436,8 @@ function mountCut(panel: HTMLElement) {
 		video.defaultMuted = muted;
 		video.loop = false;
 		video.playsInline = true;
+		video.setAttribute('playsinline', '');
+		video.setAttribute('webkit-playsinline', '');
 		video.preload = 'auto';
 		video.src = src;
 		setLoad(0, 'loading');
@@ -424,7 +464,7 @@ function mountCut(panel: HTMLElement) {
 	video.addEventListener('click', togglePlay);
 
 	setPlaybackUi(false);
-	if (preload === 'auto') attach(true);
+	if (preload === 'auto') attach(!isNarrowViewport());
 
 	const setMuted = (next: boolean) => {
 		video.muted = next;
@@ -434,7 +474,7 @@ function mountCut(panel: HTMLElement) {
 	return {
 		play,
 		pause,
-		attach: () => attach(true),
+		attach: () => attach(!isNarrowViewport()),
 		setMuted,
 		isMuted: () => video.muted,
 	};
