@@ -153,11 +153,26 @@ function flipHero(hero: HTMLElement, first: DOMRect, duration: number) {
 }
 
 function isPortraitMobile() {
-	return window.matchMedia('(max-width: 767px) and (orientation: portrait)').matches;
+	if (window.matchMedia('(max-width: 900px) and (orientation: portrait)').matches) return true;
+	// Fallback: some mobile browsers mis-report orientation media queries
+	return window.innerWidth <= 900 && window.innerHeight >= window.innerWidth;
 }
 
 function isLandscapeMobile() {
-	return window.matchMedia('(max-width: 900px) and (orientation: landscape)').matches;
+	if (window.matchMedia('(max-width: 900px) and (orientation: landscape)').matches) return true;
+	return window.innerWidth <= 900 && window.innerWidth > window.innerHeight;
+}
+
+/** Phones / small tablets: keep the film in its page frame (no FLIP expand). */
+function shouldPlayFilmInline() {
+	if (window.matchMedia('(max-width: 900px)').matches) return true;
+	if (
+		window.matchMedia('(hover: none) and (pointer: coarse)').matches &&
+		window.innerWidth < 1024
+	) {
+		return true;
+	}
+	return window.innerWidth <= 900;
 }
 
 type NativeFsVideo = HTMLVideoElement & {
@@ -228,6 +243,12 @@ async function setOpenImmersive(open: HTMLElement, on: boolean) {
 
 	const was = open.classList.contains('is-immersive');
 	if (was === on) return;
+
+	// Hard stop: never grow to fullscreen chrome on phones / small tablets
+	if (on && shouldPlayFilmInline()) {
+		setInlinePlaying(open, true);
+		return;
+	}
 
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -421,7 +442,7 @@ function mountCut(panel: HTMLElement) {
 	const expandThenPlay = async () => {
 		const open = panel.closest<HTMLElement>('.exp-open');
 		const narrow = isNarrowViewport();
-		const portraitMobile = isPortraitMobile();
+		const inline = shouldPlayFilmInline();
 		panel.classList.add('is-expanding');
 		// On mobile use the light encode; full 1080p is too heavy to start playback reliably
 		attach(!narrow);
@@ -457,14 +478,15 @@ function mountCut(panel: HTMLElement) {
 		if (started) void enterNativeFullscreen(video);
 
 		if (started && skipStart > 0 && (video.currentTime < skipStart - 0.05 || video.ended)) {
-			await seekTo(skipStart, narrow ? 1200 : 2500);
+			await seekTo(skipStart, inline || narrow ? 1200 : 2500);
 			if (playing) panel.classList.add('has-played');
 		}
 
-		// Portrait mobile: keep the frame in place + rotate hint. Desktop expands.
-		if (started && portraitMobile) {
-			setInlinePlaying(open, true);
-		} else if (started && open && !isLandscapeMobile()) {
+		// Mobile / touch: never FLIP-expand — stay in the page frame (+ rotate hint).
+		// Desktop only gets the immersive grow.
+		if (started && inline) {
+			if (!isLandscapeMobile()) setInlinePlaying(open, true);
+		} else if (started && open) {
 			await setOpenImmersive(open, true);
 		}
 
