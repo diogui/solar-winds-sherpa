@@ -1,0 +1,82 @@
+/* Shared Support section (HomeSupport) — usable on any page. */
+.home-support {
+	--hero-dusk: #171d2e;
+	scroll-margin-top: var(--header-h);
+	padding: clamp(4.5rem, 9vw, 6.5rem) 0;
+	background: var(--hero-dusk);
+}
+
+.home-support-inner {
+	width: min(860px, var(--content));
+	margin: 0 auto;
+}
+
+.home-support-copy h2 {
+	margin: 0.2rem 0 1.15rem;
+	font-size: clamp(1.7rem, 3.2vw, 2.45rem);
+	text-wrap: balance;
+}
+
+.home-support-copy p:not(.label) {
+	margin: 0;
+	max-width: 40rem;
+	color: rgb(245 245 243 / 0.92);
+	font-size: 1.08rem;
+	line-height: 1.6;
+}
+
+.home-support-copy p:not(.label) + p {
+	margin-top: 1rem;
+}
+
+.home-support-copy a {
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+	text-decoration-thickness: 1px;
+}
+
+.home-support-copy a:hover,
+.home-support-copy a:focus-visible {
+	color: var(--text);
+}
+
+.home-support-funds {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2.35rem 2.6rem;
+	margin: 2.6rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.home-support-fund-title {
+	margin: 0 0 0.85rem;
+	font-family: var(--font-display);
+	font-size: 0.78rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--accent);
+}
+
+.home-support-funds li p {
+	margin: 0;
+	color: rgb(245 245 243 / 0.88);
+	font-size: 1.02rem;
+	line-height: 1.5;
+}
+
+.home-support-give {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.7rem;
+	margin-top: 2.6rem;
+}
+
+@media (max-width: 900px) {
+	.home-support-funds {
+		grid-template-columns: 1fr;
+		gap: 1.65rem;
+	}
+}

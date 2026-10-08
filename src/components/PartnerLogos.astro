@@ -12,10 +12,16 @@ import electricon from '../assets/images/partners/electricon.svg?url';
 
 interface Props {
 	exclude?: string[];
+	/** When set, only these partner ids are shown (after exclude). */
+	include?: string[];
 }
 
-const { exclude = [] } = Astro.props;
+const { exclude = [], include } = Astro.props;
 const skipped = new Set(exclude);
+const allowed = include ? new Set(include) : null;
+
+const keep = <T extends { id: string }>(partner: T) =>
+	!skipped.has(partner.id) && (!allowed || allowed.has(partner.id));
 
 const rowOne = [
 	{ id: 'hawaii', src: hawaii, alt: 'Institute for Astronomy, University of Hawaiʻi' },
@@ -27,7 +33,7 @@ const rowOne = [
 		src: msmt,
 		alt: 'Ministry of Education, Youth and Sports of the Czech Republic',
 	},
-].filter((partner) => !skipped.has(partner.id));
+].filter(keep);
 
 const rowTwo = [
 	{
@@ -39,60 +45,64 @@ const rowTwo = [
 	{ id: 'electricon', src: electricon, alt: 'Electrícon', variant: 'electricon' },
 	{ id: 'berlin', src: berlin, alt: 'Technische Universität Berlin' },
 	{ id: 'astelco', src: astelco, alt: 'ASTELCO Systems' },
-].filter((partner) => !skipped.has(partner.id));
+].filter(keep);
 ---
 
 <div class="home-partners-grid">
-	<ul class="home-partners-row">
-		{
-			rowOne.map((partner) => (
-				<li>
-					<Image
-						src={partner.src}
-						alt={partner.alt}
-						widths={[200, 320, 480]}
-						sizes="160px"
-						class="home-partner-logo"
-					/>
-				</li>
-			))
-		}
-	</ul>
-	<ul class="home-partners-row home-partners-row--marks">
-		{
-			rowTwo.map((partner) => (
-				<li>
-					{'src' in partner && partner.src ? (
-						typeof partner.src === 'string' ? (
-							<img
-								src={partner.src}
-								alt={partner.alt}
-								width="227"
-								height="95"
-								class:list={[
-									'home-partner-logo',
-									'home-partner-logo--mark',
-									partner.variant && `home-partner-logo--${partner.variant}`,
-								]}
-							/>
+	{
+		rowOne.length > 0 && (
+			<ul class="home-partners-row">
+				{rowOne.map((partner) => (
+					<li>
+						<Image
+							src={partner.src}
+							alt={partner.alt}
+							widths={[200, 320, 480]}
+							sizes="160px"
+							class="home-partner-logo"
+						/>
+					</li>
+				))}
+			</ul>
+		)
+	}
+	{
+		rowTwo.length > 0 && (
+			<ul class="home-partners-row home-partners-row--marks">
+				{rowTwo.map((partner) => (
+					<li>
+						{'src' in partner && partner.src ? (
+							typeof partner.src === 'string' ? (
+								<img
+									src={partner.src}
+									alt={partner.alt}
+									width="227"
+									height="95"
+									class:list={[
+										'home-partner-logo',
+										'home-partner-logo--mark',
+										partner.variant && `home-partner-logo--${partner.variant}`,
+									]}
+								/>
+							) : (
+								<Image
+									src={partner.src}
+									alt={partner.alt}
+									widths={[240, 400, 560]}
+									sizes="200px"
+									class:list={[
+										'home-partner-logo',
+										'home-partner-logo--mark',
+										partner.variant && `home-partner-logo--${partner.variant}`,
+									]}
+								/>
+							)
 						) : (
-							<Image
-								src={partner.src}
-								alt={partner.alt}
-								widths={[240, 400, 560]}
-								sizes="200px"
-								class:list={[
-									'home-partner-logo',
-									'home-partner-logo--mark',
-									partner.variant && `home-partner-logo--${partner.variant}`,
-								]}
-							/>
-						)
-					) : (
-						<span class="home-partner-pending">{partner.alt}</span>
-					)}
-				</li>
-			))
-		}
-	</ul>
+							<span class="home-partner-pending">{partner.alt}</span>
+						)}
+					</li>
+				))}
+			</ul>
+		)
+	}
 </div>

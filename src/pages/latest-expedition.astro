@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PartnerLogos from '../components/PartnerLogos.astro';
 import HomeConnect from '../components/home/HomeConnect.astro';
+import { site } from '../data/site';
 import padillaCamp from '../assets/images/field/latest-camp.jpg';
 import fieldAssemble from '../assets/images/expedition/field/field-assemble.jpg';
 import fieldCamp from '../assets/images/expedition/field/field-camp.jpg';
@@ -29,6 +30,7 @@ import burgosAdjust from '../assets/images/expedition/burgos/burgos-adjust.jpg';
 import burgosPortraitTrigaza from '../assets/images/expedition/burgos/burgos-portrait-trigaza.jpg';
 import burgosTeamTrigaza from '../assets/images/expedition/burgos/burgos-team-trigaza.jpg';
 import burgosHorizon from '../assets/images/expedition/burgos/burgos-horizon.jpg';
+import burgosProcessedCorona from '../assets/images/expedition/burgos/burgos-processed-corona.png';
 import burgosLenses from '../assets/images/expedition/burgos/burgos-lenses.jpg';
 import burgosTrigazaSlope from '../assets/images/expedition/burgos/burgos-trigaza-slope.jpg';
 import burgosDiagram from '../assets/images/expedition/burgos/burgos-diagram.jpg';
@@ -71,9 +73,8 @@ const fullSrc = burgosFilm.full;
 const fullSrcLight = burgosFilm.light;
 const fullPoster = '/media/latest/burgos-open.jpg';
 
-const druckmullerImages =
-	'http://www.zam.fme.vutbr.cz/~druck/eclipse/Ecl2026s/Trigaza/TSE_2026_530mm_DHS/0-info.htm';
 const fotoklubInstagram = 'https://www.instagram.com/fotoklubtechnikabrno';
+const druckmullerSite = 'http://www.zam.fme.vutbr.cz/~druck/';
 
 const fieldBeats = [
 	{
@@ -142,16 +143,26 @@ const fieldBeats = [
 	},
 ] as const;
 
-const burgosGallery = [
+const siteLeads = [
 	{
-		area: 'lead',
 		site: 'padilla',
-		size: 'hero',
+		label: 'Padilla de Abajo',
 		image: burgosFieldWide,
 		alt: 'Wide view of the Padilla de Abajo observing site with tents and people',
-		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
+		credit: 'Santiago Marrodán Ciordia',
 		position: '50% 50%',
 	},
+	{
+		site: 'trigaza',
+		label: 'Pico Trigaza',
+		image: burgosTrigazaSummit,
+		alt: 'Rocky summit at Pico Trigaza with radio towers and a stone building',
+		credit: 'Martin Šebek',
+		position: '50% 42%',
+	},
+] as const;
+
+const burgosGallery = [
 	{
 		area: 'b',
 		site: 'padilla',
@@ -304,15 +315,6 @@ const burgosGallery = [
 		alt: 'Researcher adjusting a camera rig in sunglasses',
 		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
 		position: '50% 40%',
-	},
-	{
-		area: 'lead',
-		site: 'trigaza',
-		size: 'hero',
-		image: burgosTrigazaSummit,
-		alt: 'Rocky summit at Pico Trigaza with radio towers and a stone building',
-		caption: 'Pico Trigaza · Martin Šebek',
-		position: '50% 42%',
 	},
 	{
 		area: 'a',
@@ -514,25 +516,35 @@ const trigazaTeam = [
 
 const nextPlaces = [
 	{ label: 'Egypt', status: 'Confirmed' },
-	{ label: 'South of Spain, near Tarifa', status: 'Confirmed' },
-	{ label: 'Tunisia', status: 'Location to confirm' },
+	{ label: 'Southern Spain, near Tarifa', status: 'Confirmed' },
+	{ label: 'Tunisia', status: 'Observing site to be confirmed' },
 ] as const;
+
+/*
+  Editorial (not public): partner logos here are only those confirmed for Burgos 2026.
+  Site-wide partners not yet confirmed for this expedition are omitted for now
+  (berlin, astelco, electricon). Local supporters in Valmala will be added when named.
+  Re-check the include list with Danilo before publish.
+*/
+const burgosPartnerIds = ['hawaii', 'wentworth', 'nsf', 'nasa', 'msmt', 'brno'] as const;
 
 const podcast = {
 	title: 'Ver el Sol de noche',
 	author: 'Ignacio Amigo',
 	authorUrl: 'https://ignacioamigo.com',
+	/* Both language cuts are 1993s per Spotify music:duration. */
+	durationLabel: '33 min',
 	languages: [
 		{
 			id: 'en',
-			label: 'English',
+			label: 'Listen in English',
 			episodeId: '1guLK11F1MHIH6VIVq8yxn',
 			spotifyUrl: 'https://open.spotify.com/episode/1guLK11F1MHIH6VIVq8yxn',
 			iframeTitle: 'Spotify: Ver el Sol de Noche (English)',
 		},
 		{
 			id: 'es',
-			label: 'Español',
+			label: 'Escuchar en español',
 			episodeId: '0dct76LVlB3Z9jHQvvz2dW',
 			spotifyUrl: 'https://open.spotify.com/episode/0dct76LVlB3Z9jHQvvz2dW',
 			iframeTitle: 'Spotify: Ver el Sol de noche (Español)',
@@ -548,182 +560,243 @@ const podcastDefault = podcast.languages[0];
 	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla de Abajo and Pico Trigaza."
 >
 	<article class="page exp">
-		<section class="exp-open" id="burgos-2026" aria-labelledby="exp-heading" data-header-hero>
-			<div class="exp-hero" data-cut-switch>
-				<div class="exp-hero-chrome">
-					<button type="button" class="exp-hero-mute" data-exp-mute aria-label="Mute sound" aria-pressed="false">
-						<span class="exp-hero-mute-icon" data-exp-mute-icon aria-hidden="true">
-							<svg class="exp-hero-mute-on" viewBox="0 0 24 24" width="18" height="18" fill="none">
-								<path
-									d="M4 10.5v3h3.2L11 17V7L7.2 10.5H4Z"
-									fill="currentColor"></path>
-								<path
-									d="M14.2 9.2a3.6 3.6 0 0 1 0 5.6M16.6 7a6.4 6.4 0 0 1 0 10"
-									stroke="currentColor"
-									stroke-width="1.7"
-									stroke-linecap="round"></path>
-							</svg>
-							<svg class="exp-hero-mute-off" viewBox="0 0 24 24" width="18" height="18" fill="none">
-								<path
-									d="M4 10.5v3h3.2L11 17V7L7.2 10.5H4Z"
-									fill="currentColor"></path>
-								<path
-									d="M15 9.5 20 14.5M20 9.5 15 14.5"
-									stroke="currentColor"
-									stroke-width="1.7"
-									stroke-linecap="round"></path>
-							</svg>
-						</span>
-					</button>
-					<button type="button" class="exp-hero-close" data-exp-close aria-label="Exit film">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<p class="exp-rotate-hint" data-exp-rotate-hint hidden>
-					<span class="exp-rotate-hint-icon" aria-hidden="true">↻</span>
-					<span class="exp-rotate-hint-text">Rotate for a larger view.</span>
-				</p>
-				<div class="exp-hero-frame">
-					<div
-						class="exp-hero-panel"
-						data-exp-src={hasFull ? fullSrc : undefined}
-						data-exp-src-light={hasFull ? fullSrcLight : undefined}
-						data-exp-skip-start={hasFull ? '5' : undefined}
-						data-exp-skip-tail={hasFull ? '4.3' : undefined}
-						data-exp-preload="auto"
-					>
-						{
-							hasFull ? (
-								<>
-									<video
-										class="exp-hero-video"
-										data-exp-video
-										playsinline
-										webkit-playsinline
-										preload="auto"
-										poster={fullPoster}
-										aria-label="Burgos expedition film by Santiago Marrodán Ciordia"
-									></video>
-									<img
-										class="exp-hero-still"
-										src={fullPoster}
-										alt=""
-										width="1920"
-										height="1080"
-										decoding="async"
-									/>
-									<button class="exp-play" type="button" data-exp-play aria-label="Play video">
-										<span data-exp-play-label>Play</span>
-									</button>
-									<div
-										class="exp-hero-load"
-										data-exp-load
-										role="progressbar"
-										aria-label="Film download"
-										aria-valuemin="0"
-										aria-valuemax="100"
-										aria-valuenow="0"
-									>
-										<span class="exp-hero-load-bar" data-exp-load-bar></span>
-									</div>
-								</>
-							) : (
-								<Image
-									src={padillaCamp}
-									alt="Two team members in purple expedition shirts at the Padilla de Abajo field camp, beside grey observation tents"
-									widths={[960, 1400, 1800]}
-									sizes="100vw"
-									class="exp-hero-photo"
-								/>
-							)
-						}
-					</div>
-				</div>
-				{hasFull && <p class="exp-hero-credit">Film by Santiago Marrodán Ciordia</p>}
+		<section class="exp-screen" id="burgos-2026" aria-labelledby="exp-heading" data-header-hero>
+			<div class="exp-screen-media">
+				<Image
+					src={burgosHorizon}
+					alt="Tripods silhouetted against a low sun over a wide valley at Pico Trigaza"
+					widths={[1200, 2000, 2800]}
+					sizes="100vw"
+					loading="eager"
+					class="exp-screen-photo"
+				/>
+				<div class="exp-screen-shade" aria-hidden="true"></div>
 			</div>
-
-			<div class="exp-open-copy">
+			<div class="exp-screen-copy">
 				<p class="label page-kicker">Latest expedition · 2026</p>
 				<h1 id="exp-heading">Burgos, Spain</h1>
 				<p class="exp-facts">12 August 2026 · Padilla de Abajo · Pico Trigaza</p>
-				<p>
-					The greatest challenge was observing an eclipse so low on the horizon — about eight degrees —
-					without interference from the landscape.
-				</p>
-				{hasFull && <p class="exp-screen-credit">Film by Santiago Marrodán Ciordia</p>}
+				<p class="exp-screen-lead">Two observing sites. One total solar eclipse.</p>
+				<p class="exp-screen-credit">Pico Trigaza · Václav Široký, 2026</p>
 			</div>
 		</section>
 
 		<section class="exp-block exp-sites" id="mission" aria-labelledby="mission-heading" data-burgos-filter>
-			<div class="page-narrow">
-				<p class="label">Two observing sites</p>
+			<div class="exp-sites-intro">
 				<h2 id="mission-heading">Two sites, one eclipse.</h2>
-				<p>
-					There is not usually a specific scientific goal for one expedition. The work is to build a
-					larger, cumulative body of observations. Whenever possible, more than one observing site
-					increases the chance of clear skies and the total time spent in totality.
-				</p>
-				<p>
-					In Burgos the teams worked from two places — Padilla de Abajo in the valley, and Pico Trigaza
-					on the ridge. The photographs below are from both sites; each caption names the place and the
-					photographer. Use the filters to see one site at a time.
-				</p>
+				<div class="exp-sites-copy">
+					<!-- Proposed editorial — validate scientific wording with Danilo before publish. -->
+					<p>
+						In Burgos, the Sherpas observed from two locations: Padilla de Abajo in the valley and Pico
+						Trigaza on the ridge. Observing from more than one site improves the chances of clear skies
+						and adds to the project’s growing record of the solar corona.
+					</p>
+					<p>
+						With the eclipse only about eight degrees above the horizon, both teams needed a clear view
+						unobstructed by the landscape.
+					</p>
+				</div>
 			</div>
 
-			<div class="exp-gallery-toolbar" role="group" aria-label="Filter photographs by site">
-				<button type="button" class="exp-site-btn" data-gallery-filter="all" aria-pressed="true">
-					All
-				</button>
-				<button type="button" class="exp-site-btn" data-gallery-filter="padilla" aria-pressed="false">
-					Padilla de Abajo
-				</button>
-				<button type="button" class="exp-site-btn" data-gallery-filter="trigaza" aria-pressed="false">
-					Pico Trigaza
-				</button>
-			</div>
-
-			<div
-				class="exp-burgos-gallery"
-				data-lightbox-gallery
-				data-burgos-gallery
-				role="list"
-				aria-label="Burgos expedition photographs from Padilla de Abajo and Pico Trigaza"
-			>
+			<div class="exp-sites-pair" data-lightbox-gallery aria-label="The two Burgos observing sites">
 				{
-					burgosGallery.map((shot) => (
-						<figure
-							class:list={['exp-burgos-shot', `exp-burgos-shot--${shot.size}`]}
-							role="listitem"
-							data-site={shot.site}
-							style={`--shot-pos: ${shot.position}`}
-						>
+					siteLeads.map((site) => (
+						<figure class="exp-sites-shot" style={`--shot-pos: ${site.position}`}>
 							<button
 								type="button"
-								class="exp-burgos-shot-open"
+								class="exp-sites-shot-open"
 								data-lightbox-trigger
-								aria-label={`View larger: ${shot.caption}`}
+								aria-label={`View larger: ${site.label}`}
 							>
 								<Image
-									src={shot.image}
-									alt={shot.alt}
-									widths={[480, 800, 1200, 1600]}
-									sizes={
-										shot.size === 'hero' || shot.size === 'wide'
-											? '(max-width: 900px) 94vw, 48vw'
-											: '(max-width: 900px) 46vw, 28vw'
-									}
+									src={site.image}
+									alt={site.alt}
+									widths={[640, 960, 1400]}
+									sizes="(max-width: 900px) 92vw, 46vw"
 									loading="lazy"
-									class="exp-burgos-photo"
+									class="exp-sites-photo"
 								/>
 							</button>
-							<figcaption class="exp-burgos-caption" data-lightbox-caption-text>
-								{shot.caption}
+							<figcaption class="exp-sites-caption" data-lightbox-caption-text>
+								{site.label}
 							</figcaption>
 						</figure>
 					))
 				}
 			</div>
+
+			<div class="exp-gallery-head">
+				<p class="exp-gallery-note">
+					Filter by site. Each caption names the place and the photographer.
+				</p>
+				<div class="exp-gallery-toolbar" role="group" aria-label="Filter photographs by site">
+					<button type="button" class="exp-site-btn" data-gallery-filter="all" aria-pressed="true">
+						All
+					</button>
+					<button type="button" class="exp-site-btn" data-gallery-filter="padilla" aria-pressed="false">
+						Padilla de Abajo
+					</button>
+					<button type="button" class="exp-site-btn" data-gallery-filter="trigaza" aria-pressed="false">
+						Pico Trigaza
+					</button>
+				</div>
+			</div>
+
+			<div class="exp-burgos-carousel carousel" data-carousel data-lightbox-gallery>
+				<div
+					class="exp-burgos-gallery carousel-track"
+					data-carousel-track
+					data-burgos-gallery
+					tabindex="0"
+					role="list"
+					aria-label="Burgos expedition photographs from Padilla de Abajo and Pico Trigaza"
+				>
+					{
+						burgosGallery.map((shot) => (
+							<figure
+								class:list={['exp-burgos-shot', `exp-burgos-shot--${shot.size}`]}
+								role="listitem"
+								data-site={shot.site}
+								style={`--shot-pos: ${shot.position}`}
+							>
+								<button
+									type="button"
+									class="exp-burgos-shot-open"
+									data-lightbox-trigger
+									aria-label={`View larger: ${shot.caption}`}
+								>
+									<Image
+										src={shot.image}
+										alt={shot.alt}
+										widths={[480, 800, 1200, 1600]}
+										sizes={
+											shot.size === 'hero' || shot.size === 'wide'
+												? '(max-width: 900px) 85vw, 48vw'
+												: '(max-width: 900px) 78vw, 28vw'
+										}
+										loading="lazy"
+										class="exp-burgos-photo"
+									/>
+								</button>
+								<figcaption class="exp-burgos-caption" data-lightbox-caption-text>
+									{shot.caption}
+								</figcaption>
+							</figure>
+						))
+					}
+				</div>
+				<div class="carousel-controls exp-burgos-carousel-controls">
+					<p class="exp-burgos-carousel-hint">Swipe or use the arrows to browse</p>
+					<div class="carousel-arrows">
+						<button class="icon-btn" type="button" data-carousel-prev aria-label="Previous photographs">
+							←
+						</button>
+						<button class="icon-btn" type="button" data-carousel-next aria-label="Next photographs">
+							→
+						</button>
+					</div>
+				</div>
+			</div>
 		</section>
+
+		{
+			hasFull && (
+				<section class="exp-block exp-film exp-open" id="film" aria-labelledby="film-heading">
+					<div class="page-narrow exp-film-copy">
+						<p class="label">The film</p>
+						<h2 id="film-heading">A film from Padilla de Abajo.</h2>
+						<p>
+							Filmmaker Santiago Marrodán Ciordia followed the Burgos 2026 campaign — a longer look at
+							the people, the instruments and the days around totality in Padilla de Abajo.
+						</p>
+					</div>
+
+					<div class="exp-hero" data-cut-switch>
+						<div class="exp-hero-chrome">
+							<button
+								type="button"
+								class="exp-hero-mute"
+								data-exp-mute
+								aria-label="Mute sound"
+								aria-pressed="false"
+							>
+								<span class="exp-hero-mute-icon" data-exp-mute-icon aria-hidden="true">
+									<svg class="exp-hero-mute-on" viewBox="0 0 24 24" width="18" height="18" fill="none">
+										<path d="M4 10.5v3h3.2L11 17V7L7.2 10.5H4Z" fill="currentColor" />
+										<path
+											d="M14.2 9.2a3.6 3.6 0 0 1 0 5.6M16.6 7a6.4 6.4 0 0 1 0 10"
+											stroke="currentColor"
+											stroke-width="1.7"
+											stroke-linecap="round"
+										/>
+									</svg>
+									<svg class="exp-hero-mute-off" viewBox="0 0 24 24" width="18" height="18" fill="none">
+										<path d="M4 10.5v3h3.2L11 17V7L7.2 10.5H4Z" fill="currentColor" />
+										<path
+											d="M15 9.5 20 14.5M20 9.5 15 14.5"
+											stroke="currentColor"
+											stroke-width="1.7"
+											stroke-linecap="round"
+										/>
+									</svg>
+								</span>
+							</button>
+							<button type="button" class="exp-hero-close" data-exp-close aria-label="Exit film">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<p class="exp-rotate-hint" data-exp-rotate-hint hidden>
+							<span class="exp-rotate-hint-icon" aria-hidden="true">↻</span>
+							<span class="exp-rotate-hint-text">Rotate for a larger view.</span>
+						</p>
+						<div class="exp-hero-frame">
+							<div
+								class="exp-hero-panel"
+								data-exp-src={fullSrc}
+								data-exp-src-light={fullSrcLight}
+								data-exp-skip-start="5"
+								data-exp-skip-tail="4.3"
+								data-exp-preload="metadata"
+							>
+								<video
+									class="exp-hero-video"
+									data-exp-video
+									playsinline
+									webkit-playsinline
+									preload="metadata"
+									poster={fullPoster}
+									aria-label="Burgos expedition film by Santiago Marrodán Ciordia"
+								/>
+								<img
+									class="exp-hero-still"
+									src={fullPoster}
+									alt=""
+									width="1920"
+									height="1080"
+									decoding="async"
+									loading="lazy"
+								/>
+								<button class="exp-play" type="button" data-exp-play aria-label="Play video">
+									<span data-exp-play-label>Play film</span>
+								</button>
+								<div
+									class="exp-hero-load"
+									data-exp-load
+									role="progressbar"
+									aria-label="Film download"
+									aria-valuemin="0"
+									aria-valuemax="100"
+									aria-valuenow="0"
+								>
+									<span class="exp-hero-load-bar" data-exp-load-bar />
+								</div>
+							</div>
+						</div>
+						<p class="exp-hero-credit">Film by Santiago Marrodán Ciordia</p>
+					</div>
+				</section>
+			)
+		}
 
 		<section class="exp-block" id="in-the-field" aria-labelledby="field-heading">
 			<div class="page-narrow">
@@ -826,97 +899,125 @@ const podcastDefault = podcast.languages[0];
 			<div class="page-narrow">
 				<p class="label">Made Possible By</p>
 				<h2 id="partners-heading">The support that put this expedition in the field.</h2>
+				<!--
+					Editorial (not public): former note that logos match the rest of the site, and that
+					Valmala local supporters will be added when confirmed. Thank-you copy below is proposed —
+					confirm with Danilo before publish.
+				-->
 				<p>
-					The institutions and partners on this page are the same as those on the rest of the site.
-					Local supporters in Valmala will be added when the names are confirmed.
+					Thank you to the institutions, technical partners and local supporters who helped make the
+					Burgos 2026 expedition possible.
 				</p>
 			</div>
-			<PartnerLogos />
+			<PartnerLogos include={[...burgosPartnerIds]} />
 		</section>
 
 		<section class="exp-block exp-podcast" id="podcast" aria-labelledby="podcast-heading" data-podcast>
-			<div class="exp-podcast-layout">
-				<div class="exp-podcast-copy">
-					<p class="label">Podcast</p>
-					<h2 id="podcast-heading">{podcast.title}</h2>
-					<div class="exp-podcast-byline">
-						<figure class="exp-podcast-byline-photo">
-							<Image
-								src={ignacioAmigo}
-								alt="Ignacio Amigo"
-								widths={[96, 160, 240]}
-								sizes="76px"
-							/>
-						</figure>
-						<p class="exp-podcast-byline-text">
-							A conversation recorded by{' '}
-							<a href={podcast.authorUrl} rel="noopener noreferrer" target="_blank">{podcast.author}</a>
-							, science writer, who spent several days with the expedition in Padilla de Abajo.
+			<div class="exp-podcast-panel">
+				<div class="exp-podcast-layout">
+					<div class="exp-podcast-copy">
+						<p class="label">Podcast</p>
+						<h2 id="podcast-heading">{podcast.title}</h2>
+						<div class="exp-podcast-byline">
+							<figure class="exp-podcast-byline-photo">
+								<Image
+									src={ignacioAmigo}
+									alt=""
+									widths={[96, 160, 240]}
+									sizes="48px"
+								/>
+							</figure>
+							<p class="exp-podcast-byline-text">
+								<a href={podcast.authorUrl} rel="noopener noreferrer" target="_blank">{podcast.author}</a>
+							</p>
+						</div>
+						<p>
+							Science writer Ignacio Amigo joined the expedition in Padilla de Abajo, recording
+							conversations with the researchers and the sounds of eclipse day.
+						</p>
+						<p class="exp-podcast-about">
+							<a href={podcast.authorUrl} rel="noopener noreferrer" target="_blank">About Ignacio</a>
 						</p>
 					</div>
+
+					<div class="exp-podcast-listen-col">
+						<div class="exp-podcast-langs" data-podcast-langs role="group" aria-label="Episode language">
+							{
+								podcast.languages.map((language, index) => (
+									<button
+										type="button"
+										class="exp-site-btn"
+										data-podcast-lang={language.id}
+										data-episode={language.episodeId}
+										data-spotify={language.spotifyUrl}
+										data-iframe-title={language.iframeTitle}
+										aria-pressed={index === 0 ? 'true' : 'false'}
+									>
+										{language.label}
+									</button>
+								))
+							}
+						</div>
+						<p class="exp-podcast-duration">{podcast.durationLabel}</p>
+						<div class="exp-podcast-player">
+							<iframe
+								data-podcast-frame
+								src={`https://open.spotify.com/embed/episode/${podcastDefault.episodeId}?utm_source=generator&theme=0`}
+								title={podcastDefault.iframeTitle}
+								width="100%"
+								height="152"
+								allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+								loading="lazy"
+							></iframe>
+						</div>
+						<p class="exp-podcast-listen">
+							<a
+								data-podcast-listen
+								href={podcastDefault.spotifyUrl}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								Listen on Spotify <span class="cta-arrow" aria-hidden="true">→</span>
+							</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="exp-processed" id="processed-images" aria-labelledby="processed-heading">
+			<div class="exp-section-inner exp-processed-layout">
+				<figure class="exp-processed-media">
+					<Image
+						class="exp-processed-photo"
+						src={burgosProcessedCorona}
+						alt="Processed white-light image of the solar corona during the 2026 total solar eclipse"
+						widths={[640, 960, 1280]}
+						sizes="(max-width: 900px) 92vw, 52vw"
+					/>
+					<figcaption class="exp-processed-credit">
+						© 2026 Miloslav Druckmüller, Shadia Habbal, Zdeněk Sobotka
+					</figcaption>
+				</figure>
+				<div class="exp-processed-copy">
+					<p class="label">Processed Eclipse Images</p>
+					<h2 id="processed-heading">A closer look at the solar corona.</h2>
 					<p>
-						A biochemist by training, he holds a PhD in molecular biology and a degree in science
-						journalism. On site he interviewed the scientists, recorded sound, and gathered each
-						researcher’s account of the 2026 eclipse.
+						A processed image of the 2026 total solar eclipse by{' '}
+						<a href={druckmullerSite} rel="noopener noreferrer" target="_blank"
+							>Miloslav Druckmüller</a
+						>.
 					</p>
 				</div>
-
-				<div class="exp-podcast-langs" data-podcast-langs>
-					{
-						podcast.languages.map((language, index) => (
-							<button
-								type="button"
-								class="exp-site-btn"
-								data-podcast-lang={language.id}
-								data-episode={language.episodeId}
-								data-spotify={language.spotifyUrl}
-								data-iframe-title={language.iframeTitle}
-								aria-pressed={index === 0 ? 'true' : 'false'}
-							>
-								{language.label}
-							</button>
-						))
-					}
-				</div>
-
-				<div class="exp-podcast-player">
-					<iframe
-						data-podcast-frame
-						src={`https://open.spotify.com/embed/episode/${podcastDefault.episodeId}?utm_source=generator&theme=0`}
-						title={podcastDefault.iframeTitle}
-						width="100%"
-						height="152"
-						allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-						allowfullscreen
-						loading="lazy"
-					></iframe>
-				</div>
-				<p class="exp-podcast-listen">
-					<a
-						data-podcast-listen
-						href={podcastDefault.spotifyUrl}
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						Listen on Spotify <span class="cta-arrow" aria-hidden="true">→</span>
-					</a>
-				</p>
 			</div>
 		</section>
 
 		<section class="exp-next" id="what-comes-next" aria-labelledby="next-heading">
-			<div class="page-narrow">
-				<p class="label">What Comes Next</p>
-				<h2 id="next-heading">The next totality is 2 August 2027.</h2>
-				<p>
-					Some images from Burgos have already been processed — they are published on{' '}
-					<a href={druckmullerImages} rel="noopener noreferrer" target="_blank">
-						Miloslav Druckmüller’s site</a
-					>. Reducing the rest of the data has begun, and will take months, if not years.
-				</p>
-				<p>
-					Egypt, the south of Spain near Tarifa, and Tunisia are confirmed for 2 August 2027. The
-					exact site in Tunisia is still to be set.
+			<div class="exp-next-panel">
+				<p class="label">Next Expedition</p>
+				<h2 id="next-heading">2 August 2027.</h2>
+				<p class="exp-next-lead">
+					The next campaign will bring the Sherpas to Egypt, southern Spain and Tunisia.
 				</p>
 				<ul class="exp-next-places">
 					{
@@ -928,9 +1029,26 @@ const podcastDefault = podcast.languages[0];
 						))
 					}
 				</ul>
-				<div class="exp-next-cta">
-					<a class="cta cta--button" href="#contact">
-						Talk to us <span class="cta-arrow" aria-hidden="true">→</span>
+			</div>
+		</section>
+
+		<section class="exp-invite" id="support" aria-labelledby="invite-heading">
+			<!--
+				Editorial (not public): Patreon / Buy Me a Coffee / four support types stay on Home #support.
+			-->
+			<div class="exp-section-inner exp-invite-inner">
+				<p class="label">Support Our Work</p>
+				<h2 id="invite-heading">Help make eclipse science possible.</h2>
+				<p>
+					Help sustain the expeditions, instruments and research that deepen our understanding of the
+					Sun.
+				</p>
+				<div class="exp-invite-actions">
+					<a class="cta cta--button" href="/#support">
+						Explore ways to support <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
+					<a class="exp-invite-secondary" href={`mailto:${site.email}`}>
+						Discuss a partnership
 					</a>
 				</div>
 			</div>

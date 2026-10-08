@@ -237,7 +237,9 @@ function setInlinePlaying(open: HTMLElement | null, on: boolean) {
 
 async function setOpenImmersive(open: HTMLElement, on: boolean) {
 	const hero = open.querySelector<HTMLElement>('.exp-hero');
-	const intro = open.querySelector<HTMLElement>('.exp-open-copy');
+	const intro =
+		open.querySelector<HTMLElement>('.exp-open-copy') ??
+		open.querySelector<HTMLElement>('.exp-film-copy');
 	if (!hero) return;
 
 	const was = open.classList.contains('is-immersive');

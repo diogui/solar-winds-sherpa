@@ -49,7 +49,7 @@
  * 6. What comes next. The close follows the Latest Expedition page: Burgos data reduction
  *    is underway and will take months to years; the next totality is 2 August 2027.
  *    Confirm that this science-page close should stay in step with that page.
- *    “Support our research” points at /#support while /join still redirects home.
+ *    “Support our research” points at #support on this page.
  */
 
 export type ScienceImage =
@@ -299,6 +299,6 @@ export const nextStep = {
 	text: 'Some images from the 2026 eclipse are already processed. The rest of the analysis will take months, and in some cases years. The next totality is 2 August 2027.',
 	expeditionHref: '/latest-expedition',
 	expeditionLabel: 'Explore our latest expedition',
-	supportHref: '/#support',
+	supportHref: '#support',
 	supportLabel: 'Support our research',
 } as const;

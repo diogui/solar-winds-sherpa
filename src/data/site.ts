@@ -22,8 +22,8 @@ export const navLeft = [
 ];
 
 export const navRight = [
-	{ href: '/#contact', label: 'Contact', live: true },
-	{ href: homeOnlyPreview ? '/#support' : '/join', label: 'Support', live: true },
+	{ href: '#contact', label: 'Contact', live: true },
+	{ href: '#support', label: 'Support', live: true },
 ];
 
 export const footerLinks = [
