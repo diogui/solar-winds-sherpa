@@ -287,6 +287,13 @@ body:has([data-header-hero]) .site-header[data-variant='page'] {
 	--header-progress: 0;
 }
 
+/* Expedition mobile uses a thumbnail under the nav — keep the header solid. */
+@media (max-width: 900px) {
+	body:has(.exp-open[data-header-hero]) .site-header[data-variant='page'] {
+		--header-progress: 1;
+	}
+}
+
 .header-fill {
 	position: absolute;
 	inset: 0 0 auto;

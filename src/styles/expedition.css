@@ -1337,24 +1337,34 @@ html.has-lightbox-open body {
 }
 
 @media (max-width: 900px) {
-	/* Stack media + copy so the tall phone viewport does not leave empty sky. */
+	/* Mobile: thumbnail card under the nav, text below. Play stays in-frame. */
+	article.page.exp {
+		padding-top: var(--header-h);
+	}
+
 	.exp-open {
 		display: block;
 		min-height: 0;
 		overflow: visible;
+		background: transparent;
 	}
 
 	.exp-hero {
 		position: relative;
 		inset: auto;
-		width: 100%;
+		z-index: 1;
+		width: calc(100% - 2rem);
+		max-width: 40rem;
 		height: auto;
+		margin: 1rem auto 0;
 	}
 
 	.exp-hero-frame {
 		position: relative;
 		inset: auto;
-		aspect-ratio: 5 / 4;
+		aspect-ratio: 16 / 10;
+		border-radius: 6px;
+		background: #05070c;
 	}
 
 	.exp-hero-still,
@@ -1365,17 +1375,30 @@ html.has-lightbox-open body {
 	.exp-hero-panel::after {
 		background: linear-gradient(
 			180deg,
-			rgb(8 13 20 / 0.28) 0%,
-			transparent 28%,
-			transparent 72%,
-			rgb(8 13 20 / 0.4) 100%
+			rgb(8 13 20 / 0.18) 0%,
+			transparent 32%,
+			transparent 68%,
+			rgb(8 13 20 / 0.42) 100%
 		);
+	}
+
+	.exp-play {
+		padding: 0.82rem 1.4rem 0.78rem;
+		font-size: 0.78rem;
+		letter-spacing: 0.16em;
+		box-shadow: 0 10px 28px rgb(8 13 20 / 0.45);
 	}
 
 	.exp-open-copy {
 		width: min(760px, calc(100% - 2rem));
 		margin: 0 auto;
-		padding: 1.65rem 0 2.4rem;
+		padding: 1.35rem 0 2.4rem;
+	}
+
+	/* Keep the intro readable while the film plays in the thumbnail. */
+	.exp-open.is-inline-playing .exp-open-copy {
+		opacity: 1;
+		pointer-events: auto;
 	}
 
 	article.page.exp h1 {
@@ -1397,9 +1420,24 @@ html.has-lightbox-open body {
 		color: var(--text-mute);
 	}
 
+	/* Close / mute live inside the video card, clear of the site header. */
+	.exp-open.is-inline-playing .exp-hero-chrome {
+		top: 0.65rem;
+		right: 0.65rem;
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: none;
+	}
+
 	.exp-open.is-inline-playing .exp-hero-frame {
-		aspect-ratio: auto;
-		min-height: min(62vh, 28rem);
+		aspect-ratio: 16 / 10;
+		min-height: 0;
+	}
+
+	.exp-open.is-inline-playing .exp-rotate-hint {
+		bottom: 0.7rem;
+		width: min(18rem, calc(100% - 1.25rem));
 	}
 
 	.exp-mission-grid,

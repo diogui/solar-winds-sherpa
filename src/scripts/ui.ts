@@ -126,13 +126,20 @@ function initInnerHeader() {
 	if (!header || header.dataset.variant === 'home') return;
 
 	const hero = document.querySelector<HTMLElement>('[data-header-hero]');
-	if (!hero) {
+	const mobileExpThumb =
+		hero?.matches('.exp-open') && window.matchMedia('(max-width: 900px)').matches;
+	if (!hero || mobileExpThumb) {
 		header.style.setProperty('--header-progress', '1');
 		return;
 	}
 
 	let ticking = false;
 	const update = () => {
+		if (window.matchMedia('(max-width: 900px)').matches && hero.matches('.exp-open')) {
+			header.style.setProperty('--header-progress', '1');
+			header.classList.remove('is-scrolled');
+			return;
+		}
 		const heroH = hero.offsetHeight;
 		const start = Math.max(0, heroH - header.offsetHeight);
 		const fade = 88;
