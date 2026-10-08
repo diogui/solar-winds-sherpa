@@ -30,32 +30,38 @@ function initMobileNav() {
 }
 
 function initCarousel() {
-	const root = document.querySelector<HTMLElement>('[data-carousel]');
-	if (!root) return;
+	document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+		const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+		const prev = root.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+		const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
+		if (!track || !prev || !next) return;
 
-	const track = root.querySelector<HTMLElement>('[data-carousel-track]');
-	const prev = root.querySelector<HTMLButtonElement>('[data-carousel-prev]');
-	const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
-	if (!track || !prev || !next) return;
+		const distance = () => {
+			const card = track.querySelector<HTMLElement>(':scope > *');
+			if (card) {
+				const gap = Number.parseFloat(getComputedStyle(track).gap || '0') || 0;
+				return card.getBoundingClientRect().width + gap;
+			}
+			return Math.min(track.clientWidth * 0.82, 380);
+		};
 
-	const distance = () => Math.min(track.clientWidth * 0.82, 380);
-
-	prev.addEventListener('click', () => {
-		track.scrollBy({ left: -distance(), behavior: 'smooth' });
-	});
-	next.addEventListener('click', () => {
-		track.scrollBy({ left: distance(), behavior: 'smooth' });
-	});
-
-	track.addEventListener('keydown', (event) => {
-		if (event.key === 'ArrowLeft') {
-			event.preventDefault();
+		prev.addEventListener('click', () => {
 			track.scrollBy({ left: -distance(), behavior: 'smooth' });
-		}
-		if (event.key === 'ArrowRight') {
-			event.preventDefault();
+		});
+		next.addEventListener('click', () => {
 			track.scrollBy({ left: distance(), behavior: 'smooth' });
-		}
+		});
+
+		track.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				track.scrollBy({ left: -distance(), behavior: 'smooth' });
+			}
+			if (event.key === 'ArrowRight') {
+				event.preventDefault();
+				track.scrollBy({ left: distance(), behavior: 'smooth' });
+			}
+		});
 	});
 }
 
@@ -118,7 +124,36 @@ function initNewsletterForm() {
 function initInnerHeader() {
 	const header = document.querySelector<HTMLElement>('[data-header]');
 	if (!header || header.dataset.variant === 'home') return;
-	header.style.setProperty('--header-progress', '1');
+
+	const hero = document.querySelector<HTMLElement>('[data-header-hero]');
+	if (!hero) {
+		header.style.setProperty('--header-progress', '1');
+		return;
+	}
+
+	let ticking = false;
+	const update = () => {
+		const heroH = hero.offsetHeight;
+		const start = Math.max(0, heroH - header.offsetHeight);
+		const fade = 88;
+		const progress = Math.min(1, Math.max(0, (window.scrollY - start) / fade));
+		header.style.setProperty('--header-progress', String(progress));
+		header.classList.toggle('is-scrolled', window.scrollY > start);
+	};
+
+	update();
+	window.addEventListener(
+		'scroll',
+		() => {
+			if (ticking) return;
+			ticking = true;
+			window.requestAnimationFrame(() => {
+				update();
+				ticking = false;
+			});
+		},
+		{ passive: true },
+	);
 }
 
 function isHomeArchive() {

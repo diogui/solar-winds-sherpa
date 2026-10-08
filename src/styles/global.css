@@ -282,6 +282,11 @@ p {
 	--header-progress: 1;
 }
 
+/* Full-bleed page heroes start with a clear header; JS fades it in on scroll. */
+body:has([data-header-hero]) .site-header[data-variant='page'] {
+	--header-progress: 0;
+}
+
 .header-fill {
 	position: absolute;
 	inset: 0 0 auto;

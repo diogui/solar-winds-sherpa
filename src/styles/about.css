@@ -475,6 +475,26 @@ html.has-lightbox-open body {
 	gap: 0.55rem;
 }
 
+.about-people-gallery--landscape {
+	display: grid;
+	width: min(1120px, calc(100% - 2.5rem));
+	margin: 2rem auto 0;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-rows: none;
+	grid-template-areas: none;
+	grid-auto-flow: dense;
+	gap: 0.55rem;
+}
+
+.about-people-gallery--landscape .about-people-shot {
+	aspect-ratio: 3 / 2;
+}
+
+.about-people-gallery--landscape .about-people-shot--wide {
+	grid-column: span 2;
+	aspect-ratio: 16 / 9;
+}
+
 .about-people-copy {
 	grid-area: copy;
 	display: flex;
@@ -925,6 +945,16 @@ html.has-lightbox-open body {
 		gap: 0.5rem;
 	}
 
+	.about-people-gallery--landscape {
+		width: calc(100% - 2rem);
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.about-people-gallery--landscape .about-people-shot--wide {
+		grid-column: span 2;
+		aspect-ratio: 16 / 10;
+	}
+
 	.about-people-copy {
 		padding: 0 0 1rem;
 	}
@@ -932,5 +962,598 @@ html.has-lightbox-open body {
 	.about-support-funds {
 		grid-template-columns: 1fr;
 		gap: 0.9rem;
+	}
+}
+
+/* —— Version switcher (review) —— */
+.about-version-bar {
+	position: sticky;
+	top: var(--header-h, 4.5rem);
+	z-index: 40;
+	display: grid;
+	gap: 0.45rem;
+	width: min(1280px, calc(100% - 2rem));
+	margin: 0.75rem auto 1.25rem;
+	padding: 0.85rem 1rem;
+	border: 1px solid rgb(249 171 0 / 0.35);
+	border-radius: 6px;
+	background: rgb(8 13 20 / 0.92);
+	backdrop-filter: blur(8px);
+}
+
+.about-version-bar-copy,
+.about-version-bar-hint {
+	margin: 0;
+	color: var(--text-dim);
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.about-version-bar-copy strong {
+	color: var(--accent);
+	font-weight: 500;
+}
+
+.about-version-bar-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.55rem 0.85rem;
+	align-items: center;
+}
+
+.about-version-bar-nav a {
+	color: var(--text);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	text-decoration: none;
+	border-bottom: 1px solid transparent;
+}
+
+.about-version-bar-nav a[aria-current='page'] {
+	color: var(--accent);
+	border-bottom-color: var(--accent);
+}
+
+.about-version-bar-nav a:hover,
+.about-version-bar-nav a:focus-visible {
+	color: var(--accent);
+}
+
+.about-version-bar-hint code {
+	color: var(--text-mute);
+	font-size: 0.85em;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+.about-draft-tag {
+	display: inline-block;
+	margin: 0 0.4rem 0.35rem 0;
+	padding: 0.18rem 0.45rem;
+	border: 1px solid rgb(249 171 0 / 0.4);
+	border-radius: 999px;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.58rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+/* —— versao-chat layout —— */
+.page.about.about--chat {
+	padding-top: 0;
+}
+
+.about--chat .about-screen {
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	min-height: 100vh;
+	min-height: 100dvh;
+	overflow: hidden;
+	background: #05070c;
+}
+
+.about--chat .about-screen-media,
+.about--chat .about-screen-media picture,
+.about--chat .about-screen-photo {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.about--chat .about-screen-media {
+	overflow: hidden;
+}
+
+.about--chat .about-screen-photo {
+	object-fit: cover;
+	/* Drops the observers in the lower-left of burgos-totality.jpg. */
+	object-view-box: inset(0% 0% 37.8% 37.8%);
+	object-position: 34% 22%;
+}
+
+.about--chat .about-screen-shade {
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(
+			90deg,
+			rgb(8 13 20 / 0.78) 0%,
+			rgb(8 13 20 / 0.46) 34%,
+			rgb(8 13 20 / 0.12) 58%,
+			transparent 78%
+		),
+		linear-gradient(180deg, rgb(8 13 20 / 0.28) 0%, transparent 18%, transparent 55%, rgb(8 13 20 / 0.55) 100%);
+}
+
+.about--chat .about-screen-copy {
+	position: relative;
+	z-index: 1;
+	width: var(--content);
+	margin: 0 auto;
+	padding: calc(var(--header-h) + 2rem) 0 3.25rem;
+}
+
+article.page.about.about--chat h1 {
+	max-width: 13em;
+	margin-bottom: 1rem;
+	color: #fff;
+	font-size: clamp(2.35rem, 5vw, 4.15rem);
+	line-height: 1.05;
+	text-shadow: 0 10px 28px rgb(8 13 20 / 0.35);
+}
+
+.about--chat .about-intro-lead {
+	max-width: 36rem;
+	margin: 0;
+	color: rgb(245 245 243 / 0.88);
+	font-size: clamp(1.08rem, 1.6vw, 1.24rem);
+	line-height: 1.55;
+}
+
+.about--chat .about-indicators {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.25rem 2rem;
+	max-width: 46rem;
+	margin: 2rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.about--chat .about-indicator-value {
+	display: block;
+	color: #fff;
+	font-family: var(--font-display);
+	font-size: clamp(2.4rem, 4vw, 3.4rem);
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	line-height: 1;
+}
+
+.about--chat .about-indicator-label {
+	display: block;
+	max-width: 11rem;
+	margin-top: 0.45rem;
+	color: rgb(245 245 243 / 0.72);
+	font-family: var(--font-display);
+	font-size: 0.72rem;
+	letter-spacing: 0.08em;
+	line-height: 1.35;
+	text-transform: uppercase;
+}
+
+.about--chat .about-screen-credit {
+	margin: 1.75rem 0 0;
+	color: rgb(245 245 243 / 0.62);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.about-montage--trio {
+	display: grid;
+	grid-template-columns: 1.2fr 1fr 1fr;
+	grid-template-areas: 'people setup eclipse';
+	gap: 0.5rem;
+	aspect-ratio: auto;
+}
+
+.about-montage--trio .about-montage-item {
+	display: grid;
+	grid-template-rows: 1fr auto;
+	min-height: 14rem;
+}
+
+.about-montage--trio .about-montage-item--people {
+	grid-area: people;
+	min-height: 18rem;
+}
+
+.about-montage--trio .about-montage-item--setup {
+	grid-area: setup;
+}
+
+.about-montage--trio .about-montage-item--eclipse {
+	grid-area: eclipse;
+}
+
+.about-montage--trio figcaption,
+.about-people-chat-photo figcaption,
+.about-sharing-media figcaption {
+	margin: 0.55rem 0 0;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	letter-spacing: 0.08em;
+	line-height: 1.45;
+}
+
+.about-origin {
+	display: grid;
+	gap: 1.15rem;
+	margin: 2rem 0 0;
+	padding: 0;
+}
+
+.about-origin > div {
+	display: grid;
+	grid-template-columns: 7.5rem minmax(0, 1fr);
+	gap: 0.85rem 1.25rem;
+	padding-bottom: 1.1rem;
+	border-bottom: 1px solid rgb(245 245 243 / 0.1);
+}
+
+.about-origin dt {
+	margin: 0;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.about-origin dd {
+	margin: 0;
+	color: var(--text);
+	font-size: 1.02rem;
+	line-height: 1.55;
+}
+
+.about-story-carousel {
+	margin-top: 2.5rem;
+}
+
+/* Mobile: horizontal swipe carousel */
+.about-story-track {
+	padding-top: 0.25rem;
+	padding-bottom: 0.85rem;
+	-webkit-overflow-scrolling: touch;
+	touch-action: pan-x;
+}
+
+.about-story-slide {
+	position: relative;
+	flex: 0 0 min(88vw, 420px);
+	aspect-ratio: 16 / 10;
+	margin: 0;
+	overflow: hidden;
+	border-radius: 5px;
+	scroll-snap-align: start;
+	background: var(--bg-2);
+	isolation: isolate;
+}
+
+.about-story-slide .about-story-shot-open {
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	cursor: zoom-in;
+	color: inherit;
+}
+
+.about-story-slide .about-story-photo {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: var(--shot-pos, 50% 50%);
+	transform: scale(1);
+	transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-story-slide:hover .about-story-photo,
+.about-story-slide:focus-within .about-story-photo {
+	transform: scale(1.06);
+}
+
+.about-story-carousel-controls {
+	width: min(1120px, calc(100% - 2.5rem));
+	margin-top: 0.85rem;
+}
+
+.about-story-carousel-hint {
+	margin: 0;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+/* Desktop: landscape grid like The People */
+@media (min-width: 901px) {
+	.about-story-track {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-auto-flow: dense;
+		gap: 0.55rem;
+		overflow: visible;
+		scroll-snap-type: none;
+		padding: 0;
+		width: min(1120px, calc(100% - 2.5rem));
+		margin: 0 auto;
+		touch-action: auto;
+	}
+
+	.about-story-slide {
+		flex: none;
+		width: auto;
+		aspect-ratio: 3 / 2;
+		scroll-snap-align: unset;
+	}
+
+	.about-story-slide--wide {
+		grid-column: span 2;
+		aspect-ratio: 16 / 9;
+	}
+
+	.about-story-carousel-controls {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.about-story-slide .about-story-photo {
+		transition: none;
+	}
+
+	.about-story-slide:hover .about-story-photo,
+	.about-story-slide:focus-within .about-story-photo {
+		transform: none;
+	}
+}
+
+.about-featured--bright .about-featured-img,
+.about-featured--bright .about-card-img {
+	filter: none;
+}
+
+.about-founder-link {
+	margin-top: 0.85rem;
+	color: var(--text-dim);
+}
+
+.about-placeholder-link {
+	color: var(--text-mute);
+}
+
+.about-contribution-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1rem;
+	width: min(1120px, calc(100% - 2.5rem));
+	margin: 1.75rem auto 0;
+	padding: 0;
+	list-style: none;
+}
+
+.about-contribution-grid li {
+	padding: 1.15rem 1.2rem;
+	border: 1px solid rgb(245 245 243 / 0.1);
+	border-radius: 6px;
+	background: rgb(245 245 243 / 0.03);
+}
+
+.about-contribution-grid h3 {
+	margin: 0 0 0.55rem;
+	font-size: 1.05rem;
+}
+
+.about-contribution-grid p {
+	margin: 0;
+	color: var(--text-dim);
+}
+
+.about-people-chat-layout {
+	display: grid;
+	grid-template-columns: 1.15fr 0.85fr;
+	gap: 1.25rem;
+	width: min(1120px, calc(100% - 2.5rem));
+	margin: 2rem auto 0;
+	align-items: start;
+}
+
+.about-people-chat-photo {
+	margin: 0;
+}
+
+.about-people-chat-img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 11;
+	object-fit: cover;
+	object-position: var(--shot-pos, 50% 50%);
+	border-radius: 5px;
+}
+
+.about-profile-card {
+	padding: 1.25rem 1.3rem 1.4rem;
+	border: 1px dashed rgb(249 171 0 / 0.45);
+	border-radius: 6px;
+	background: rgb(8 13 20 / 0.45);
+}
+
+.about-profile-placeholder {
+	display: grid;
+	place-items: center;
+	aspect-ratio: 4 / 5;
+	margin: 0.5rem 0 1rem;
+	border-radius: 4px;
+	background: linear-gradient(160deg, #1a2233, #0d121c);
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.about-profile-card h3 {
+	margin: 0 0 0.35rem;
+}
+
+.about-profile-role {
+	margin: 0 0 0.75rem;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.about-people-cta {
+	margin-top: 1.75rem;
+}
+
+.about-sharing-layout {
+	display: grid;
+	grid-template-columns: 1.1fr 0.9fr;
+	gap: 1.5rem 2rem;
+	width: min(1120px, calc(100% - 2.5rem));
+	margin: 0 auto;
+	align-items: center;
+}
+
+.about-sharing-media {
+	margin: 0;
+}
+
+.about-sharing-photo {
+	display: block;
+	width: 100%;
+	aspect-ratio: 16 / 11;
+	object-fit: cover;
+	object-position: 50% 50%;
+	border-radius: 5px;
+}
+
+.about-sharing-copy h3 {
+	margin: 1.25rem 0 0.65rem;
+	font-size: 1.2rem;
+}
+
+.about-partner-examples {
+	margin-top: 1.75rem;
+}
+
+.about-partner-note {
+	color: var(--text-mute);
+	font-size: 0.92rem;
+}
+
+.about-partner-examples ul {
+	display: grid;
+	gap: 0.85rem;
+	margin: 1rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.about-partner-examples li {
+	display: grid;
+	gap: 0.35rem;
+	padding: 0.95rem 1.05rem;
+	border: 1px solid rgb(245 245 243 / 0.1);
+	border-radius: 6px;
+}
+
+.about-partner-examples span {
+	color: var(--text-dim);
+}
+
+.about-continue {
+	margin-top: 1rem;
+	padding: 3.5rem 0;
+	background:
+		radial-gradient(ellipse 80% 60% at 20% 0%, rgb(249 171 0 / 0.08), transparent 55%),
+		var(--bg-2);
+	border-top: 1px solid rgb(245 245 243 / 0.08);
+}
+
+.about-continue-cta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-top: 1.5rem;
+}
+
+.about-continue-contact {
+	margin-top: 1.1rem;
+	color: var(--text-dim);
+}
+
+@media (max-width: 900px) {
+	article.page.about.about--chat h1 {
+		font-size: clamp(2.05rem, 8.4vw, 2.85rem);
+	}
+
+	.about--chat .about-screen-copy {
+		padding-bottom: 2.25rem;
+	}
+
+	.about--chat .about-indicators {
+		gap: 1rem 0.85rem;
+	}
+
+	.about-montage--trio {
+		grid-template-columns: 1fr 1fr;
+		grid-template-areas:
+			'people people'
+			'setup eclipse';
+	}
+
+	.about-montage--trio .about-montage-item--people {
+		min-height: 14rem;
+	}
+
+	.about-origin > div {
+		grid-template-columns: 1fr;
+		gap: 0.35rem;
+	}
+
+	.about-people-chat-layout,
+	.about-sharing-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.about-story-carousel-hint {
+		max-width: 12rem;
+	}
+
+	.about-contribution-grid {
+		grid-template-columns: 1fr;
 	}
 }

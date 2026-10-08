@@ -1,0 +1,501 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PartnerLogos from '../components/PartnerLogos.astro';
+import WorkCards from '../components/WorkCards.astro';
+import HomeConnect from '../components/home/HomeConnect.astro';
+import { supportLinks } from '../data/site';
+import instruments from '../assets/images/field/latest-instruments.jpg';
+import shadia from '../assets/images/field/shadia-habbal.jpg';
+import team from '../assets/images/field/latest-team.jpg';
+import totality from '../assets/images/field/burgos-totality.jpg';
+import fieldSetup from '../assets/images/field/burgos-workshop.jpg';
+import observer from '../assets/images/work/research.jpg';
+import storyGroupUsa from '../assets/images/about/story/group-usa-2024.jpg';
+import storyGroup2017 from '../assets/images/about/story/group-2017.jpg';
+import storyGroupSpain from '../assets/images/about/story/group-spain.jpg';
+import storyGroupField2015 from '../assets/images/about/story/group-field-2015.jpg';
+import storyPeopleAdjusting from '../assets/images/about/story/people-adjusting.jpg';
+import storyPeopleShadia from '../assets/images/about/story/people-shadia-field.jpg';
+import storyPeopleHorses from '../assets/images/about/story/people-horses.jpg';
+import storyPeopleJanaHorses from '../assets/images/about/story/people-jana-horses.jpg';
+import storyPeopleInstruments from '../assets/images/about/story/people-instruments.jpg';
+import storyPeopleOutreach from '../assets/images/about/story/people-outreach.jpg';
+import storyPeopleCerro from '../assets/images/about/story/people-cerro-tololo.jpg';
+import storyComputers8003 from '../assets/images/about/story/computers-8003.jpg';
+import storyComputersNight from '../assets/images/about/story/computers-night.jpg';
+import peopleUsa from '../assets/images/about/people/group-usa-2024.jpg';
+import people2021 from '../assets/images/about/people/group-2021.jpg';
+import peopleAirport from '../assets/images/about/people/group-airport.jpg';
+import peopleMexicoEight from '../assets/images/about/people/group-mexico-eight.jpg';
+import peopleMexicoTrio from '../assets/images/about/people/group-mexico-trio.jpg';
+import peopleSpain from '../assets/images/about/people/group-spain.jpg';
+import peopleGear from '../assets/images/about/people/group-gear-2024.jpg';
+import people2017 from '../assets/images/about/people/group-2017.jpg';
+import peopleField2015 from '../assets/images/about/people/group-field-2015.jpg';
+import '../styles/work.css';
+import '../styles/about.css';
+
+const expeditionHref = '/latest-expedition#team';
+
+const introMontage = [
+	{
+		image: team,
+		alt: 'Solar Wind Sherpas team members gathered around a telescope in Burgos',
+		area: 'people',
+		position: '54% 38%',
+	},
+	{
+		image: totality,
+		alt: 'Total solar eclipse over the Burgos ridge, with telescopes in the foreground',
+		area: 'landscape',
+		position: '50% 28%',
+	},
+	{
+		image: observer,
+		alt: 'A researcher in a Solar Wind Sherpas shirt operating a camera in the field',
+		area: 'observer',
+		position: '35% 40%',
+	},
+	{
+		image: fieldSetup,
+		alt: 'Two team members assembling custom solar instruments at a work table',
+		area: 'setup',
+		position: '50% 42%',
+	},
+	{
+		image: instruments,
+		alt: 'Custom solar instruments and a field laptop on the Burgos ridge',
+		area: 'gear',
+		position: '28% 52%',
+	},
+] as const;
+
+const storyGallery = [
+	{
+		image: storyPeopleAdjusting,
+		alt: 'Jana adjusting a multi-camera rig in the field',
+		caption: 'Jana at work, 2024',
+		area: 'lead',
+		position: '48% 40%',
+	},
+	{
+		image: storyComputers8003,
+		alt: 'Total solar eclipse above silhouetted cameras and telescopes in the field',
+		caption: 'Totality · USA, 2024',
+		area: 'a',
+		position: '50% 35%',
+	},
+	{
+		image: storyGroupUsa,
+		alt: 'Solar Wind Sherpas team in matching blue shirts posing in a grassy field',
+		caption: '2024',
+		area: 'b',
+		position: '50% 42%',
+	},
+	{
+		image: storyGroup2017,
+		alt: 'Large expedition group in red shirts in front of field vehicles',
+		caption: '2017',
+		area: 'c',
+		position: '50% 45%',
+	},
+	{
+		image: storyPeopleCerro,
+		alt: 'Cerro Tololo observatory landscape under a bright sun',
+		caption: 'Cerro Tololo, 2019 · Petr Štarha',
+		area: 'd',
+		position: '50% 45%',
+	},
+	{
+		image: storyPeopleInstruments,
+		alt: 'Ben calibrating instruments inside a field tent',
+		caption: 'Ben on his first expedition · Indonesia, 2016',
+		area: 'e',
+		position: '50% 42%',
+	},
+	{
+		image: storyGroupSpain,
+		alt: 'Team portrait on a grassy ridge with a telescope beside them',
+		caption: 'Foto Klub + Milos, 2026',
+		area: 'f',
+		position: '50% 38%',
+	},
+	{
+		image: storyComputersNight,
+		alt: 'Field computers glowing in a darkened operations tent before totality',
+		caption: 'USA, 2024',
+		area: 'g',
+		position: '50% 48%',
+	},
+	{
+		image: storyPeopleHorses,
+		alt: 'Petr, Jana and a teammate on horseback among mountain trees',
+		caption: 'Petr, Jana and a teammate on horseback, 2017',
+		area: 'h',
+		position: '50% 40%',
+	},
+	{
+		image: storyPeopleJanaHorses,
+		alt: 'Jana working under a cloth at an instrument, with horses nearby',
+		caption: 'Jana at work · 2017',
+		area: 'i',
+		position: '45% 50%',
+	},
+	{
+		image: storyPeopleShadia,
+		alt: 'Shadia Habbal working alone at a field site in the distance',
+		caption: 'Shadia in the distance, 2024',
+		area: 'j',
+		position: '42% 48%',
+	},
+	{
+		image: storyGroupField2015,
+		alt: 'Red expedition tent and instruments on a coastal gravel site',
+		caption: 'Faroe Islands, 2015',
+		area: 'k',
+		position: '50% 48%',
+	},
+	{
+		image: storyPeopleOutreach,
+		alt: 'Ben and Martina speaking on stage with an eclipse slide behind them',
+		caption: 'Ben and Martina speaking, 2024',
+		area: 'm',
+		position: '50% 40%',
+	},
+] as const;
+
+const peopleGallery = [
+	{
+		image: peopleUsa,
+		alt: 'Solar Wind Sherpas team in matching blue shirts posing in a grassy field',
+		caption: '2024',
+		area: 'hero',
+		position: '50% 40%',
+	},
+	{
+		image: peopleSpain,
+		alt: 'Expedition team on a Spanish ridge with a telescope and open sky behind them',
+		caption: 'Foto Klub + Milos, 2026',
+		area: 'a',
+		position: '50% 42%',
+	},
+	{
+		image: peopleMexicoEight,
+		alt: 'Eight expedition members in blue shirts at a field camp with tents',
+		caption: '2024',
+		area: 'b',
+		position: '50% 40%',
+	},
+	{
+		image: peopleMexicoTrio,
+		alt: 'Sage, Luke and Carlos in matching expedition shirts in Canatlán',
+		caption: 'Sage, Luke & Carlos · Canatlán, 2024',
+		area: 'c',
+		position: '50% 38%',
+	},
+	{
+		image: people2017,
+		alt: 'Large expedition group in red shirts gathered in front of field vehicles',
+		caption: '2017',
+		area: 'd',
+		position: '50% 45%',
+	},
+	{
+		image: peopleAirport,
+		alt: 'Team selfie with expedition luggage at an airport arrivals hall',
+		caption: 'Airport selfie · Houston, 2024',
+		area: 'e',
+		position: '50% 42%',
+	},
+	{
+		image: peopleGear,
+		alt: 'Petr and Matěj behind a dense array of cameras prepared for totality',
+		caption: 'Petr & Matěj, 2024',
+		area: 'f',
+		position: '48% 48%',
+	},
+	{
+		image: people2021,
+		alt: 'Team in cold-weather parkas and life vests aboard a research vessel',
+		caption: 'Antarctica, 2021',
+		area: 'g',
+		position: '50% 45%',
+	},
+	{
+		image: peopleField2015,
+		alt: 'Red expedition tent and instruments on a coastal gravel observing site',
+		caption: 'Faroe Islands, 2015',
+		area: 'h',
+		position: '50% 48%',
+	},
+] as const;
+---
+
+<BaseLayout
+	title="About"
+	description="Solar Wind Sherpas is an expeditionary collaboration, founded and led by Dr. Shadia Habbal, that studies the solar corona from the path of totality."
+>
+	<article class="page about">
+		<section class="about-intro" id="introduction" aria-labelledby="about-heading">
+			<div class="page-narrow">
+				<p class="label page-kicker">About</p>
+				<h1 id="about-heading">A collaboration that goes to the path of totality.</h1>
+				<p class="about-facts">31 years · 21 expeditions · 40+ peer-reviewed publications</p>
+				<p>
+					Founded and led by solar physicist Dr. Shadia Habbal, Solar Wind Sherpas deploys portable
+					observatories to total solar eclipses worldwide — to study the corona and the origins of
+					the solar wind.
+				</p>
+			</div>
+			<figure class="about-media reveal">
+				<div
+					class="about-montage"
+					role="group"
+					aria-label="People, landscapes and instruments from Solar Wind Sherpas expeditions"
+				>
+					{
+						introMontage.map((shot, index) => (
+							<div
+								class:list={['about-montage-item', `about-montage-item--${shot.area}`]}
+								style={`--shot-pos: ${shot.position}`}
+							>
+								<Image
+									src={shot.image}
+									alt={shot.alt}
+									widths={[480, 800, 1200]}
+									sizes={
+										shot.area === 'people'
+											? '(max-width: 900px) 50vw, 28vw'
+											: '(max-width: 900px) 50vw, 36vw'
+									}
+									loading={index === 0 ? 'eager' : 'lazy'}
+									class="about-montage-photo"
+								/>
+							</div>
+						))
+					}
+				</div>
+				<figcaption>Burgos, Spain · 2026</figcaption>
+			</figure>
+		</section>
+
+		<section class="about-block" id="our-story" aria-labelledby="story-heading">
+			<div class="page-narrow">
+				<h2 id="story-heading">Our Story</h2>
+				<p>
+					Dr. Shadia Habbal founded Solar Wind Sherpas in 1995 and has led every expedition since.
+					Across three decades, the work has been carried by people, instruments and the brief windows
+					of totality that bring them together.
+				</p>
+			</div>
+			<div
+				class="about-story-gallery"
+				data-lightbox-gallery
+				role="list"
+				aria-label="Our Story photographs"
+			>
+				{
+					storyGallery.map((shot) => (
+						<figure
+							class:list={['about-story-shot', `about-story-shot--${shot.area}`]}
+							role="listitem"
+							style={`--shot-pos: ${shot.position}`}
+						>
+							<button
+								type="button"
+								class="about-story-shot-open"
+								data-lightbox-trigger
+								aria-label={`View larger: ${shot.caption}`}
+							>
+								<Image
+									src={shot.image}
+									alt={shot.alt}
+									widths={[480, 800, 1200, 1600]}
+									sizes="(max-width: 900px) 92vw, 36vw"
+									loading="lazy"
+									class="about-story-photo"
+								/>
+							</button>
+							<figcaption class="about-story-caption" data-lightbox-caption-text>
+								{shot.caption}
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="about-founder" id="founder" aria-labelledby="founder-heading">
+			<article class="about-card about-featured reveal">
+				<div class="about-card-photo about-featured-photo">
+					<Image
+						src={shadia}
+						alt="Dr. Shadia Habbal smiling in the field"
+						widths={[640, 960, 1024]}
+						sizes="(max-width: 900px) 92vw, 42vw"
+						class="about-card-img about-featured-img"
+					/>
+				</div>
+				<div class="about-card-copy">
+					<p class="label">Founder</p>
+					<h3 id="founder-heading">Dr. Shadia R. Habbal</h3>
+					<p class="about-featured-affiliation">
+						Professor and Astronomer, Institute for Astronomy, University of Hawaiʻi
+					</p>
+					<p>
+						Born in Syria, she earned her Ph.D. in Physics from the University of Cincinnati in 1977.
+						After more than two decades at the Smithsonian Astrophysical Observatory and Harvard, she
+						joined the Institute for Astronomy in 2005. She is Lead Editor of the Astrophysical
+						Journal.
+					</p>
+					<p>
+						She founded Solar Wind Sherpas in 1995 and has led every expedition since. Findings have
+						been featured in <em>Science</em>. The work has been recognized with a NASA Certificate
+						of Appreciation and an Honorary Doctorate from Brno University of Technology.
+					</p>
+				</div>
+			</article>
+		</section>
+
+		<section class="about-people" id="people" aria-labelledby="people-heading">
+			<div
+				class="about-people-gallery"
+				data-lightbox-gallery
+				aria-label="The People Behind the Sherpas photographs"
+			>
+				<div class="about-people-copy">
+					<h2 id="people-heading">The People Behind the Sherpas</h2>
+					<p>
+						Each expedition brings together the scientists, engineers and observers needed for those
+						minutes — including graduate students and early-career researchers in the field.
+						Participants are listed with the expedition they joined.
+					</p>
+					<a class="cta" href={expeditionHref}>
+						See who was in the field in Burgos <span class="cta-arrow" aria-hidden="true">→</span>
+					</a>
+				</div>
+				{
+					peopleGallery.map((shot) => (
+						<figure
+							class:list={['about-people-shot', `about-people-shot--${shot.area}`]}
+							style={`--shot-pos: ${shot.position}`}
+						>
+							<button
+								type="button"
+								class="about-people-shot-open"
+								data-lightbox-trigger
+								aria-label={`View larger: ${shot.caption}`}
+							>
+								<Image
+									src={shot.image}
+									alt={shot.alt}
+									widths={[480, 800, 1200, 1600]}
+									sizes={
+										shot.area === 'hero'
+											? '(max-width: 900px) 94vw, 48vw'
+											: '(max-width: 900px) 46vw, 28vw'
+									}
+									loading="lazy"
+									class="about-people-photo"
+								/>
+							</button>
+							<figcaption class="about-people-caption" data-lightbox-caption-text>
+								{shot.caption}
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+
+		<dialog class="about-lightbox" data-about-lightbox aria-label="Photo gallery">
+			<button type="button" class="about-lightbox-close" data-lightbox-close aria-label="Close gallery">
+				<span aria-hidden="true">×</span>
+			</button>
+			<button type="button" class="about-lightbox-nav about-lightbox-nav--prev" data-lightbox-prev aria-label="Previous photo">
+				<span aria-hidden="true">‹</span>
+			</button>
+			<button type="button" class="about-lightbox-nav about-lightbox-nav--next" data-lightbox-next aria-label="Next photo">
+				<span aria-hidden="true">›</span>
+			</button>
+			<div class="about-lightbox-stage" data-lightbox-stage>
+				<img class="about-lightbox-image" data-lightbox-image alt="" />
+				<div class="about-lightbox-meta">
+					<p class="about-lightbox-caption" data-lightbox-caption></p>
+					<p class="about-lightbox-counter" data-lightbox-counter></p>
+				</div>
+			</div>
+		</dialog>
+
+		<section class="about-suite" id="actions" aria-labelledby="actions-heading">
+			<div class="about-suite-block">
+				<header class="about-suite-head">
+					<h2 id="actions-heading">Our Actions</h2>
+					<p>
+						We bring solar research into the field and share the science of eclipses with the
+						communities we meet.
+					</p>
+				</header>
+				<WorkCards />
+			</div>
+		</section>
+
+		<section class="about-block about-partners" id="partners" aria-labelledby="about-partners-heading">
+			<div class="page-narrow">
+				<h2 id="about-partners-heading">Partners &amp; Supporters</h2>
+			</div>
+			<PartnerLogos />
+		</section>
+
+		<section class="about-support" id="support" aria-labelledby="about-support-heading">
+			<div class="page-narrow">
+				<p class="label">Support our work</p>
+				<h2 id="about-support-heading">Help make eclipse science possible.</h2>
+				<p>
+					If you or your organization would like to help sustain future expeditions and scientific
+					research, <a href="#contact">we would welcome a conversation</a>.
+				</p>
+				<p>
+					You can also support the project in a way that works for you: join us on Patreon for
+					ongoing support, or make a one-time contribution through Buy Me a Coffee. Every
+					contribution helps us carry this work forward.
+				</p>
+				<ul class="about-support-funds">
+					<li>
+						<p class="about-support-fund-title">Expedition sponsorship</p>
+						<p>Travel, field equipment, and operations across observing sites.</p>
+					</li>
+					<li>
+						<p class="about-support-fund-title">Data analysis</p>
+						<p>The years of work that turn eclipse observations into papers.</p>
+					</li>
+					<li>
+						<p class="about-support-fund-title">Instrumentation</p>
+						<p>Spectrometers, filters and cameras built for the path of totality.</p>
+					</li>
+					<li>
+						<p class="about-support-fund-title">Early-career scientists</p>
+						<p>Students and researchers who learn this science in the field.</p>
+					</li>
+				</ul>
+				<div class="about-support-cta">
+					{
+						supportLinks.map((link) => (
+							<a
+								class="cta cta--button"
+								href={link.href}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								{link.label} <span class="cta-arrow" aria-hidden="true">→</span>
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<HomeConnect />
+	</article>
+</BaseLayout>

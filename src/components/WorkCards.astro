@@ -9,7 +9,7 @@ interface Props {
 	outreachHref?: string | false;
 }
 
-const { outreachHref = homeOnlyPreview ? '/#who-we-are' : '/about' } = Astro.props;
+const { outreachHref = '/about#actions' } = Astro.props;
 
 const fronts = [
 	{
@@ -24,8 +24,8 @@ const fronts = [
 	{
 		title: 'Eclipse Expeditions',
 		text: 'Observing a total solar eclipse starts long before totality. We select observing sites, prepare instruments and bring people and equipment into the field, ready to make the most of a brief opportunity to study the corona.',
-		href: homeOnlyPreview ? '/#expeditions' : '/expeditions',
-		cta: 'Explore our expeditions',
+		href: homeOnlyPreview ? '/latest-expedition' : '/expeditions',
+		cta: homeOnlyPreview ? 'Explore our latest expedition' : 'Explore our expeditions',
 		image: expeditionsPhoto,
 		alt: 'Telescopes set up on a ridge in Spain at sunset, ready for eclipse observations',
 		variant: 'expeditions',

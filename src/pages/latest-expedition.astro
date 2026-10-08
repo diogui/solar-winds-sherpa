@@ -548,17 +548,7 @@ const podcastDefault = podcast.languages[0];
 	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla de Abajo and Pico Trigaza."
 >
 	<article class="page exp">
-		<section class="exp-open" id="burgos-2026" aria-labelledby="exp-heading">
-			<div class="page-narrow exp-open-copy">
-				<p class="label page-kicker">Latest expedition · 2026</p>
-				<h1 id="exp-heading">Burgos, Spain</h1>
-				<p class="exp-facts">12 August 2026 · Padilla de Abajo · Pico Trigaza</p>
-				<p>
-					The greatest challenge was observing an eclipse so low on the horizon — about eight degrees —
-					without interference from the landscape.
-				</p>
-			</div>
-
+		<section class="exp-open" id="burgos-2026" aria-labelledby="exp-heading" data-header-hero>
 			<div class="exp-hero" data-cut-switch>
 				<div class="exp-hero-chrome">
 					<button type="button" class="exp-hero-mute" data-exp-mute aria-label="Mute sound" aria-pressed="false">
@@ -618,8 +608,8 @@ const podcastDefault = podcast.languages[0];
 										class="exp-hero-still"
 										src={fullPoster}
 										alt=""
-										width="1600"
-										height="900"
+										width="1920"
+										height="1080"
 										decoding="async"
 									/>
 									<button class="exp-play" type="button" data-exp-play aria-label="Play video">
@@ -642,7 +632,7 @@ const podcastDefault = podcast.languages[0];
 									src={padillaCamp}
 									alt="Two team members in purple expedition shirts at the Padilla de Abajo field camp, beside grey observation tents"
 									widths={[960, 1400, 1800]}
-									sizes="(max-width: 900px) 94vw, 88vw"
+									sizes="100vw"
 									class="exp-hero-photo"
 								/>
 							)
@@ -650,6 +640,17 @@ const podcastDefault = podcast.languages[0];
 					</div>
 				</div>
 				{hasFull && <p class="exp-hero-credit">Film by Santiago Marrodán Ciordia</p>}
+			</div>
+
+			<div class="exp-open-copy">
+				<p class="label page-kicker">Latest expedition · 2026</p>
+				<h1 id="exp-heading">Burgos, Spain</h1>
+				<p class="exp-facts">12 August 2026 · Padilla de Abajo · Pico Trigaza</p>
+				<p>
+					The greatest challenge was observing an eclipse so low on the horizon — about eight degrees —
+					without interference from the landscape.
+				</p>
+				{hasFull && <p class="exp-screen-credit">Film by Santiago Marrodán Ciordia</p>}
 			</div>
 		</section>
 
