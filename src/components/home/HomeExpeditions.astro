@@ -46,9 +46,30 @@
 					<dt>Expeditions</dt>
 					<dd>21</dd>
 				</div>
-				<div>
+				<div class="home-expeditions-stat-years">
 					<dt>Years</dt>
-					<dd>31</dd>
+					<dd>
+						<span>31</span>
+						<button
+							type="button"
+							class="home-expeditions-tour"
+							data-expedition-tour
+							aria-pressed="false"
+							aria-label="Play expedition tour"
+						>
+							<span class="home-expeditions-tour-play" aria-hidden="true">
+								<svg viewBox="0 0 24 24" focusable="false">
+									<path d="M8 5.5v13l11-6.5z" />
+								</svg>
+							</span>
+							<span class="home-expeditions-tour-pause" aria-hidden="true">
+								<svg viewBox="0 0 24 24" focusable="false">
+									<rect x="6" y="5" width="4" height="14" rx="1" />
+									<rect x="14" y="5" width="4" height="14" rx="1" />
+								</svg>
+							</span>
+						</button>
+					</dd>
 				</div>
 			</dl>
 		</div>

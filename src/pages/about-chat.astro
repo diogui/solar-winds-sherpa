@@ -1,9 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PartnerLogos from '../components/PartnerLogos.astro';
+import Partners from '../components/Partners.astro';
 import WorkCards from '../components/WorkCards.astro';
 import TakeAction from '../components/TakeAction.astro';
+import OnPageNav from '../components/OnPageNav.astro';
 import heroTotality from '../assets/images/field/burgos-totality.jpg';
 import shadia from '../assets/images/field/shadia-habbal.jpg';
 import storyGroupUsa from '../assets/images/about/story/group-usa-2024.jpg';
@@ -197,12 +198,22 @@ const peopleGallery = [
 		position: '50% 48%',
 	},
 ] as const;
+
+const aboutNav = [
+	{ id: 'founder', label: 'Founder' },
+	{ id: 'our-story', label: 'Our Story' },
+	{ id: 'people', label: 'People' },
+	{ id: 'actions', label: 'Actions' },
+	{ id: 'partners', label: 'Partners' },
+	{ id: 'take-action', label: 'Take Action' },
+] as const;
 ---
 
 <BaseLayout
 	title="About"
 	description="Solar Wind Sherpas brings together scientists, engineers and observers to study the Sun’s outer atmosphere from the path of totality."
 >
+	<OnPageNav sections={aboutNav} hero=".about-screen" />
 	<article class="page about about--chat">
 		<section class="about-screen" id="introduction" aria-labelledby="about-heading" data-header-hero>
 			<div class="about-screen-media">
@@ -438,40 +449,28 @@ const peopleGallery = [
 			</div>
 		</section>
 
-		<section class="about-block about-partners" id="partners" aria-labelledby="about-partners-heading">
-			<div class="page-narrow">
-				<h2 id="about-partners-heading">Partners &amp; Supporters</h2>
-				<p>
-					The work of the Sherpas is supported through scientific collaboration, funding, technical
-					contributions and help in the field. These relationships contribute to different stages of
-					the research and to specific expeditions.
-				</p>
-			</div>
-			<PartnerLogos />
-			<ul class="about-partner-examples page-narrow">
-				<li>
-					<strong>Scientific collaboration</strong>
-					<span>
-						Partner institutions contribute researchers, analysis and shared observing programmes
-						that strengthen the science behind each campaign.
-					</span>
-				</li>
-				<li>
-					<strong>Research funding</strong>
-					<span>
-						Grants and sponsored programmes help cover instruments, travel and the long analysis
-						work that continues between eclipses.
-					</span>
-				</li>
-				<li>
-					<strong>Instruments and field support</strong>
-					<span>
-						Technical partners and field collaborators supply equipment, logistics and on-site
-						help that make portable observatories possible.
-					</span>
-				</li>
-			</ul>
-		</section>
+		<Partners
+			variant="block"
+			id="partners"
+			headingId="about-partners-heading"
+			label="Partners"
+			heading="Partners & Supporters"
+			lead="The work of the Sherpas is supported through scientific collaboration, funding, technical contributions and help in the field. These relationships contribute to different stages of the research and to specific expeditions."
+			examples={[
+				{
+					title: 'Scientific collaboration',
+					body: 'Partner institutions contribute researchers, analysis and shared observing programmes that strengthen the science behind each campaign.',
+				},
+				{
+					title: 'Research funding',
+					body: 'Grants and sponsored programmes help cover instruments, travel and the long analysis work that continues between eclipses.',
+				},
+				{
+					title: 'Instruments and field support',
+					body: 'Technical partners and field collaborators supply equipment, logistics and on-site help that make portable observatories possible.',
+				},
+			]}
+		/>
 
 		<dialog class="about-lightbox" data-about-lightbox aria-label="Photo gallery">
 			<button type="button" class="about-lightbox-close" data-lightbox-close aria-label="Close gallery">

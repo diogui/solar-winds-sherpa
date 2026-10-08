@@ -1,11 +1,11 @@
 ---
-import PartnerLogos from '../PartnerLogos.astro';
+import Partners from '../Partners.astro';
 ---
 
-<section class="home-partners" aria-labelledby="partners-heading">
-	<h2 id="partners-heading" class="home-partners-title">Partners & Supporters</h2>
-	<PartnerLogos />
-	<a class="cta home-partners-continue" href="#what-we-do">
-		What we do <span class="cta-arrow cta-arrow--down" aria-hidden="true">↓</span>
-	</a>
-</section>
+<Partners
+	variant="strip"
+	id="partners"
+	heading="Partners & Supporters"
+	continueHref="#what-we-do"
+	continueLabel="What we do"
+/>

@@ -1,0 +1,42 @@
+---
+import '../styles/onpage-nav.css';
+
+interface Section {
+	id: string;
+	label: string;
+}
+
+interface Props {
+	sections: readonly Section[];
+	/** CSS selector for the hero/opening block — nav appears after it leaves view. */
+	hero?: string;
+	label?: string;
+}
+
+const {
+	sections,
+	hero = '.home-hero, .exp-screen, .about-screen, [data-header-hero]',
+	label = 'On this page',
+} = Astro.props;
+---
+
+<nav
+	class="page-toc"
+	data-onpage-toc
+	data-toc-hero={hero}
+	aria-label={label}
+	hidden
+>
+	<ol class="page-toc-list">
+		{
+			sections.map((section) => (
+				<li>
+					<a class="page-toc-link" href={`#${section.id}`} data-onpage-toc-link={section.id}>
+						<span class="page-toc-dot" aria-hidden="true" />
+						<span class="page-toc-label">{section.label}</span>
+					</a>
+				</li>
+			))
+		}
+	</ol>
+</nav>

@@ -1,0 +1,87 @@
+---
+import PartnerLogos from './PartnerLogos.astro';
+import '../styles/partners.css';
+
+interface Example {
+	title: string;
+	body: string;
+}
+
+interface Props {
+	id?: string;
+	/** Section kicker — omit on the Home strip title style */
+	label?: string;
+	heading: string;
+	headingId?: string;
+	lead?: string;
+	include?: string[];
+	exclude?: string[];
+	continueHref?: string;
+	continueLabel?: string;
+	/** strip = Home dusk logo band; block = About / Expedition editorial */
+	variant?: 'strip' | 'block';
+	examples?: Example[];
+}
+
+const {
+	id = 'partners',
+	label,
+	heading,
+	headingId = `${id}-heading`,
+	lead,
+	include,
+	exclude,
+	continueHref,
+	continueLabel,
+	variant = 'block',
+	examples = [],
+} = Astro.props;
+---
+
+<section
+	class:list={['partners', `partners--${variant}`]}
+	id={id}
+	aria-labelledby={headingId}
+>
+	{
+		variant === 'strip' ? (
+			<h2 id={headingId} class="partners-heading">
+				{heading}
+			</h2>
+		) : (
+			<div class="partners-intro">
+				{label ? <p class="label">{label}</p> : null}
+				<h2 id={headingId} class="partners-heading">
+					{heading}
+				</h2>
+				{lead ? <p class="partners-lead">{lead}</p> : null}
+			</div>
+		)
+	}
+
+	<PartnerLogos include={include} exclude={exclude} />
+
+	{
+		examples.length > 0 && (
+			<ul class="partners-examples">
+				{examples.map((item) => (
+					<li>
+						<strong>{item.title}</strong>
+						<span>{item.body}</span>
+					</li>
+				))}
+			</ul>
+		)
+	}
+
+	{
+		continueHref && continueLabel ? (
+			<a class="cta partners-continue" href={continueHref}>
+				{continueLabel}{' '}
+				<span class="cta-arrow cta-arrow--down" aria-hidden="true">
+					↓
+				</span>
+			</a>
+		) : null
+	}
+</section>

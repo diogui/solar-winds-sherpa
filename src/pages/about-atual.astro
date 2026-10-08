@@ -1,9 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PartnerLogos from '../components/PartnerLogos.astro';
+import Partners from '../components/Partners.astro';
 import WorkCards from '../components/WorkCards.astro';
 import TakeAction from '../components/TakeAction.astro';
+import OnPageNav from '../components/OnPageNav.astro';
 import instruments from '../assets/images/field/latest-instruments.jpg';
 import shadia from '../assets/images/field/shadia-habbal.jpg';
 import team from '../assets/images/field/latest-team.jpg';
@@ -229,12 +230,22 @@ const peopleGallery = [
 		position: '50% 48%',
 	},
 ] as const;
+
+const aboutNav = [
+	{ id: 'our-story', label: 'Our Story' },
+	{ id: 'founder', label: 'Founder' },
+	{ id: 'people', label: 'People' },
+	{ id: 'actions', label: 'Actions' },
+	{ id: 'partners', label: 'Partners' },
+	{ id: 'take-action', label: 'Take Action' },
+] as const;
 ---
 
 <BaseLayout
 	title="About"
 	description="Solar Wind Sherpas is an expeditionary collaboration, founded and led by Dr. Shadia Habbal, that studies the solar corona from the path of totality."
 >
+	<OnPageNav sections={aboutNav} hero=".about-intro" />
 	<article class="page about">
 		<section class="about-intro" id="introduction" aria-labelledby="about-heading">
 			<div class="page-narrow">
@@ -440,12 +451,13 @@ const peopleGallery = [
 			</div>
 		</section>
 
-		<section class="about-block about-partners" id="partners" aria-labelledby="about-partners-heading">
-			<div class="page-narrow">
-				<h2 id="about-partners-heading">Partners &amp; Supporters</h2>
-			</div>
-			<PartnerLogos />
-		</section>
+		<Partners
+			variant="block"
+			id="partners"
+			headingId="about-partners-heading"
+			label="Partners"
+			heading="Partners & Supporters"
+		/>
 
 		<TakeAction />
 	</article>

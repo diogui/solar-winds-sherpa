@@ -1,9 +1,21 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PartnerLogos from '../components/PartnerLogos.astro';
+import Partners from '../components/Partners.astro';
 import TakeAction from '../components/TakeAction.astro';
-import ExpeditionSectionNav from '../components/expedition/ExpeditionSectionNav.astro';
+import OnPageNav from '../components/OnPageNav.astro';
+
+const expeditionNav = [
+	{ id: 'mission', label: 'Two Sites' },
+	{ id: 'film', label: 'Film' },
+	{ id: 'in-the-field', label: 'Field' },
+	{ id: 'team', label: 'Team' },
+	{ id: 'made-possible-by', label: 'Partners' },
+	{ id: 'podcast', label: 'Podcast' },
+	{ id: 'processed-images', label: 'Processed' },
+	{ id: 'what-comes-next', label: 'Next' },
+	{ id: 'take-action', label: 'Take Action' },
+] as const;
 import padillaCamp from '../assets/images/field/latest-camp.jpg';
 import fieldAssemble from '../assets/images/expedition/field/field-assemble.jpg';
 import fieldCamp from '../assets/images/expedition/field/field-camp.jpg';
@@ -559,7 +571,7 @@ const podcastDefault = podcast.languages[0];
 	title="Latest Expedition"
 	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla de Abajo and Pico Trigaza."
 >
-	<ExpeditionSectionNav />
+	<OnPageNav sections={expeditionNav} hero=".exp-screen" />
 	<article class="page exp">
 		<section class="exp-screen" id="burgos-2026" aria-labelledby="exp-heading" data-header-hero>
 			<div class="exp-screen-media">
@@ -799,7 +811,7 @@ const podcastDefault = podcast.languages[0];
 			)
 		}
 
-		<section class="exp-block" id="in-the-field" aria-labelledby="field-heading">
+		<section class="exp-block exp-field" id="in-the-field" aria-labelledby="field-heading">
 			<div class="page-narrow">
 				<p class="label">In the Field</p>
 				<h2 id="field-heading">Preparation and observation.</h2>
@@ -840,7 +852,7 @@ const podcastDefault = podcast.languages[0];
 			</div>
 		</section>
 
-		<section class="exp-block" id="team" aria-labelledby="team-heading">
+		<section class="exp-block exp-team" id="team" aria-labelledby="team-heading">
 			<div class="page-narrow">
 				<p class="label">The Expedition Team</p>
 				<h2 id="team-heading">Who was in the field.</h2>
@@ -896,22 +908,20 @@ const podcastDefault = podcast.languages[0];
 			</div>
 		</section>
 
-		<section class="exp-block exp-partners" id="made-possible-by" aria-labelledby="partners-heading">
-			<div class="page-narrow">
-				<p class="label">Made Possible By</p>
-				<h2 id="partners-heading">The support that put this expedition in the field.</h2>
-				<!--
-					Editorial (not public): former note that logos match the rest of the site, and that
-					Valmala local supporters will be added when confirmed. Thank-you copy below is proposed —
-					confirm with Danilo before publish.
-				-->
-				<p>
-					Thank you to the institutions, technical partners and local supporters who helped make the
-					Burgos 2026 expedition possible.
-				</p>
-			</div>
-			<PartnerLogos include={[...burgosPartnerIds]} />
-		</section>
+		<!--
+			Editorial (not public): former note that logos match the rest of the site, and that
+			Valmala local supporters will be added when confirmed. Thank-you copy below is proposed —
+			confirm with Danilo before publish.
+		-->
+		<Partners
+			variant="block"
+			id="made-possible-by"
+			headingId="partners-heading"
+			label="Made Possible By"
+			heading="The support that put this expedition in the field."
+			lead="Thank you to the institutions, technical partners and local supporters who helped make the Burgos 2026 expedition possible."
+			include={[...burgosPartnerIds]}
+		/>
 
 		<section class="exp-block exp-podcast" id="podcast" aria-labelledby="podcast-heading" data-podcast>
 			<div class="exp-podcast-panel">

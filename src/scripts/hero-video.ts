@@ -32,7 +32,8 @@ export function chooseHero({
 	connection = null,
 }: ChooseHeroOptions): HeroChoice {
 	const mobile = width <= HERO_MOBILE_MAX;
-	const poster = mobile ? 'hero-mobile-poster.jpg' : 'hero-poster.jpg';
+	/* Cache-bust when posters are regenerated to match the opening frame. */
+	const poster = mobile ? 'hero-mobile-poster.jpg?v=4' : 'hero-poster.jpg?v=4';
 	const ending = mobile ? 'hero-mobile-ending.jpg' : 'hero-ending.jpg';
 	const type = connection?.effectiveType;
 	if (reducedMotion || connection?.saveData || ['slow-2g', '2g'].includes(type ?? '')) {
@@ -44,7 +45,7 @@ export function chooseHero({
 		}
 		return { file: 'hero-mobile-720.mp4?v=9', poster, ending, reason: 'mobile', mobile };
 	}
-	return { file: 'hero-final-24.mp4?v=1', poster, ending, reason: 'final', mobile };
+	return { file: 'hero-final-24.mp4?v=4', poster, ending, reason: 'final', mobile };
 }
 
 function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean) {
@@ -55,6 +56,13 @@ function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean
 		connection,
 	});
 }
+
+/** Bad eclipse→celebration crossfade baked into hero-final / hero-mobile masters. */
+const HERO_GHOST_SKIP = { from: 38.72, to: 39.55 } as const;
+/** Skip the weak opening; start just before the eclipse callout so motion leads. */
+const HERO_START_AT = 2;
+/** Hold the poster after the hero is on screen before autoplay. */
+const HERO_START_DELAY_MS = 1000;
 
 export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	const video = root.querySelector<HTMLVideoElement>('[data-hero-video], video');
@@ -81,8 +89,30 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	root.dataset.heroMobile = selection.mobile ? 'true' : 'false';
 
 	let timeout: number | undefined;
+	let startDelay: number | undefined;
 	let userPaused = false;
 	let ended = false;
+	let skippingGhost = false;
+
+	const clearStartDelay = () => {
+		if (startDelay === undefined) return;
+		window.clearTimeout(startDelay);
+		startDelay = undefined;
+	};
+
+	const skipGhostFrame = () => {
+		if (skippingGhost || ended || userPaused) return;
+		const t = video.currentTime;
+		if (t < HERO_GHOST_SKIP.from || t >= HERO_GHOST_SKIP.to) return;
+		skippingGhost = true;
+		try {
+			video.currentTime = HERO_GHOST_SKIP.to;
+		} finally {
+			window.requestAnimationFrame(() => {
+				skippingGhost = false;
+			});
+		}
+	};
 
 	const atEnd = () =>
 		video.duration > 1 && video.currentTime >= video.duration - 0.08;
@@ -124,6 +154,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 
 	const stop = () => {
 		if (ended) return;
+		clearStartDelay();
 		video.pause();
 		root.dataset.paused = 'true';
 		if (timeout !== undefined) window.clearTimeout(timeout);
@@ -133,6 +164,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 
 	const unload = () => {
 		if (ended) return;
+		clearStartDelay();
 		video.pause();
 		video.removeAttribute('src');
 		video.load();
@@ -140,6 +172,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	};
 
 	const release = () => {
+		clearStartDelay();
 		if (ended) {
 			video.pause();
 			return;
@@ -160,11 +193,12 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	};
 
 	const play = async (explicit = false) => {
+		clearStartDelay();
 		if (ended && selection.mobile && atEnd()) return;
 		if (ended && explicit && !selection.mobile) {
 			ended = false;
 			delete root.dataset.ended;
-			video.currentTime = 0;
+			video.currentTime = HERO_START_AT;
 		}
 		if (!video.getAttribute('src')) {
 			const selected =
@@ -178,10 +212,20 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		if (timeout !== undefined) window.clearTimeout(timeout);
 		timeout = window.setTimeout(unload, 10000);
 		try {
+			if (video.currentTime < HERO_START_AT - 0.05) video.currentTime = HERO_START_AT;
 			await video.play();
 		} catch {
 			if (!ended) idle();
 		}
+	};
+
+	const scheduleAutoplay = () => {
+		if (userPaused || ended || !selection.file || startDelay !== undefined) return;
+		startDelay = window.setTimeout(() => {
+			startDelay = undefined;
+			if (userPaused || ended) return;
+			void play();
+		}, HERO_START_DELAY_MS);
 	};
 
 	video.addEventListener('playing', () => {
@@ -192,7 +236,10 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		delete root.dataset.paused;
 		ensureEnding();
 		setButton(true);
+		skipGhostFrame();
 	});
+	video.addEventListener('timeupdate', skipGhostFrame);
+	video.addEventListener('seeked', skipGhostFrame);
 	video.addEventListener('ended', () => {
 		if (!atEnd()) return;
 		ended = true;
@@ -240,7 +287,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	new IntersectionObserver(
 		([entry]) => {
 			if (entry?.isIntersecting && (entry.intersectionRatio ?? 0) >= 0.2) {
-				if (!userPaused && !ended && selection.file) void play();
+				if (!userPaused && !ended && selection.file) scheduleAutoplay();
 				return;
 			}
 			release();

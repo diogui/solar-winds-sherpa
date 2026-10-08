@@ -9,12 +9,25 @@ import HomeLatest from '../components/home/HomeLatest.astro';
 import HomeExpeditions from '../components/home/HomeExpeditions.astro';
 import HomeContributions from '../components/home/HomeContributions.astro';
 import TakeAction from '../components/TakeAction.astro';
+import OnPageNav from '../components/OnPageNav.astro';
 import { site } from '../data/site';
 import '../styles/home.css';
 import '../styles/work.css';
+
+const homeNav = [
+	{ id: 'who-we-are', label: 'Who We Are' },
+	{ id: 'partners', label: 'Partners' },
+	{ id: 'what-we-do', label: 'What We Do' },
+	{ id: 'why-eclipses', label: 'Why Eclipses' },
+	{ id: 'expeditions', label: 'Expeditions' },
+	{ id: 'latest-expedition', label: 'Latest' },
+	{ id: 'contributions', label: 'Science' },
+	{ id: 'take-action', label: 'Take Action' },
+] as const;
 ---
 
 <BaseLayout variant="home" description={site.description}>
+	<OnPageNav sections={homeNav} hero=".home-hero" />
 	<HomeHero />
 	<HomeVision />
 	<HomePartners />

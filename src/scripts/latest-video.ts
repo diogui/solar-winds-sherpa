@@ -2,6 +2,10 @@ import type { ConnectionLike } from './hero-video';
 
 const FILM = 'film';
 const PHOTOS = 'photos';
+/** Match latest-expedition `data-exp-skip-start` — fade-in after the black lead-in. */
+const FILM_START_AT = 5;
+/** Match latest-expedition `data-exp-skip-tail` — stop before the black lead-out. */
+const FILM_SKIP_TAIL = 4.3;
 
 function network(): ConnectionLike | null {
 	const nav = navigator as Navigator & {
@@ -82,11 +86,37 @@ export function mountLatestFilm(root: HTMLElement) {
 		attach(src);
 	};
 
-	const play = () => {
+	const atFadeIn = () =>
+		Number.isFinite(video.currentTime) && video.currentTime >= FILM_START_AT - 0.05;
+
+	const seekToFadeIn = () => {
+		if (!Number.isFinite(video.duration) || video.duration <= FILM_START_AT) return;
+		if (video.currentTime < FILM_START_AT - 0.05 || video.ended) {
+			video.currentTime = FILM_START_AT;
+		}
+	};
+
+	const loopEnd = () => {
+		const duration = video.duration;
+		if (!duration || !Number.isFinite(duration)) return Number.POSITIVE_INFINITY;
+		return Math.max(FILM_START_AT + 1, duration - FILM_SKIP_TAIL);
+	};
+
+	const play = async () => {
 		if (mode() !== FILM || motion.matches) return;
 		warm(true);
-		const playAttempt = video.play();
-		if (playAttempt) playAttempt.then(() => setReady(true)).catch(() => setReady(false));
+		try {
+			if (video.readyState >= 1) seekToFadeIn();
+			await video.play();
+			if (!atFadeIn()) {
+				seekToFadeIn();
+				setReady(false);
+				return;
+			}
+			setReady(true);
+		} catch {
+			setReady(false);
+		}
 	};
 
 	const pause = () => {
@@ -112,28 +142,44 @@ export function mountLatestFilm(root: HTMLElement) {
 
 	video.addEventListener('loadstart', () => setLoad(0, 'loading'));
 	video.addEventListener('progress', updateLoad);
-	video.addEventListener('loadedmetadata', updateLoad);
-	video.addEventListener('playing', () => setReady(true));
+	video.addEventListener('loadedmetadata', () => {
+		updateLoad();
+		if (inView && mode() === FILM && !motion.matches) seekToFadeIn();
+	});
+	video.addEventListener('seeked', () => {
+		if (mode() === FILM && !video.paused && atFadeIn()) setReady(true);
+	});
+	video.addEventListener('playing', () => {
+		if (!atFadeIn()) {
+			seekToFadeIn();
+			return;
+		}
+		setReady(true);
+	});
 	video.addEventListener('pause', () => {
 		if (mode() === PHOTOS || video.ended) setReady(false);
 	});
+	video.addEventListener('timeupdate', () => {
+		if (mode() !== FILM || video.paused || motion.matches) return;
+		if (video.currentTime < FILM_START_AT - 0.05) {
+			seekToFadeIn();
+			return;
+		}
+		if (video.currentTime >= loopEnd() - 0.05) {
+			video.currentTime = FILM_START_AT;
+		}
+	});
 	video.addEventListener('ended', () => {
 		if (inView && mode() === FILM && !motion.matches) {
-			const src = video.getAttribute('src');
-			if (src) {
-				warmed = false;
-				video.removeAttribute('src');
-				video.load();
-				attach(src);
-				play();
-				return;
-			}
+			seekToFadeIn();
+			void play();
+			return;
 		}
 		setReady(false);
 	});
 	video.addEventListener('canplay', () => {
 		updateLoad();
-		if (inView && mode() === FILM && !motion.matches) play();
+		if (inView && mode() === FILM && !motion.matches) void play();
 	});
 	video.addEventListener('canplaythrough', updateLoad);
 

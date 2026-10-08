@@ -48,10 +48,10 @@ const rowTwo = [
 ].filter(keep);
 ---
 
-<div class="home-partners-grid">
+<div class="partners-logos">
 	{
 		rowOne.length > 0 && (
-			<ul class="home-partners-row">
+			<ul class="partners-row">
 				{rowOne.map((partner) => (
 					<li>
 						<Image
@@ -59,7 +59,7 @@ const rowTwo = [
 							alt={partner.alt}
 							widths={[200, 320, 480]}
 							sizes="160px"
-							class="home-partner-logo"
+							class="partners-logo"
 						/>
 					</li>
 				))}
@@ -68,7 +68,7 @@ const rowTwo = [
 	}
 	{
 		rowTwo.length > 0 && (
-			<ul class="home-partners-row home-partners-row--marks">
+			<ul class="partners-row partners-row--marks">
 				{rowTwo.map((partner) => (
 					<li>
 						{'src' in partner && partner.src ? (
@@ -79,9 +79,9 @@ const rowTwo = [
 									width="227"
 									height="95"
 									class:list={[
-										'home-partner-logo',
-										'home-partner-logo--mark',
-										partner.variant && `home-partner-logo--${partner.variant}`,
+										'partners-logo',
+										'partners-logo--mark',
+										partner.variant && `partners-logo--${partner.variant}`,
 									]}
 								/>
 							) : (
@@ -91,14 +91,14 @@ const rowTwo = [
 									widths={[240, 400, 560]}
 									sizes="200px"
 									class:list={[
-										'home-partner-logo',
-										'home-partner-logo--mark',
-										partner.variant && `home-partner-logo--${partner.variant}`,
+										'partners-logo',
+										'partners-logo--mark',
+										partner.variant && `partners-logo--${partner.variant}`,
 									]}
 								/>
 							)
 						) : (
-							<span class="home-partner-pending">{partner.alt}</span>
+							<span class="partners-pending">{partner.alt}</span>
 						)}
 					</li>
 				))}

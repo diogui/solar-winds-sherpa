@@ -4,7 +4,7 @@ import {
 	mountExpeditionSites,
 	mountPodcastLang,
 	mountBurgosGalleryFilter,
-	mountExpeditionSectionNav,
+	mountOnPageNav,
 } from './expedition-page';
 import { mountAboutLightbox } from './about-lightbox';
 
@@ -217,8 +217,8 @@ function initExpeditionPage() {
 	if (podcast) mountPodcastLang(podcast);
 	const galleryFilter = document.querySelector<HTMLElement>('[data-burgos-filter]');
 	if (galleryFilter) mountBurgosGalleryFilter(galleryFilter);
-	const toc = document.querySelector<HTMLElement>('[data-exp-toc]');
-	if (toc) mountExpeditionSectionNav(toc);
+	const toc = document.querySelector<HTMLElement>('[data-onpage-toc]');
+	if (toc) mountOnPageNav(toc);
 }
 
 function initWhyEclipses() {

@@ -711,14 +711,16 @@ export function mountExpeditionSites(root: HTMLElement) {
 	}
 }
 
-export function mountExpeditionSectionNav(nav: HTMLElement) {
-	const hero = document.querySelector<HTMLElement>('.exp-screen');
-	const links = [...nav.querySelectorAll<HTMLAnchorElement>('[data-exp-toc-link]')];
+export function mountOnPageNav(nav: HTMLElement) {
+	const heroSelector =
+		nav.dataset.tocHero?.trim() || '.home-hero, .exp-screen, .about-screen, [data-header-hero]';
+	const hero = document.querySelector<HTMLElement>(heroSelector);
+	const links = [...nav.querySelectorAll<HTMLAnchorElement>('[data-onpage-toc-link]')];
 	if (!hero || !links.length) return;
 
 	const sections = links
 		.map((link) => {
-			const id = link.dataset.expTocLink;
+			const id = link.dataset.onpageTocLink;
 			const el = id ? document.getElementById(id) : null;
 			return id && el ? { id, el, link } : null;
 		})
@@ -726,7 +728,7 @@ export function mountExpeditionSectionNav(nav: HTMLElement) {
 
 	if (!sections.length) return;
 
-	const mq = window.matchMedia('(min-width: 1440px)');
+	const mq = window.matchMedia('(min-width: 1680px)');
 	let visible = false;
 	let activeId = '';
 
@@ -807,3 +809,6 @@ export function mountExpeditionSectionNav(nav: HTMLElement) {
 
 	update();
 }
+
+/** @deprecated Use mountOnPageNav */
+export const mountExpeditionSectionNav = mountOnPageNav;
