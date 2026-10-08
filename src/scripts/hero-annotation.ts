@@ -24,8 +24,6 @@ export const OVERLAY_TIMING = {
 	fadeOutEnd: 7.6,
 } as const;
 
-export const NAME_COMPACT_AT = 3;
-
 type CoverMap = {
 	scale: number;
 	offsetX: number;
@@ -273,15 +271,7 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 		video.readyState < 2 ||
 		(video.paused && video.currentTime < 0.05 && root.dataset.ended !== 'true');
 
-	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-	const setHeroCompact = (time: number) => {
-		const compact = !showingPoster() && !reducedMotion.matches && time >= NAME_COMPACT_AT;
-		if (compact) root.dataset.heroCompact = 'true';
-		else delete root.dataset.heroCompact;
-	};
-
 	const sync = (time = video.currentTime) => {
-		setHeroCompact(time);
 		if (showingPoster()) {
 			hide();
 			return;
@@ -351,7 +341,6 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 	};
 	const onLoaded = () => sync();
 	const onEmptied = () => {
-		delete root.dataset.heroCompact;
 		hide();
 	};
 
@@ -383,7 +372,6 @@ export function mountHeroAnnotation(root: HTMLElement, video: HTMLVideoElement) 
 		video.removeEventListener('loadeddata', onLoaded);
 		video.removeEventListener('emptied', onEmptied);
 		video.removeEventListener('ended', onPause);
-		delete root.dataset.heroCompact;
 		hide();
 	};
 }
