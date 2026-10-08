@@ -1430,9 +1430,30 @@ html.has-lightbox-open body {
 		transform: none;
 	}
 
+	/*
+	 * Letterbox while playing: the Burgos film is 16:9 narrative.
+	 * Contain keeps the full frame; black bars beat cropping the sides.
+	 */
 	.exp-open.is-inline-playing .exp-hero-frame {
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 16 / 9;
 		min-height: 0;
+		background: #000;
+	}
+
+	.exp-open.is-inline-playing .exp-hero-panel {
+		background: #000;
+	}
+
+	.exp-open.is-inline-playing .exp-hero-still,
+	.exp-open.is-inline-playing .exp-hero-video,
+	.exp-hero-panel.is-playing .exp-hero-video,
+	.exp-hero-panel.has-played .exp-hero-video {
+		object-fit: contain;
+		object-position: center center;
+	}
+
+	.exp-open.is-inline-playing .exp-hero-panel::after {
+		opacity: 0;
 	}
 
 	.exp-open.is-inline-playing .exp-rotate-hint {
