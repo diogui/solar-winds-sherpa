@@ -2,13 +2,14 @@
 .home-support {
 	--hero-dusk: #171d2e;
 	scroll-margin-top: var(--header-h);
-	padding: clamp(4.5rem, 9vw, 6.5rem) 0;
+	padding: var(--section-y-lg) 0;
 	background: var(--hero-dusk);
 }
 
 .home-support-inner {
 	width: min(860px, var(--content));
 	margin: 0 auto;
+	padding-inline: 0;
 }
 
 .home-support-copy h2 {

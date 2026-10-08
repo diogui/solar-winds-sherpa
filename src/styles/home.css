@@ -413,7 +413,7 @@
 }
 
 .home-partners-grid {
-	width: min(64rem, calc(100% - 3rem));
+	width: min(64rem, calc(100% - 2 * var(--page-gutter)));
 	margin: 0 auto;
 	display: grid;
 	gap: 1.05rem;
@@ -713,13 +713,13 @@
 
 .home-latest {
 	scroll-margin-top: var(--header-h);
-	padding: 3rem 0;
+	padding: var(--section-y-half) 0 var(--section-y);
 	background: var(--bg);
 	box-sizing: border-box;
 }
 
 .home-latest-frame {
-	width: min(1320px, calc(100% - 3rem));
+	width: min(1320px, calc(100% - 2 * var(--page-gutter)));
 	margin: 0 auto;
 	display: grid;
 	grid-template-columns: minmax(0, 3fr) minmax(16.5rem, 0.92fr);
@@ -941,7 +941,8 @@
 	scroll-margin-top: var(--header-h);
 	width: var(--content);
 	margin: 0 auto;
-	padding: clamp(4.5rem, 9vw, 7rem) 0;
+	/* Half bottom before dusk Support so the band sum stays moderate. */
+	padding: var(--section-y) 0 var(--section-y-half);
 }
 
 .home-papers-head {
@@ -1667,8 +1668,9 @@
 
 @media (max-width: 767px) {
 	.home-hero {
+		/* Grow with copy on small screens — avoid fixed height clipping text. */
 		min-height: 100svh;
-		height: 100svh;
+		height: auto;
 	}
 
 	.home-hero-still,
@@ -1685,8 +1687,9 @@
 	}
 
 	.home-hero-copy {
-		width: calc(100% - 2.5rem);
+		width: calc(100% - 2 * var(--page-gutter));
 		min-height: 100svh;
+		height: auto;
 		padding: calc(var(--header-h) + env(safe-area-inset-top, 0px)) 0
 			max(1.15rem, calc(env(safe-area-inset-bottom, 0px) + 0.9rem));
 	}

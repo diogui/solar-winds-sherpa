@@ -1,0 +1,72 @@
+---
+import { site, supportLinks } from '../data/site';
+import '../styles/take-action.css';
+---
+
+<section class="take-action" id="take-action" aria-labelledby="take-action-heading">
+	<div class="take-action-inner">
+		<header class="take-action-intro reveal">
+			<p class="label">Take Action</p>
+			<h2 id="take-action-heading">Be part of the journey.</h2>
+		</header>
+
+		<div class="take-action-grid">
+			<article class="take-action-col" id="support">
+				<p class="label">Support Our Work</p>
+				<h3>Help make eclipse science possible.</h3>
+				<p>
+					Support the expeditions, instruments and research that deepen our understanding of the Sun.
+				</p>
+				<p class="take-action-areas">
+					Expeditions · Data analysis · Instrumentation · Early-career researchers
+				</p>
+				<div class="take-action-actions">
+					{
+						supportLinks.map((link) => (
+							<a
+								class="cta cta--button"
+								href={link.href}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								{link.label} <span class="cta-arrow" aria-hidden="true">→</span>
+							</a>
+						))
+					}
+				</div>
+			</article>
+
+			<article class="take-action-col" id="contact">
+				<p class="label">Contact</p>
+				<h3>Start a conversation.</h3>
+				<p>
+					Interested in supporting the project, exploring a collaboration or asking a question? Get
+					in touch.
+				</p>
+				<a class="take-action-email" href={`mailto:${site.email}`}>{site.email}</a>
+			</article>
+
+			<article class="take-action-col" id="subscribe">
+				<p class="label">Stay Informed</p>
+				<h3>Follow the next chapter.</h3>
+				<p>Subscribe for updates on our expeditions and solar research.</p>
+				<form class="take-action-form" data-newsletter-form data-mailto={site.email}>
+					<label class="take-action-field-label" for="take-action-email">Email address</label>
+					<div class="take-action-form-row">
+						<input
+							id="take-action-email"
+							type="email"
+							name="email"
+							autocomplete="email"
+							required
+							placeholder="you@example.com"
+						/>
+						<button class="cta cta--button" type="submit">
+							Subscribe <span class="cta-arrow" aria-hidden="true">→</span>
+						</button>
+					</div>
+				</form>
+			</article>
+		</div>
+	</div>
+</section>

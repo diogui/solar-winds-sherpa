@@ -3,8 +3,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PartnerLogos from '../components/PartnerLogos.astro';
 import WorkCards from '../components/WorkCards.astro';
-import HomeConnect from '../components/home/HomeConnect.astro';
-import { supportLinks } from '../data/site';
+import TakeAction from '../components/TakeAction.astro';
 import instruments from '../assets/images/field/latest-instruments.jpg';
 import shadia from '../assets/images/field/shadia-habbal.jpg';
 import team from '../assets/images/field/latest-team.jpg';
@@ -448,54 +447,6 @@ const peopleGallery = [
 			<PartnerLogos />
 		</section>
 
-		<section class="about-support" id="support" aria-labelledby="about-support-heading">
-			<div class="page-narrow">
-				<p class="label">Support our work</p>
-				<h2 id="about-support-heading">Help make eclipse science possible.</h2>
-				<p>
-					If you or your organization would like to help sustain future expeditions and scientific
-					research, <a href="#contact">we would welcome a conversation</a>.
-				</p>
-				<p>
-					You can also support the project in a way that works for you: join us on Patreon for
-					ongoing support, or make a one-time contribution through Buy Me a Coffee. Every
-					contribution helps us carry this work forward.
-				</p>
-				<ul class="about-support-funds">
-					<li>
-						<p class="about-support-fund-title">Expedition sponsorship</p>
-						<p>Travel, field equipment, and operations across observing sites.</p>
-					</li>
-					<li>
-						<p class="about-support-fund-title">Data analysis</p>
-						<p>The years of work that turn eclipse observations into papers.</p>
-					</li>
-					<li>
-						<p class="about-support-fund-title">Instrumentation</p>
-						<p>Spectrometers, filters and cameras built for the path of totality.</p>
-					</li>
-					<li>
-						<p class="about-support-fund-title">Early-career scientists</p>
-						<p>Students and researchers who learn this science in the field.</p>
-					</li>
-				</ul>
-				<div class="about-support-cta">
-					{
-						supportLinks.map((link) => (
-							<a
-								class="cta cta--button"
-								href={link.href}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								{link.label} <span class="cta-arrow" aria-hidden="true">→</span>
-							</a>
-						))
-					}
-				</div>
-			</div>
-		</section>
-
-		<HomeConnect />
+		<TakeAction />
 	</article>
 </BaseLayout>

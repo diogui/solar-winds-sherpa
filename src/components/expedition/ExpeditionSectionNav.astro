@@ -1,0 +1,28 @@
+---
+const sections = [
+	{ id: 'mission', label: 'Two Sites' },
+	{ id: 'film', label: 'Film' },
+	{ id: 'in-the-field', label: 'In the Field' },
+	{ id: 'team', label: 'Team' },
+	{ id: 'made-possible-by', label: 'Partners' },
+	{ id: 'podcast', label: 'Podcast' },
+	{ id: 'processed-images', label: 'Processed' },
+	{ id: 'what-comes-next', label: 'Next' },
+	{ id: 'take-action', label: 'Take Action' },
+] as const;
+---
+
+<nav class="exp-toc" data-exp-toc aria-label="On this page" hidden>
+	<ol class="exp-toc-list">
+		{
+			sections.map((section) => (
+				<li>
+					<a class="exp-toc-link" href={`#${section.id}`} data-exp-toc-link={section.id}>
+						<span class="exp-toc-dot" aria-hidden="true" />
+						<span class="exp-toc-label">{section.label}</span>
+					</a>
+				</li>
+			))
+		}
+	</ol>
+</nav>

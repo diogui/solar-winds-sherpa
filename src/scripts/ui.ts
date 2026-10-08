@@ -1,6 +1,11 @@
 import { mountHero } from './hero-video';
 import { mountLatestFilm } from './latest-video';
-import { mountExpeditionSites, mountPodcastLang, mountBurgosGalleryFilter } from './expedition-page';
+import {
+	mountExpeditionSites,
+	mountPodcastLang,
+	mountBurgosGalleryFilter,
+	mountExpeditionSectionNav,
+} from './expedition-page';
 import { mountAboutLightbox } from './about-lightbox';
 
 function initMobileNav() {
@@ -212,6 +217,8 @@ function initExpeditionPage() {
 	if (podcast) mountPodcastLang(podcast);
 	const galleryFilter = document.querySelector<HTMLElement>('[data-burgos-filter]');
 	if (galleryFilter) mountBurgosGalleryFilter(galleryFilter);
+	const toc = document.querySelector<HTMLElement>('[data-exp-toc]');
+	if (toc) mountExpeditionSectionNav(toc);
 }
 
 function initWhyEclipses() {

@@ -27,7 +27,8 @@
 .science-section {
 	width: var(--content);
 	margin: 0 auto;
-	padding-top: clamp(4.25rem, 8vw, 6.5rem);
+	/* Adjacent sections each contribute half → ~--section-y between last/first content. */
+	padding-top: var(--section-y);
 	scroll-margin-top: var(--header-h);
 }
 
@@ -445,8 +446,8 @@
 }
 
 .science-next {
-	margin-top: clamp(4.5rem, 8vw, 6.75rem);
-	padding: clamp(4.5rem, 9vw, 7rem) 0;
+	margin-top: var(--section-y-half);
+	padding: var(--section-y-lg) 0;
 	background: var(--hero-dusk);
 	scroll-margin-top: var(--header-h);
 }

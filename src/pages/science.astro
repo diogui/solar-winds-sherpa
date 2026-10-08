@@ -2,8 +2,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HomeSupport from '../components/home/HomeSupport.astro';
-import HomeConnect from '../components/home/HomeConnect.astro';
+import TakeAction from '../components/TakeAction.astro';
 import {
 	eclipseFrames,
 	featuredIds,
@@ -326,7 +325,6 @@ const featured = featuredIds.map((id) => {
 			</div>
 		</section>
 
-		<HomeSupport />
-		<HomeConnect />
+		<TakeAction />
 	</article>
 </BaseLayout>

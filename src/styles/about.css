@@ -15,7 +15,7 @@ article.page.about h1 {
 }
 
 .about .page-narrow {
-	width: min(760px, calc(100vw - 3rem));
+	width: var(--prose);
 }
 
 .about-facts {
@@ -103,7 +103,8 @@ article.page.about h1 {
 }
 
 .about-block {
-	padding: 4.25rem 0 1rem;
+	/* Half top + tight bottom so gallery/media can sit close; neighbours supply the rest. */
+	padding: var(--section-y-half) 0 var(--section-y-half);
 }
 
 .about-block h2 {
@@ -116,7 +117,7 @@ article.page.about h1 {
 }
 
 .about-story-gallery {
-	width: min(1280px, calc(100% - 2.5rem));
+	width: var(--media-wide);
 	margin: 2.5rem auto 0;
 	display: grid;
 	grid-template-columns: 1.35fr 0.9fr 1.05fr 0.95fr 0.95fr;
@@ -443,10 +444,11 @@ html.has-lightbox-open body {
 
 .about-founder {
 	scroll-margin-top: var(--header-h);
-	width: min(1120px, calc(100% - 3.5rem));
+	width: var(--content);
 	max-width: 100%;
 	margin: 0 auto;
-	padding: 8.5rem 0 8.25rem;
+	/* After full-bleed hero: roomy top, modest bottom so story block isn’t double-spaced. */
+	padding: var(--section-y-lg) 0 var(--section-y-half);
 }
 
 .about-people {
@@ -643,7 +645,7 @@ html.has-lightbox-open body {
 	width: var(--content);
 	max-width: 100%;
 	margin: 0 auto;
-	padding: 7rem 0 5.5rem;
+	padding: var(--section-y) 0 var(--section-y-half);
 	display: flex;
 	flex-direction: column;
 	gap: 3.25rem;
@@ -792,8 +794,9 @@ html.has-lightbox-open body {
 
 .about-support {
 	scroll-margin-top: var(--header-h);
-	margin-top: 6.5rem;
-	padding: 7.25rem 0 7.5rem;
+	margin-top: 0;
+	/* Dusk closer: one full large band — previous section keeps a half bottom only. */
+	padding: var(--section-y-lg) 0;
 	background: var(--hero-dusk);
 }
 
@@ -900,8 +903,8 @@ html.has-lightbox-open body {
 	}
 
 	.about-founder {
-		width: calc(100% - 2rem);
-		padding: 6.5rem 0 6.25rem;
+		width: calc(100% - 2 * var(--page-gutter));
+		padding: var(--section-y-lg) 0 var(--section-y-half);
 	}
 
 	.about-featured {
@@ -1055,6 +1058,7 @@ html.has-lightbox-open body {
 	align-items: flex-end;
 	min-height: 100vh;
 	min-height: 100dvh;
+	height: auto;
 	overflow: hidden;
 	background: #05070c;
 }

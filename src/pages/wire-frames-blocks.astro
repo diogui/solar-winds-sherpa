@@ -1,0 +1,338 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { blockPatterns } from '../data/block-patterns';
+import '../styles/wireframes.css';
+
+const statusLabel = {
+	shared: 'Shared',
+	candidate: 'Candidate to share',
+	exception: 'Approved exception',
+} as const;
+---
+
+<BaseLayout
+	title="Wireframes · Block patterns"
+	description="Internal catalog of reusable layout patterns for Solar Wind Sherpas pages."
+>
+	<article class="page wire-page">
+		<div class="wire-page-inner">
+			<header class="wire-hero">
+				<p class="label">Internal · Pattern library</p>
+				<h1>Block patterns</h1>
+				<p>
+					Visual inventory of layout families. Pick by structure when composing Science, About, or a
+					new expedition page — not by the Home copy that first used them.
+				</p>
+				<ul class="wire-legend" aria-label="Status legend">
+					<li><span class="wire-pill wire-pill--shared" aria-hidden="true"></span> Shared now</li>
+					<li>
+						<span class="wire-pill wire-pill--candidate" aria-hidden="true"></span> Candidate to
+						share
+					</li>
+					<li>
+						<span class="wire-pill wire-pill--exception" aria-hidden="true"></span> Approved
+						exception
+					</li>
+				</ul>
+			</header>
+
+			<nav aria-label="Pattern index">
+				<ul class="wire-index">
+					{
+						blockPatterns.map((pattern) => (
+							<li>
+								<a href={`#${pattern.id}`}>
+									{pattern.name}
+									<span class="wire-index-meta">{statusLabel[pattern.status]}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			{
+				blockPatterns.map((pattern) => (
+					<section class="wire-block" id={pattern.id} aria-labelledby={`${pattern.id}-title`}>
+						<div class="wire-block-head">
+							<div>
+								<div class="wire-block-title">
+									<h2 id={`${pattern.id}-title`}>{pattern.name}</h2>
+									<p class="wire-status">
+										<span
+											class:list={[
+												'wire-pill',
+												pattern.status === 'shared' && 'wire-pill--shared',
+												pattern.status === 'candidate' && 'wire-pill--candidate',
+												pattern.status === 'exception' && 'wire-pill--exception',
+											]}
+											aria-hidden="true"
+										/>
+										{statusLabel[pattern.status]}
+									</p>
+								</div>
+								<p class="wire-block-layout">{pattern.layout}</p>
+							</div>
+							<ul class="wire-meta">
+								<li>
+									<strong>Best for</strong>
+									{pattern.bestFor}
+								</li>
+								<li>
+									<strong>Used on</strong>
+									{pattern.usedOn.join(' · ')}
+								</li>
+								{pattern.variants && (
+									<li>
+										<strong>Variants</strong>
+										{pattern.variants.join(' · ')}
+									</li>
+								)}
+							</ul>
+						</div>
+
+						<div class="wire-stage" aria-hidden="true">
+							{pattern.wire === 'screen-hero' && (
+								<div class="wf wf-screen-hero">
+									<div class="wf-media wf-media--hero">Photo / video plane</div>
+									<div class="wf-screen-hero-copy">
+										<span class="wf-label">Label</span>
+										<span class="wf-h wf-h--xl" />
+										<span class="wf-line wf-line--short" />
+										<span class="wf-line" style="max-width: 40%" />
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'essay-opening' && (
+								<div class="wf wf-essay">
+									<div class="wf-essay-copy">
+										<span class="wf-label">Label</span>
+										<span class="wf-h wf-h--xl" />
+										<span class="wf-line" />
+										<span class="wf-line" />
+										<span class="wf-line wf-line--short" />
+									</div>
+									<div class="wf-media wf-media--tall">Inset figure</div>
+								</div>
+							)}
+
+							{pattern.wire === 'section-intro' && (
+								<div class="wf wf-intro">
+									<span class="wf-label">Yellow label</span>
+									<span class="wf-h wf-h--lg" />
+									<span class="wf-line" style="max-width: 70%" />
+								</div>
+							)}
+
+							{pattern.wire === 'centered-manifesto' && (
+								<div class="wf wf-manifesto">
+									<span class="wf-label">Label</span>
+									<span class="wf-h wf-h--xl" />
+									<span class="wf-h wf-h--lg" />
+									<span class="wf-line" />
+									<span class="wf-line" />
+									<span class="wf-line wf-line--short" />
+								</div>
+							)}
+
+							{pattern.wire === 'feature-grid-3' && (
+								<div class="wf wf-grid-3">
+									<div>
+										<span class="wf-label">Label</span>
+										<span class="wf-h wf-h--lg" />
+									</div>
+									<div class="wf-grid-3-cards">
+										{[1, 2, 3].map((n) => (
+											<div class="wf-card">
+												<div class="wf-media">Media {n}</div>
+												<span class="wf-h" />
+												<span class="wf-line" />
+												<span class="wf-line wf-line--short" />
+												<span class="wf-btn">CTA</span>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'split-steps' && (
+								<div class="wf wf-split">
+									<div>
+										<span class="wf-label">Label</span>
+										<span class="wf-h wf-h--lg" />
+										<span class="wf-line" />
+										<span class="wf-line wf-line--short" />
+										<div class="wf-steps">
+											{[1, 2, 3].map((n) => (
+												<div class="wf-step">
+													<span class="wf-step-num">0{n}</span>
+													<div>
+														<span class="wf-h" />
+														<span class="wf-line wf-line--short" />
+													</div>
+												</div>
+											))}
+										</div>
+									</div>
+									<div class="wf-media wf-media--tall">Swapping media</div>
+								</div>
+							)}
+
+							{pattern.wire === 'split-media-copy' && (
+								<div class="wf wf-split wf-split--flip">
+									<div class="wf-media wf-media--tall">Media</div>
+									<div>
+										<span class="wf-label">Label</span>
+										<span class="wf-h wf-h--lg" />
+										<span class="wf-line" />
+										<span class="wf-line" />
+										<span class="wf-line wf-line--short" />
+										<span class="wf-btn">Optional CTA</span>
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'film-stage' && (
+								<div class="wf wf-film">
+									<span class="wf-label">The film</span>
+									<span class="wf-h wf-h--lg" />
+									<span class="wf-line wf-line--short" style="margin-bottom: 0.75rem" />
+									<div class="wf-media wf-media--tall">
+										<span class="wf-play" />
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'gallery-carousel' && (
+								<div class="wf">
+									<span class="wf-label">Label</span>
+									<span class="wf-h wf-h--lg" />
+									<div class="wf-gallery-tools">
+										<span class="wf-chip">All</span>
+										<span class="wf-chip">Filter A</span>
+										<span class="wf-chip">Filter B</span>
+									</div>
+									<div class="wf-track">
+										{[1, 2, 3, 4, 5].map(() => (
+											<div class="wf-media">Shot</div>
+										))}
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'field-beat-grid' && (
+								<div class="wf">
+									<span class="wf-label">In the field</span>
+									<span class="wf-h wf-h--lg" />
+									<div class="wf-beats">
+										{['Assemble', 'Camp', 'Install', 'Observe'].map((label) => (
+											<div class="wf-beat">
+												<div class="wf-media">Photo</div>
+												<span>{label}</span>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'people-roster' && (
+								<div class="wf">
+									<span class="wf-label">Team</span>
+									<span class="wf-h wf-h--lg" />
+									<div class="wf-people">
+										<div class="wf-people-group">
+											{[1, 2, 3, 4].map(() => (
+												<div class="wf-person" />
+											))}
+										</div>
+										<div class="wf-people-group">
+											{[1, 2, 3].map(() => (
+												<div class="wf-person" />
+											))}
+										</div>
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'logo-strip' && (
+								<div class="wf">
+									<span class="wf-label">Made possible by</span>
+									<span class="wf-h" />
+									<div class="wf-logos">
+										{[1, 2, 3, 4, 5, 6].map(() => (
+											<div class="wf-logo" />
+										))}
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'podcast-embed' && (
+								<div class="wf wf-podcast">
+									<div class="wf-media">Cover</div>
+									<div>
+										<span class="wf-label">Podcast</span>
+										<span class="wf-h wf-h--lg" />
+										<span class="wf-line" />
+										<span class="wf-line wf-line--short" />
+										<div class="wf-dot-row">
+											<span class="wf-chip">EN</span>
+											<span class="wf-chip">ES</span>
+										</div>
+										<span class="wf-btn">Listen</span>
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'panel-callout' && (
+								<div class="wf wf-panel">
+									<span class="wf-label">Next expedition</span>
+									<span class="wf-h wf-h--lg" />
+									<span class="wf-line" />
+									<span class="wf-line wf-line--short" />
+									<div class="wf-steps" style="margin-top: 0.85rem">
+										{[1, 2, 3].map(() => (
+											<span class="wf-line" />
+										))}
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'closing-band' && (
+								<div class="wf wf-closing">
+									<span class="wf-label">Take Action</span>
+									<span class="wf-h wf-h--xl" />
+									<div class="wf-closing-cols">
+										{['Support', 'Contact', 'Stay Informed'].map((title) => (
+											<div class="wf-closing-col">
+												<span class="wf-label">{title}</span>
+												<span class="wf-h" />
+												<span class="wf-line" />
+												<span class="wf-line wf-line--short" />
+												<span class="wf-btn">Action</span>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+
+							{pattern.wire === 'on-page-toc' && (
+								<div class="wf wf-toc">
+									<div class="wf-toc-rail">
+										{['Sites', 'Film', 'Field', 'Team'].map((label, i) => (
+											<div class:list={['wf-toc-item', i === 0 && 'is-on']}>
+												<span />
+												<span>{label}</span>
+											</div>
+										))}
+									</div>
+									<div class="wf-toc-page wf-media wf-media--tall">Page content</div>
+								</div>
+							)}
+						</div>
+					</section>
+				))
+			}
+		</div>
+	</article>
+</BaseLayout>

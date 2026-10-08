@@ -5,12 +5,115 @@
 	overflow-x: clip;
 }
 
+/* —— On-page section nav (desktop; mobile deferred) —— */
+.exp-toc {
+	position: fixed;
+	z-index: 30;
+	top: 50%;
+	left: max(0.85rem, calc((100vw - var(--content)) / 2 - 9.75rem));
+	width: 8.75rem;
+	transform: translateY(-50%) translateX(-0.35rem);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition:
+		opacity 0.4s var(--ease),
+		visibility 0.4s var(--ease),
+		transform 0.45s var(--ease);
+}
+
+.exp-toc.is-visible {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transform: translateY(-50%) translateX(0);
+}
+
+.exp-toc-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.exp-toc-list li + li {
+	margin-top: 0.15rem;
+}
+
+.exp-toc-link {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	padding: 0.28rem 0;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	font-weight: 500;
+	letter-spacing: 0.18em;
+	line-height: 1.25;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: color 0.3s var(--ease);
+}
+
+.exp-toc-dot {
+	flex: 0 0 auto;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: currentColor;
+	opacity: 0.55;
+	transition:
+		opacity 0.3s var(--ease),
+		background-color 0.3s var(--ease),
+		box-shadow 0.3s var(--ease),
+		transform 0.3s var(--ease);
+}
+
+.exp-toc-label {
+	min-width: 0;
+}
+
+.exp-toc-link:hover,
+.exp-toc-link:focus-visible {
+	color: var(--text);
+}
+
+.exp-toc-link:hover .exp-toc-dot,
+.exp-toc-link:focus-visible .exp-toc-dot {
+	opacity: 1;
+}
+
+.exp-toc-link.is-active {
+	color: var(--text);
+}
+
+.exp-toc-link.is-active .exp-toc-dot {
+	opacity: 1;
+	background: var(--accent);
+	box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.18);
+	transform: scale(1.15);
+}
+
+html.is-exp-immersive .exp-toc {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+/* Needs ~9.75rem clear of the content rail; hide sooner than that. */
+@media (max-width: 1439px) {
+	.exp-toc {
+		display: none;
+	}
+}
+
 article.page.exp {
 	padding-top: 0;
 }
 
 .exp .page-narrow {
-	width: min(760px, calc(100vw - 3rem));
+	width: var(--prose);
 }
 
 /* —— Full-bleed photo hero (matches About) —— */
@@ -20,6 +123,7 @@ article.page.exp {
 	align-items: flex-end;
 	min-height: 100vh;
 	min-height: 100dvh;
+	height: auto;
 	overflow: hidden;
 	background: #05070c;
 }
@@ -524,7 +628,7 @@ html.is-exp-immersive .site-header .brand-lockup {
 }
 
 .exp-block {
-	padding: 4.25rem 0 1rem;
+	padding: var(--section-y-half) 0 var(--section-y-half);
 	scroll-margin-top: calc(var(--header-h) + 0.75rem);
 }
 
@@ -561,12 +665,12 @@ html.is-exp-immersive .site-header .brand-lockup {
 }
 
 .exp-block.exp-podcast {
-	/* Half of the ~80px partners→podcast gap (paired with partners padding-bottom). */
-	padding: 40px 0 4.5rem;
+	/* Soft handoff from partners; keep panel breathing room without a double band. */
+	padding: var(--section-y-half) 0 var(--section-y);
 }
 
 .exp-podcast-panel {
-	width: min(1120px, calc(100% - 2.5rem));
+	width: min(1120px, calc(100% - 2 * var(--page-gutter)));
 	margin: 0 auto;
 	padding: clamp(1.75rem, 3.5vw, 2.75rem) clamp(1.25rem, 3vw, 2.5rem);
 	border-radius: 8px;
@@ -991,9 +1095,9 @@ html.is-exp-immersive .site-header .brand-lockup {
 }
 
 .exp-block.exp-sites {
-	/* Single gap from hero credit → section — overrides .exp-block top padding. */
-	padding-top: 80px;
-	padding-bottom: 1rem;
+	/* Larger top after the screen hero; bottom rejoins the shared half+half rhythm. */
+	padding-top: var(--section-y-lg);
+	padding-bottom: var(--section-y-half);
 }
 
 .exp-sites-intro {
@@ -1430,7 +1534,7 @@ html.has-lightbox-open body {
 }
 
 .exp-block.exp-partners {
-	padding: 4.5rem 0 40px;
+	padding: var(--section-y) 0 var(--section-y-half);
 }
 
 .exp-partners .home-partners-grid {
@@ -1481,7 +1585,8 @@ html.has-lightbox-open body {
 
 .exp-processed,
 .exp-next {
-	padding: 64px 0;
+	/* Half each → ~--section-y between Processed, Next, and Support. */
+	padding: var(--section-y-half) 0;
 	background: transparent;
 	scroll-margin-top: calc(var(--header-h) + 0.75rem);
 }
@@ -1546,7 +1651,7 @@ html.has-lightbox-open body {
 }
 
 .exp-next-panel {
-	width: min(1120px, calc(100% - 2.5rem));
+	width: min(1120px, calc(100% - 2 * var(--page-gutter)));
 	margin: 0 auto;
 	padding: clamp(1.75rem, 3.5vw, 2.75rem) clamp(1.25rem, 3vw, 2.5rem);
 	border-radius: 8px;
@@ -1597,7 +1702,7 @@ html.has-lightbox-open body {
 }
 
 .exp-invite {
-	padding: 64px 0;
+	padding: var(--section-y-lg) 0;
 	background: var(--hero-dusk, #171d2e);
 	scroll-margin-top: calc(var(--header-h) + 0.75rem);
 }
@@ -1677,7 +1782,8 @@ html.has-lightbox-open body {
 	}
 
 	.exp-block.exp-sites {
-		padding-top: 48px;
+		padding-top: var(--section-y);
+		padding-bottom: var(--section-y-half);
 	}
 
 	.exp-sites-intro {
@@ -1831,20 +1937,20 @@ html.has-lightbox-open body {
 	}
 
 	.exp-block {
-		padding: 3.4rem 0 0.6rem;
+		padding: var(--section-y-half) 0 var(--section-y-half);
 	}
 
 	.exp-block.exp-partners {
-		padding: 3.5rem 0 24px;
+		padding: var(--section-y) 0 var(--section-y-half);
 	}
 
 	.exp-block.exp-podcast {
-		padding: 24px 0 3.5rem;
+		padding: var(--section-y-half) 0 var(--section-y);
 	}
 
 	.exp-podcast-panel,
 	.exp-next-panel {
-		width: min(1120px, calc(100% - 2rem));
+		width: min(1120px, calc(100% - 2 * var(--page-gutter)));
 		padding: 1.5rem 1.15rem;
 	}
 
@@ -1862,9 +1968,12 @@ html.has-lightbox-open body {
 	}
 
 	.exp-processed,
-	.exp-next,
+	.exp-next {
+		padding: var(--section-y-half) 0;
+	}
+
 	.exp-invite {
-		padding: 48px 0;
+		padding: var(--section-y-lg) 0;
 	}
 
 	.exp-processed-layout {

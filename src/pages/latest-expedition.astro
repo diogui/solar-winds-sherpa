@@ -2,8 +2,8 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PartnerLogos from '../components/PartnerLogos.astro';
-import HomeConnect from '../components/home/HomeConnect.astro';
-import { site } from '../data/site';
+import TakeAction from '../components/TakeAction.astro';
+import ExpeditionSectionNav from '../components/expedition/ExpeditionSectionNav.astro';
 import padillaCamp from '../assets/images/field/latest-camp.jpg';
 import fieldAssemble from '../assets/images/expedition/field/field-assemble.jpg';
 import fieldCamp from '../assets/images/expedition/field/field-camp.jpg';
@@ -559,6 +559,7 @@ const podcastDefault = podcast.languages[0];
 	title="Latest Expedition"
 	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla de Abajo and Pico Trigaza."
 >
+	<ExpeditionSectionNav />
 	<article class="page exp">
 		<section class="exp-screen" id="burgos-2026" aria-labelledby="exp-heading" data-header-hero>
 			<div class="exp-screen-media">
@@ -1032,29 +1033,7 @@ const podcastDefault = podcast.languages[0];
 			</div>
 		</section>
 
-		<section class="exp-invite" id="support" aria-labelledby="invite-heading">
-			<!--
-				Editorial (not public): Patreon / Buy Me a Coffee / four support types stay on Home #support.
-			-->
-			<div class="exp-section-inner exp-invite-inner">
-				<p class="label">Support Our Work</p>
-				<h2 id="invite-heading">Help make eclipse science possible.</h2>
-				<p>
-					Help sustain the expeditions, instruments and research that deepen our understanding of the
-					Sun.
-				</p>
-				<div class="exp-invite-actions">
-					<a class="cta cta--button" href="/#support">
-						Explore ways to support <span class="cta-arrow" aria-hidden="true">→</span>
-					</a>
-					<a class="exp-invite-secondary" href={`mailto:${site.email}`}>
-						Discuss a partnership
-					</a>
-				</div>
-			</div>
-		</section>
-
-		<HomeConnect />
+		<TakeAction />
 
 		<dialog class="about-lightbox" data-about-lightbox aria-label="Photo gallery">
 			<button type="button" class="about-lightbox-close" data-lightbox-close aria-label="Close gallery">

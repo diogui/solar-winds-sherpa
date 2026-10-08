@@ -1,6 +1,7 @@
 .home-work {
 	scroll-margin-top: var(--header-h);
-	padding: 4.5rem 0 5.5rem;
+	/* After dusk partners: moderate top; half bottom before Why. */
+	padding: var(--section-y) 0 var(--section-y-half);
 }
 
 .home-work-intro {

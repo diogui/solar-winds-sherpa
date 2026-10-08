@@ -1,0 +1,173 @@
+/* Shared closing block — Support / Contact / Stay Informed */
+.take-action {
+	--hero-dusk: #171d2e;
+	scroll-margin-top: var(--header-h);
+	padding: var(--section-y-lg) 0;
+	background: var(--hero-dusk);
+}
+
+.take-action-inner {
+	width: var(--content);
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+.take-action-intro {
+	margin: 0 0 var(--section-y-half);
+}
+
+.take-action-intro .label {
+	margin: 0 0 0.85rem;
+}
+
+.take-action-intro h2 {
+	margin: 0;
+	max-width: 22ch;
+	font-size: clamp(1.85rem, 3.6vw, 2.75rem);
+	text-wrap: balance;
+}
+
+.take-action-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0;
+	align-items: start;
+}
+
+.take-action-col {
+	scroll-margin-top: calc(var(--header-h) + 0.75rem);
+	padding: 0 1.65rem;
+	min-width: 0;
+}
+
+.take-action-col:first-child {
+	padding-left: 0;
+}
+
+.take-action-col:last-child {
+	padding-right: 0;
+}
+
+.take-action-col + .take-action-col {
+	border-left: 1px solid rgb(245 245 243 / 0.12);
+}
+
+.take-action-col .label {
+	margin: 0 0 0.85rem;
+}
+
+.take-action-col h3 {
+	margin: 0 0 0.85rem;
+	font-size: clamp(1.2rem, 2vw, 1.55rem);
+	line-height: 1.2;
+	text-wrap: balance;
+}
+
+.take-action-col > p {
+	margin: 0;
+	color: rgb(245 245 243 / 0.9);
+	font-size: 1rem;
+	line-height: 1.55;
+}
+
+.take-action-areas {
+	margin-top: 0.95rem !important;
+	color: rgb(245 245 243 / 0.62) !important;
+	font-size: 0.88rem !important;
+	line-height: 1.45 !important;
+	text-wrap: pretty;
+}
+
+.take-action-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.65rem;
+	margin-top: 1.35rem;
+}
+
+.take-action-email {
+	display: inline-block;
+	margin-top: 1.15rem;
+	font-family: var(--font-display);
+	font-size: clamp(1rem, 1.5vw, 1.2rem);
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	color: var(--text);
+	word-break: break-word;
+	transition: color 0.35s var(--ease);
+}
+
+.take-action-email:hover,
+.take-action-email:focus-visible {
+	color: var(--accent);
+}
+
+.take-action-form {
+	display: grid;
+	gap: 0.55rem;
+	margin-top: 1.15rem;
+}
+
+.take-action-field-label {
+	margin: 0;
+	color: rgb(245 245 243 / 0.72);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.take-action-form-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.65rem;
+	align-items: stretch;
+}
+
+.take-action-form input {
+	flex: 1 1 10rem;
+	min-width: 0;
+	padding: 0.85rem 0.95rem;
+	background: rgb(8 13 20 / 0.45);
+	border: 1px solid rgb(245 245 243 / 0.14);
+	border-radius: 4px;
+	color: var(--text);
+	font: inherit;
+	font-size: 1rem;
+}
+
+.take-action-form input::placeholder {
+	color: var(--text-mute);
+}
+
+.take-action-form input:focus {
+	outline: none;
+	border-color: var(--accent);
+}
+
+.take-action-form .cta--button {
+	flex: 0 0 auto;
+	cursor: pointer;
+}
+
+@media (max-width: 900px) {
+	.take-action-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.take-action-col {
+		padding: 0;
+	}
+
+	.take-action-col + .take-action-col {
+		margin-top: 1.75rem;
+		padding-top: 1.75rem;
+		border-left: none;
+		border-top: 1px solid rgb(245 245 243 / 0.12);
+	}
+
+	.take-action-intro {
+		margin-bottom: 1.5rem;
+	}
+}

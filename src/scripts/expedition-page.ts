@@ -710,3 +710,100 @@ export function mountExpeditionSites(root: HTMLElement) {
 		});
 	}
 }
+
+export function mountExpeditionSectionNav(nav: HTMLElement) {
+	const hero = document.querySelector<HTMLElement>('.exp-screen');
+	const links = [...nav.querySelectorAll<HTMLAnchorElement>('[data-exp-toc-link]')];
+	if (!hero || !links.length) return;
+
+	const sections = links
+		.map((link) => {
+			const id = link.dataset.expTocLink;
+			const el = id ? document.getElementById(id) : null;
+			return id && el ? { id, el, link } : null;
+		})
+		.filter((item): item is { id: string; el: HTMLElement; link: HTMLAnchorElement } => Boolean(item));
+
+	if (!sections.length) return;
+
+	const mq = window.matchMedia('(min-width: 1440px)');
+	let visible = false;
+	let activeId = '';
+
+	const setVisible = (next: boolean) => {
+		if (visible === next) return;
+		visible = next;
+		nav.setAttribute('aria-hidden', String(!next));
+		if (next) {
+			nav.hidden = false;
+			window.requestAnimationFrame(() => {
+				nav.classList.add('is-visible');
+			});
+			return;
+		}
+		nav.classList.remove('is-visible');
+		window.setTimeout(() => {
+			if (!visible) nav.hidden = true;
+		}, 420);
+	};
+
+	const setActive = (id: string) => {
+		if (activeId === id) return;
+		activeId = id;
+		for (const section of sections) {
+			const on = section.id === id;
+			section.link.classList.toggle('is-active', on);
+			if (on) section.link.setAttribute('aria-current', 'location');
+			else section.link.removeAttribute('aria-current');
+		}
+	};
+
+	const update = () => {
+		if (!mq.matches || document.documentElement.classList.contains('is-exp-immersive')) {
+			setVisible(false);
+			return;
+		}
+
+		const headerH =
+			Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 88;
+		const heroBottom = hero.getBoundingClientRect().bottom;
+		const pastHero = heroBottom <= headerH + 8;
+		setVisible(pastHero);
+		if (!pastHero) return;
+
+		const mark = headerH + Math.min(160, window.innerHeight * 0.28);
+		let current = sections[0];
+		for (const section of sections) {
+			if (section.el.getBoundingClientRect().top <= mark) current = section;
+		}
+		setActive(current.id);
+	};
+
+	let ticking = false;
+	const onScroll = () => {
+		if (ticking) return;
+		ticking = true;
+		window.requestAnimationFrame(() => {
+			update();
+			ticking = false;
+		});
+	};
+
+	window.addEventListener('scroll', onScroll, { passive: true });
+	window.addEventListener('resize', onScroll, { passive: true });
+	mq.addEventListener('change', onScroll);
+
+	const immersiveObserver = new MutationObserver(onScroll);
+	immersiveObserver.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ['class'],
+	});
+
+	for (const section of sections) {
+		section.link.addEventListener('click', () => {
+			setActive(section.id);
+		});
+	}
+
+	update();
+}
