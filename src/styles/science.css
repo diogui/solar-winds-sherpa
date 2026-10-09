@@ -14,14 +14,121 @@
 	text-wrap: balance;
 }
 
-.science-intro {
+/* Essay opening — concept-led, not a screen hero */
+.science-opening {
 	width: var(--content);
 	margin: 0 auto;
+	padding-bottom: var(--section-y-half);
+	scroll-margin-top: var(--header-h);
+}
+
+.science-essay {
+	display: grid;
+	grid-template-columns: minmax(0, 1.15fr) minmax(14rem, 0.85fr);
+	gap: clamp(1.75rem, 4vw, 3.25rem);
+	align-items: start;
+}
+
+.science-intro {
+	min-width: 0;
 }
 
 .science-intro .lead {
-	max-width: 38rem;
+	max-width: 36rem;
 	margin-bottom: 0;
+}
+
+.science-figure {
+	margin: 0;
+	min-width: 0;
+}
+
+.science-figure-frame {
+	overflow: hidden;
+	background: var(--bg);
+	aspect-ratio: 1 / 1;
+}
+
+.science-figure-frame img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.science-caption {
+	margin: 0.7rem 0 0;
+	max-width: 28rem;
+	color: var(--text-dim);
+	font-size: 0.9rem;
+	line-height: 1.5;
+}
+
+.science-credit {
+	display: block;
+	margin-top: 0.35rem;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: var(--label-size);
+	font-weight: 500;
+	letter-spacing: var(--label-tracking);
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+
+/* Feature grid · 3 — same family as Take Action / What we do */
+.science-questions {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0;
+	align-items: start;
+	margin: var(--section-y) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.science-question {
+	min-width: 0;
+	padding: 0 1.65rem;
+	scroll-margin-top: calc(var(--header-h) + 0.75rem);
+}
+
+.science-question:first-child {
+	padding-left: 0;
+}
+
+.science-question:last-child {
+	padding-right: 0;
+}
+
+.science-question + .science-question {
+	border-left: 1px solid var(--line-quiet);
+}
+
+.science-question-index {
+	display: block;
+	margin: 0 0 0.75rem;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: var(--label-size);
+	font-weight: 500;
+	letter-spacing: var(--label-tracking);
+	text-transform: uppercase;
+}
+
+.science-question h2 {
+	margin: 0 0 0.7rem;
+	max-width: none;
+	font-size: clamp(1.2rem, 2vw, 1.55rem);
+	line-height: 1.2;
+	text-wrap: balance;
+}
+
+.science-question p {
+	margin: 0;
+	color: var(--text-dim);
+	font-size: 1rem;
+	line-height: 1.55;
 }
 
 .science-section {
@@ -50,111 +157,39 @@
 	margin-top: 1rem;
 }
 
-.science-hero {
-	width: var(--content);
-	margin: 2.25rem auto 0;
-}
-
-.science-hero-frame,
 .science-step-frame,
 .science-feature-frame,
 .science-instrument-frame,
 .science-compare-frame {
 	overflow: hidden;
 	border-radius: 6px;
-	background: #05070c;
+	background: var(--bg);
 }
 
-.science-hero-frame img,
 .science-step-frame img,
 .science-feature-frame img {
 	width: 100%;
 	height: auto;
 }
 
-.science-caption {
-	margin: 0.7rem 0 0;
-	max-width: 42rem;
-	color: var(--text-dim);
-	font-size: 0.95rem;
-	line-height: 1.5;
-}
-
-.science-credit {
-	display: block;
-	margin-top: 0.35rem;
-	color: var(--text-mute);
-	font-family: var(--font-display);
-	font-size: 0.68rem;
-	font-weight: 500;
-	letter-spacing: 0.14em;
-	line-height: 1.4;
-	text-transform: uppercase;
-}
-
-.science-questions {
-	width: var(--content);
-	margin: 2.75rem auto 0;
-	padding: 0;
-	list-style: none;
-}
-
-.science-question {
-	display: grid;
-	grid-template-columns: 4.25rem minmax(0, 40rem);
-	gap: 0.35rem 1.25rem;
-	padding: 1.45rem 0;
-	border-top: 1px solid var(--line-quiet);
-	scroll-margin-top: calc(var(--header-h) + 0.75rem);
-}
-
-.science-question:last-child {
-	border-bottom: 1px solid var(--line-quiet);
-}
-
-.science-question-index {
-	color: var(--accent);
-	font-family: var(--font-display);
-	font-size: 0.78rem;
-	font-weight: 500;
-	letter-spacing: 0.16em;
-	padding-top: 0.35rem;
-}
-
-.science-question h2 {
-	margin: 0 0 0.45rem;
-	max-width: none;
-	font-size: clamp(1.35rem, 2.4vw, 1.85rem);
-}
-
-.science-question p {
-	margin: 0;
-	max-width: 38rem;
-	color: var(--text-dim);
-}
-
-.science-why {
-	display: grid;
-	grid-template-columns: minmax(0, 1.05fr) minmax(16rem, 0.82fr);
-	gap: clamp(1.75rem, 4vw, 3.5rem);
-	align-items: start;
-	margin-top: 1.75rem;
-}
-
 .science-compare {
 	display: grid;
-	gap: 0.85rem;
-	margin: 0;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.25rem 1.5rem;
+	margin: 2rem 0 0;
 	padding: 0;
 	list-style: none;
 }
 
 .science-compare figure {
 	margin: 0;
+	min-width: 0;
 }
 
 .science-compare-frame {
-	aspect-ratio: 16 / 10;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background: var(--bg);
 }
 
 .science-compare-frame img,
@@ -166,17 +201,17 @@
 }
 
 .science-compare figcaption {
-	margin-top: 0.45rem;
+	margin-top: 0.65rem;
 }
 
 .science-compare .science-caption {
-	margin-top: 0.15rem;
-	font-size: 0.92rem;
+	margin-top: 0.2rem;
+	max-width: none;
+	font-size: 0.95rem;
 }
 
 .science-compare .science-credit {
-	margin-top: 0.1rem;
-	letter-spacing: 0.12em;
+	margin-top: 0;
 }
 
 .science-instrument {
@@ -474,19 +509,47 @@
 		font-size: clamp(1.6rem, 7vw, 2.15rem);
 	}
 
-	.science-question,
+	.science-essay {
+		grid-template-columns: 1fr;
+		gap: 1.75rem;
+	}
+
+	.science-figure-frame {
+		aspect-ratio: 16 / 10;
+		max-width: 28rem;
+	}
+
+	.science-questions {
+		grid-template-columns: 1fr;
+		margin-top: 2.25rem;
+	}
+
+	.science-question {
+		padding: 0;
+	}
+
+	.science-question + .science-question {
+		margin-top: 1.75rem;
+		padding-top: 1.75rem;
+		border-left: none;
+		border-top: 1px solid var(--line-quiet);
+	}
+
 	.science-step,
 	.science-step--text {
 		grid-template-columns: 1fr;
 		gap: 0.35rem;
 	}
 
-	.science-question-index,
 	.science-step-index {
 		padding-top: 0;
 	}
 
-	.science-why,
+	.science-compare {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+	}
+
 	.science-instrument,
 	.science-feature {
 		grid-template-columns: 1fr;

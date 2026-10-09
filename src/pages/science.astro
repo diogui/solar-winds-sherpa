@@ -53,76 +53,76 @@ const featured = featuredIds.map((id) => {
 	description="What Solar Wind Sherpas investigates in the solar corona, how totality is used to record it, and the papers that follow from those observations."
 >
 	<article class="page science">
-		<header class="science-intro" id="questions">
-			<p class="label page-kicker">Science</p>
-			<h1 id="questions-heading">The questions we explore</h1>
-			<p class="lead">
-				A total solar eclipse gives a few minutes when the Sun’s outer atmosphere can be studied
-				from the ground. These are the questions that work is built around.
-			</p>
-		</header>
+		<section class="science-opening" id="questions" aria-labelledby="questions-heading">
+			<div class="science-essay">
+				<header class="science-intro">
+					<p class="label page-kicker">Science</p>
+					<h1 id="questions-heading">The questions we explore</h1>
+					<p class="lead">
+						A total solar eclipse gives a few minutes when the Sun’s outer atmosphere can be
+						studied from the ground. These are the questions that work is built around.
+					</p>
+				</header>
 
-		<figure class="science-hero">
-			<div class="science-hero-frame">
-				<Image
-					src={photos[hero.image]}
-					alt={hero.alt}
-					widths={[800, 1400, 2000]}
-					sizes="(max-width: 1120px) 100vw, 1120px"
-					loading="eager"
-				/>
+				<figure class="science-figure">
+					<div class="science-figure-frame">
+						<Image
+							src={photos[hero.image]}
+							alt={hero.alt}
+							widths={[640, 960, 1280]}
+							sizes="(max-width: 900px) 92vw, min(28rem, 40vw)"
+							loading="eager"
+						/>
+					</div>
+					<figcaption class="science-caption">
+						{hero.caption}
+						<span class="science-credit">{hero.credit}</span>
+					</figcaption>
+				</figure>
 			</div>
-			<figcaption class="science-caption">
-				{hero.caption}
-				<span class="science-credit">{hero.credit}</span>
-			</figcaption>
-		</figure>
 
-		<ol class="science-questions" aria-labelledby="questions-heading">
-			{
-				questions.map((question) => (
-					<li class="science-question" id={question.id}>
-						<span class="science-question-index">{question.index}</span>
-						<div>
+			<ol class="science-questions" aria-labelledby="questions-heading">
+				{
+					questions.map((question) => (
+						<li class="science-question" id={question.id}>
+							<span class="science-question-index">{question.index}</span>
 							<h2>{question.title}</h2>
 							<p>{question.text}</p>
-						</div>
-					</li>
-				))
-			}
-		</ol>
+						</li>
+					))
+				}
+			</ol>
+		</section>
 
 		<section class="science-section" id="eclipses" aria-labelledby="eclipses-heading">
 			<p class="label">Why eclipses</p>
 			<h2 id="eclipses-heading">Why total eclipses matter</h2>
-			<div class="science-why">
-				<div class="science-prose">
-					{whyParagraphs.map((paragraph) => <p>{paragraph}</p>)}
-				</div>
-				<ul class="science-compare">
-					{
-						eclipseFrames.map((frame) => (
-							<li>
-								<figure>
-									<div class="science-compare-frame" style={`--shot-pos: ${frame.position}`}>
-										<Image
-											src={photos[frame.image]}
-											alt={frame.alt}
-											widths={[480, 800, 1200]}
-											sizes="(max-width: 900px) 92vw, 28rem"
-											loading="lazy"
-										/>
-									</div>
-									<figcaption>
-										<span class="science-credit">{frame.caption}</span>
-										<span class="science-caption">{frame.detail}</span>
-									</figcaption>
-								</figure>
-							</li>
-						))
-					}
-				</ul>
+			<div class="science-prose">
+				{whyParagraphs.map((paragraph) => <p>{paragraph}</p>)}
 			</div>
+			<ul class="science-compare" aria-label="How totality reveals the corona">
+				{
+					eclipseFrames.map((frame) => (
+						<li>
+							<figure>
+								<div class="science-compare-frame" style={`--shot-pos: ${frame.position}`}>
+									<Image
+										src={photos[frame.image]}
+										alt={frame.alt}
+										widths={[480, 800, 1200]}
+										sizes="(max-width: 900px) 92vw, 33vw"
+										loading="lazy"
+									/>
+								</div>
+								<figcaption>
+									<span class="science-credit">{frame.caption}</span>
+									<span class="science-caption">{frame.detail}</span>
+								</figcaption>
+							</figure>
+						</li>
+					))
+				}
+			</ul>
 		</section>
 
 		<section class="science-section" id="instruments" aria-labelledby="instruments-heading">
