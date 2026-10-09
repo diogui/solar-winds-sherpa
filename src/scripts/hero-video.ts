@@ -61,8 +61,8 @@ function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean
 const HERO_GHOST_SKIP = { from: 38.72, to: 39.55 } as const;
 /** Skip the weak opening; start just before the eclipse callout so motion leads. */
 const HERO_START_AT = 2;
-/** Hold the poster after the hero is on screen before autoplay. */
-const HERO_START_DELAY_MS = 1000;
+/** Hold the large brand on the poster before autoplay and the compact tuck. */
+const HERO_START_DELAY_MS = 2000;
 
 export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	const video = root.querySelector<HTMLVideoElement>('[data-hero-video], video');
@@ -93,6 +93,11 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	let userPaused = false;
 	let ended = false;
 	let skippingGhost = false;
+
+	const setHeroCompact = (compact: boolean) => {
+		if (compact) root.dataset.heroCompact = 'true';
+		else delete root.dataset.heroCompact;
+	};
 
 	const clearStartDelay = () => {
 		if (startDelay === undefined) return;
@@ -168,6 +173,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		video.pause();
 		video.removeAttribute('src');
 		video.load();
+		if (!motion.matches) setHeroCompact(false);
 		idle();
 	};
 
@@ -179,11 +185,13 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		}
 		video.pause();
 		if (!video.getAttribute('src')) {
+			if (!motion.matches) setHeroCompact(false);
 			idle();
 			return;
 		}
 		video.removeAttribute('src');
 		video.load();
+		if (!motion.matches) setHeroCompact(false);
 		idle();
 	};
 
@@ -209,6 +217,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		}
 		userPaused = false;
 		delete root.dataset.paused;
+		setHeroCompact(true);
 		if (timeout !== undefined) window.clearTimeout(timeout);
 		timeout = window.setTimeout(unload, 10000);
 		try {
@@ -225,6 +234,14 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 			startDelay = undefined;
 			if (userPaused || ended) return;
 			void play();
+		}, HERO_START_DELAY_MS);
+	};
+
+	const schedulePosterCompact = () => {
+		if (selection.file || startDelay !== undefined) return;
+		startDelay = window.setTimeout(() => {
+			startDelay = undefined;
+			setHeroCompact(true);
 		}, HERO_START_DELAY_MS);
 	};
 
@@ -283,11 +300,15 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	});
 
 	idle();
+	if (motion.matches) setHeroCompact(true);
+	else setHeroCompact(false);
 	mountHeroAnnotation(root, video);
 	new IntersectionObserver(
 		([entry]) => {
 			if (entry?.isIntersecting && (entry.intersectionRatio ?? 0) >= 0.2) {
-				if (!userPaused && !ended && selection.file) scheduleAutoplay();
+				if (userPaused || ended) return;
+				if (selection.file) scheduleAutoplay();
+				else schedulePosterCompact();
 				return;
 			}
 			release();

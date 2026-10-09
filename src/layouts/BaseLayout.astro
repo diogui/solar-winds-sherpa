@@ -7,6 +7,9 @@ import '@fontsource/oswald/500.css';
 import '@fontsource/oswald/600.css';
 import '@fontsource/open-sans/400.css';
 import '@fontsource/open-sans/600.css';
+import oswaldLatin500 from '@fontsource/oswald/files/oswald-latin-500-normal.woff2?url';
+import oswaldLatin400 from '@fontsource/oswald/files/oswald-latin-400-normal.woff2?url';
+import openSansLatin400 from '@fontsource/open-sans/files/open-sans-latin-400-normal.woff2?url';
 import '../styles/global.css';
 
 interface Props {
@@ -41,6 +44,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={canonical} />
 		<meta name="twitter:card" content="summary_large_image" />
+		{/* Preload display + body latin faces so hero copy does not jump on FOUT. */}
+		<link rel="preload" href={oswaldLatin500} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={oswaldLatin400} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={openSansLatin400} as="font" type="font/woff2" crossorigin />
 		<slot name="head" />
 	</head>
 	<body>
