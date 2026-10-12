@@ -116,6 +116,12 @@ article.page.about h1 {
 	color: var(--text-dim);
 }
 
+#our-story .page-narrow > p,
+#our-story .about-origin dd {
+	text-align: justify;
+	text-wrap: pretty;
+}
+
 .about-story-gallery {
 	width: var(--media-wide);
 	margin: 2.5rem auto 0;
@@ -714,6 +720,10 @@ html.has-lightbox-open body {
 	align-items: stretch;
 	gap: 2.15rem;
 	padding: 2.15rem;
+}
+
+.about-founder .label {
+	font-size: clamp(1rem, 1.5vw, 1.12rem);
 }
 
 .about-featured-photo {

@@ -25,7 +25,7 @@ import people2021 from '../assets/images/about/people/group-2021.jpg';
 import peopleAirport from '../assets/images/about/people/group-airport.jpg';
 import peopleMexicoEight from '../assets/images/about/people/group-mexico-eight.jpg';
 import peopleMexicoTrio from '../assets/images/about/people/group-mexico-trio.jpg';
-import peopleSpain from '../assets/images/about/people/group-spain.jpg';
+import peopleMilos from '../assets/images/about/people/milos-field.jpg';
 import peopleGear from '../assets/images/about/people/group-gear-2024.jpg';
 import people2017 from '../assets/images/about/people/group-2017.jpg';
 import peopleField2015 from '../assets/images/about/people/group-field-2015.jpg';
@@ -34,85 +34,73 @@ import '../styles/about.css';
 
 const expeditionTeamHref = '/latest-expedition#team';
 
+/* Story photos: Danilo will select the final set — current picks are provisional. */
 const storyGallery = [
 	{
 		image: storyGroupField2015,
 		alt: 'Red expedition tent and instruments on a coastal gravel site',
-		caption: 'Faroe Islands, 2015',
 		position: '50% 48%',
 		wide: true,
 	},
 	{
 		image: storyPeopleInstruments,
 		alt: 'Ben calibrating instruments inside a field tent',
-		caption: 'Ben on his first expedition · Indonesia, 2016',
 		position: '50% 42%',
 	},
 	{
 		image: storyGroup2017,
 		alt: 'Large expedition group in red shirts in front of field vehicles',
-		caption: '2017',
 		position: '50% 45%',
 	},
 	{
 		image: storyPeopleHorses,
 		alt: 'Petr, Jana and a teammate on horseback among mountain trees',
-		caption: 'Petr, Jana and a teammate on horseback, 2017',
 		position: '50% 40%',
 	},
 	{
 		image: storyPeopleJanaHorses,
 		alt: 'Jana working under a cloth at an instrument, with horses nearby',
-		caption: 'Jana at work · 2017',
 		position: '45% 50%',
 	},
 	{
 		image: storyPeopleCerro,
 		alt: 'Cerro Tololo observatory landscape under a bright sun',
-		caption: 'Cerro Tololo, 2019 · Petr Štarha',
 		position: '50% 45%',
 		wide: true,
 	},
 	{
 		image: storyPeopleAdjusting,
 		alt: 'Jana adjusting a multi-camera rig in the field',
-		caption: 'Jana at work, 2024',
 		position: '48% 40%',
 	},
 	{
 		image: storyComputers8003,
 		alt: 'Total solar eclipse above silhouetted cameras and telescopes in the field',
-		caption: 'Totality · USA, 2024',
 		position: '50% 35%',
 	},
 	{
 		image: storyGroupUsa,
 		alt: 'Solar Wind Sherpas team in matching blue shirts posing in a grassy field',
-		caption: '2024',
 		position: '50% 42%',
 	},
 	{
 		image: storyComputersNight,
 		alt: 'Field computers glowing in a darkened operations tent before totality',
-		caption: 'USA, 2024',
 		position: '50% 48%',
 	},
 	{
 		image: storyPeopleShadia,
 		alt: 'Shadia Habbal working alone at a field site in the distance',
-		caption: 'Shadia in the distance, 2024',
 		position: '42% 48%',
 	},
 	{
 		image: storyPeopleOutreach,
 		alt: 'Ben and Martina speaking on stage with an eclipse slide behind them',
-		caption: 'Ben and Martina speaking, 2024',
 		position: '50% 40%',
 	},
 	{
 		image: storyGroupSpain,
 		alt: 'Team portrait on a grassy ridge with a telescope beside them',
-		caption: 'Foto Klub + Milos, 2026',
 		position: '50% 38%',
 		wide: true,
 	},
@@ -137,63 +125,54 @@ const peopleGallery = [
 	{
 		image: peopleUsa,
 		alt: 'Solar Wind Sherpas team in matching blue shirts posing in a grassy field',
-		caption: '2024',
 		area: 'hero',
 		position: '50% 40%',
 	},
 	{
-		image: peopleSpain,
-		alt: 'Expedition team on a Spanish ridge with a telescope and open sky behind them',
-		caption: 'Foto Klub + Milos, 2026',
+		image: peopleMilos,
+		alt: 'Miloslav Druckmüller among telescope mounts on a ridge at golden hour',
 		area: 'a',
-		position: '50% 42%',
+		position: '42% 40%',
 	},
 	{
 		image: peopleMexicoEight,
 		alt: 'Eight expedition members in blue shirts at a field camp with tents',
-		caption: '2024',
 		area: 'b',
 		position: '50% 40%',
 	},
 	{
 		image: peopleMexicoTrio,
 		alt: 'Sage, Luke and Carlos in matching expedition shirts in Canatlán',
-		caption: 'Sage, Luke & Carlos · Canatlán, 2024',
 		area: 'c',
 		position: '50% 38%',
 	},
 	{
 		image: people2017,
 		alt: 'Large expedition group in red shirts gathered in front of field vehicles',
-		caption: '2017',
 		area: 'd',
 		position: '50% 45%',
 	},
 	{
 		image: peopleAirport,
 		alt: 'Team selfie with expedition luggage at an airport arrivals hall',
-		caption: 'Airport selfie · Houston, 2024',
 		area: 'e',
 		position: '50% 42%',
 	},
 	{
 		image: peopleGear,
 		alt: 'Petr and Matěj behind a dense array of cameras prepared for totality',
-		caption: 'Petr & Matěj, 2024',
 		area: 'f',
 		position: '48% 48%',
 	},
 	{
 		image: people2021,
 		alt: 'Team in cold-weather parkas and life vests aboard a research vessel',
-		caption: 'Antarctica, 2021',
 		area: 'g',
 		position: '50% 45%',
 	},
 	{
 		image: peopleField2015,
 		alt: 'Red expedition tent and instruments on a coastal gravel observing site',
-		caption: 'Faroe Islands, 2015',
 		area: 'h',
 		position: '50% 48%',
 	},
@@ -249,7 +228,6 @@ const aboutNav = [
 						<span class="about-indicator-label">peer-reviewed publications</span>
 					</li>
 				</ul>
-				<p class="about-screen-credit">Pico Trigaza, Spain, 2026</p>
 			</div>
 		</section>
 
@@ -334,7 +312,7 @@ const aboutNav = [
 									type="button"
 									class="about-story-shot-open"
 									data-lightbox-trigger
-									aria-label={`View larger: ${shot.caption}`}
+									aria-label={`View larger: ${shot.alt}`}
 								>
 									<Image
 										src={shot.image}
@@ -345,9 +323,6 @@ const aboutNav = [
 										class="about-story-photo"
 									/>
 								</button>
-								<figcaption class="about-story-caption" data-lightbox-caption-text>
-									{shot.caption}
-								</figcaption>
 							</figure>
 						))
 					}
@@ -406,7 +381,7 @@ const aboutNav = [
 								type="button"
 								class="about-people-shot-open"
 								data-lightbox-trigger
-								aria-label={`View larger: ${shot.caption}`}
+								aria-label={`View larger: ${shot.alt}`}
 							>
 								<Image
 									src={shot.image}
@@ -421,9 +396,6 @@ const aboutNav = [
 									class="about-people-photo"
 								/>
 							</button>
-							<figcaption class="about-people-caption" data-lightbox-caption-text>
-								{shot.caption}
-							</figcaption>
 						</figure>
 					))
 				}
@@ -445,7 +417,7 @@ const aboutNav = [
 						communities we meet.
 					</p>
 				</header>
-				<WorkCards outreachHref={false} />
+				<WorkCards outreachHref={false} hideCredits />
 			</div>
 		</section>
 
@@ -495,7 +467,6 @@ const aboutNav = [
 			<div class="about-lightbox-stage" data-lightbox-stage>
 				<img class="about-lightbox-image" data-lightbox-image alt="" />
 				<div class="about-lightbox-meta">
-					<p class="about-lightbox-caption" data-lightbox-caption></p>
 					<p class="about-lightbox-counter" data-lightbox-counter></p>
 				</div>
 			</div>

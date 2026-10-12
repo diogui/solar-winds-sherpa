@@ -1,7 +1,6 @@
 type Slide = {
 	src: string;
 	alt: string;
-	caption: string;
 };
 
 function largestSrc(img: HTMLImageElement): string {
@@ -28,15 +27,10 @@ function slidesFromGallery(gallery: HTMLElement): Slide[] {
 			return !!frame && !frame.hasAttribute('hidden');
 		})
 		.map((trigger) => {
-			const frame = trigger.closest('figure') ?? trigger;
 			const img = trigger.querySelector<HTMLImageElement>('img');
-			const cap =
-				frame.querySelector('[data-lightbox-caption-text]') ??
-				frame.querySelector('.about-story-caption, .about-people-caption');
 			return {
 				src: img ? largestSrc(img) : '',
 				alt: img?.alt ?? '',
-				caption: cap?.textContent?.trim() ?? '',
 			};
 		});
 }
@@ -46,13 +40,12 @@ export function mountAboutLightbox() {
 	if (!dialog) return;
 
 	const image = dialog.querySelector<HTMLImageElement>('[data-lightbox-image]');
-	const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]');
 	const counter = dialog.querySelector<HTMLElement>('[data-lightbox-counter]');
 	const closeBtn = dialog.querySelector<HTMLButtonElement>('[data-lightbox-close]');
 	const prevBtn = dialog.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
 	const nextBtn = dialog.querySelector<HTMLButtonElement>('[data-lightbox-next]');
 	const stage = dialog.querySelector<HTMLElement>('[data-lightbox-stage]');
-	if (!image || !caption || !counter || !closeBtn || !prevBtn || !nextBtn || !stage) return;
+	if (!image || !counter || !closeBtn || !prevBtn || !nextBtn || !stage) return;
 
 	const galleries = [...document.querySelectorAll<HTMLElement>('[data-lightbox-gallery]')];
 	if (!galleries.length) return;
@@ -67,8 +60,6 @@ export function mountAboutLightbox() {
 		if (!slide) return;
 		image.src = slide.src;
 		image.alt = slide.alt;
-		caption.textContent = slide.caption;
-		caption.hidden = !slide.caption;
 		counter.textContent = `${index + 1} / ${slides.length}`;
 		prevBtn.disabled = slides.length < 2;
 		nextBtn.disabled = slides.length < 2;

@@ -7,9 +7,11 @@ import { homeOnlyPreview } from '../data/site';
 
 interface Props {
 	outreachHref?: string | false;
+	/** Hide photographer credits under card photos (About feedback). */
+	hideCredits?: boolean;
 }
 
-const { outreachHref = '/about#actions' } = Astro.props;
+const { outreachHref = '/about#actions', hideCredits = false } = Astro.props;
 
 const fronts = [
 	{
@@ -55,7 +57,7 @@ const fronts = [
 						sizes="(max-width: 900px) 100vw, 33vw"
 						class:list={['home-work-img', `home-work-img--${front.variant}`]}
 					/>
-					{'credit' in front && <p class="home-work-credit">{front.credit}</p>}
+					{!hideCredits && 'credit' in front && <p class="home-work-credit">{front.credit}</p>}
 				</div>
 				<div class="home-work-text">
 					<h3>{front.title}</h3>
