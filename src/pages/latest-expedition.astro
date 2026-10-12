@@ -7,13 +7,13 @@ import OnPageNav from '../components/OnPageNav.astro';
 
 const expeditionNav = [
 	{ id: 'mission', label: 'Two Sites' },
-	{ id: 'film', label: 'Film' },
 	{ id: 'in-the-field', label: 'Field' },
 	{ id: 'team', label: 'Team' },
-	{ id: 'made-possible-by', label: 'Partners' },
-	{ id: 'podcast', label: 'Podcast' },
 	{ id: 'processed-images', label: 'Processed' },
-	{ id: 'what-comes-next', label: 'Next' },
+	{ id: 'film', label: 'Film' },
+	{ id: 'podcast', label: 'Podcast' },
+	{ id: 'made-possible-by', label: 'Partners' },
+	{ id: 'what-comes-next', label: '2027' },
 	{ id: 'take-action', label: 'Take Action' },
 ] as const;
 import padillaCamp from '../assets/images/field/latest-camp.jpg';
@@ -42,7 +42,11 @@ import burgosAdjust from '../assets/images/expedition/burgos/burgos-adjust.jpg';
 import burgosPortraitTrigaza from '../assets/images/expedition/burgos/burgos-portrait-trigaza.jpg';
 import burgosTeamTrigaza from '../assets/images/expedition/burgos/burgos-team-trigaza.jpg';
 import burgosHorizon from '../assets/images/expedition/burgos/burgos-horizon.jpg';
-import burgosProcessedCorona from '../assets/images/expedition/burgos/burgos-processed-corona.png';
+import processedTrigaza14mm from '../assets/images/expedition/burgos/processed/tse2026-trigaza-14mm-c2.jpg';
+import processedTrigaza200mm from '../assets/images/expedition/burgos/processed/tse2026-trigaza-200mm.png';
+import processedTrigaza800mm from '../assets/images/expedition/burgos/processed/tse2026-trigaza-800mm.png';
+import processedTrigazaFeatured from '../assets/images/expedition/burgos/processed/tse2026-trigaza-featured.jpg';
+import Eclipse2027Map from '../components/Eclipse2027Map.astro';
 import burgosLenses from '../assets/images/expedition/burgos/burgos-lenses.jpg';
 import burgosTrigazaSlope from '../assets/images/expedition/burgos/burgos-trigaza-slope.jpg';
 import burgosDiagram from '../assets/images/expedition/burgos/burgos-diagram.jpg';
@@ -76,6 +80,8 @@ import shadiaHabbal from '../assets/images/team/shadia-habbal.jpg';
 import tulinBedel from '../assets/images/team/tulin-bedel.jpg';
 import zacBailey from '../assets/images/team/zac-bailey.jpg';
 import ignacioAmigo from '../assets/images/team/ignacio-amigo.jpg';
+import miloslavDruckmuller from '../assets/images/team/miloslav-druckmuller.jpg';
+import fotoklubTechnika from '../assets/images/team/studentsky-fotoklub-technika-brno.jpg';
 import '../styles/home.css';
 import '../styles/expedition.css';
 import { burgosFilm } from '../data/media';
@@ -516,10 +522,12 @@ const padillaTeam = [
 ] as const;
 
 const trigazaTeam = [
-	{ name: 'Miloslav Druckmüller' },
+	{ name: 'Miloslav Druckmüller', photo: miloslavDruckmuller },
 	{ name: 'Zuzana Druckmüllerova' },
 	{
 		name: 'Studentský Fotoklub Technika Brno',
+		photo: fotoklubTechnika,
+		photoClass: 'exp-team-photo--fotoklub',
 		note: 'Student photography club',
 		href: fotoklubInstagram,
 		linkLabel: 'Instagram',
@@ -527,9 +535,46 @@ const trigazaTeam = [
 ] as const;
 
 const nextPlaces = [
-	{ label: 'Egypt', status: 'Confirmed' },
-	{ label: 'Southern Spain, near Tarifa', status: 'Confirmed' },
-	{ label: 'Tunisia', status: 'Observing site to be confirmed' },
+	{ label: 'Spain', status: 'Betis, Andalucía', note: 'Totality ~1 min 57 s' },
+	{ label: 'Tunisia', status: 'El Lousa', note: 'Totality ~5 min' },
+	{ label: 'Egypt', status: 'Luxor', note: 'Totality ~6 min 22 s · near greatest eclipse' },
+] as const;
+
+const druckArchive = 'http://www.zam.fme.vutbr.cz/~druck/Eclipse/Ecl2026s/0-info.htm';
+
+const processedImages = [
+	{
+		image: processedTrigazaFeatured,
+		alt: 'Composite path of the 2026 total solar eclipse over the landscape from Pico Trigaza, from first crescent through totality to sunset',
+		title: 'Eclipse path over Trigaza',
+		note: 'Partial phases, totality, and sunset sequence',
+		href: 'http://www.zam.fme.vutbr.cz/~druck/Eclipse/Ecl2026s/TSE_2026_Trigaza.jpg',
+		credit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Václav Široký',
+	},
+	{
+		image: processedTrigaza800mm,
+		alt: 'Processed white-light image of the entire solar corona visible from Pico Trigaza during the 2026 eclipse',
+		title: 'Entire corona from Trigaza',
+		note: 'Nikkor Z 800 mm · composition of 298 frames',
+		href: 'http://www.zam.fme.vutbr.cz/~druck/Eclipse/Ecl2026s/Trigaza/TSE_2026_800mm_DHS/0-info.htm',
+		credit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Václav Široký',
+	},
+	{
+		image: processedTrigaza200mm,
+		alt: 'Wide-angle processed image of the 2026 total solar eclipse corona low above the horizon at Pico Trigaza',
+		title: 'Wide-angle corona',
+		note: '200 mm + 400 mm · composition of 433 frames',
+		href: 'http://www.zam.fme.vutbr.cz/~druck/Eclipse/Ecl2026s/Trigaza/TSE_2026_200mm_DHS/0-info.htm',
+		credit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Václav Široký',
+	},
+	{
+		image: processedTrigaza14mm,
+		alt: 'Wide landscape view of second contact at Pico Trigaza with the eclipsed Sun low over the hills',
+		title: 'Second contact, 14 mm',
+		note: 'Pico Trigaza · landscape context at C2',
+		href: 'http://www.zam.fme.vutbr.cz/~druck/Eclipse/Ecl2026s/Trigaza/TSE2026_Trigaza_14mm_C2.jpg',
+		credit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Václav Široký',
+	},
 ] as const;
 
 /*
@@ -590,7 +635,6 @@ const podcastDefault = podcast.languages[0];
 				<h1 id="exp-heading">Burgos, Spain</h1>
 				<p class="exp-facts">12 August 2026 · Padilla de Abajo · Pico Trigaza</p>
 				<p class="exp-screen-lead">Two observing sites. One total solar eclipse.</p>
-				<p class="exp-screen-credit">Pico Trigaza · Václav Široký, 2026</p>
 			</div>
 		</section>
 
@@ -630,18 +674,16 @@ const podcastDefault = podcast.languages[0];
 									class="exp-sites-photo"
 								/>
 							</button>
-							<figcaption class="exp-sites-caption" data-lightbox-caption-text>
+							<span class="visually-hidden" data-lightbox-caption-text>
 								{site.label}
-							</figcaption>
+							</span>
 						</figure>
 					))
 				}
 			</div>
 
 			<div class="exp-gallery-head">
-				<p class="exp-gallery-note">
-					Filter by site. Each caption names the place and the photographer.
-				</p>
+				<p class="exp-gallery-note">Filter by site.</p>
 				<div class="exp-gallery-toolbar" role="group" aria-label="Filter photographs by site">
 					<button type="button" class="exp-site-btn" data-gallery-filter="all" aria-pressed="true">
 						All
@@ -691,9 +733,9 @@ const podcastDefault = podcast.languages[0];
 										class="exp-burgos-photo"
 									/>
 								</button>
-								<figcaption class="exp-burgos-caption" data-lightbox-caption-text>
+								<span class="visually-hidden" data-lightbox-caption-text>
 									{shot.caption}
-								</figcaption>
+								</span>
 							</figure>
 						))
 					}
@@ -709,6 +751,166 @@ const podcastDefault = podcast.languages[0];
 						</button>
 					</div>
 				</div>
+			</div>
+		</section>
+
+		<section class="exp-block exp-field" id="in-the-field" aria-labelledby="field-heading">
+			<div class="page-narrow">
+				<p class="label">In the Field</p>
+				<h2 id="field-heading">Preparation and observation.</h2>
+				<p>
+					From assembling the instruments to the minutes on site — Padilla de Abajo and Pico Trigaza,
+					side by side.
+				</p>
+			</div>
+			<div class="exp-field-grid" data-lightbox-gallery aria-label="Preparation and observation photographs">
+				{
+					fieldBeats.map((beat) => (
+						<figure class="exp-field-shot" style={`--shot-pos: ${beat.position}`}>
+							<button
+								type="button"
+								class="exp-field-shot-open"
+								data-lightbox-trigger
+								aria-label={`View larger: ${beat.label}. ${beat.caption}`}
+							>
+								<Image
+									src={beat.image}
+									alt={beat.alt}
+									widths={[480, 800, 1200]}
+									sizes="(max-width: 900px) 46vw, 22vw"
+									loading="lazy"
+									class="exp-field-photo"
+								/>
+							</button>
+							<figcaption>
+								<strong>{beat.label}</strong>
+								<span>{beat.note}</span>
+								<span class="exp-field-credit" data-lightbox-caption-text>
+									{beat.caption}
+								</span>
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="exp-block exp-team" id="team" aria-labelledby="team-heading">
+			<div class="page-narrow">
+				<p class="label">The Expedition Team</p>
+				<h2 id="team-heading">Who was in the field.</h2>
+				<p>The people who took part in the Burgos expedition, listed by observing site.</p>
+			</div>
+
+			<div class="exp-team-group">
+				<p class="label">Padilla de Abajo</p>
+				<ul class="exp-team-grid">
+					{
+						padillaTeam.map((member) => (
+							<li class="exp-team-card">
+								<div class="exp-well exp-well--portrait">
+									<Image
+										src={member.photo}
+										alt={member.name}
+										widths={[320, 480, 720]}
+										sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 22vw"
+									/>
+								</div>
+								<h3>{member.name}</h3>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div class="exp-team-group">
+				<p class="label">Pico Trigaza</p>
+				<ul class="exp-team-grid">
+					{
+						trigazaTeam.map((member) => (
+							<li class="exp-team-card">
+								{'photo' in member && member.photo ? (
+									<div
+										class:list={[
+											'exp-well',
+											'exp-well--portrait',
+											'photoClass' in member &&
+												member.photoClass === 'exp-team-photo--fotoklub' &&
+												'exp-well--group',
+										]}
+									>
+										<Image
+											src={member.photo}
+											alt={member.name}
+											widths={[320, 480, 720, 1000]}
+											sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 28vw"
+											class:list={[
+												member.name === 'Miloslav Druckmüller' && 'exp-team-photo--milos',
+												'photoClass' in member && member.photoClass,
+											]}
+										/>
+									</div>
+								) : (
+									<div class="exp-well exp-well--portrait exp-well--empty">
+										<p class="exp-well-label">Portrait</p>
+									</div>
+								)}
+								<h3>{member.name}</h3>
+								{'note' in member && member.note ? <p class="exp-team-note">{member.note}</p> : null}
+								{'href' in member && member.href ? (
+									<a
+										class="exp-team-link"
+										href={member.href}
+										rel="noopener noreferrer"
+										target="_blank"
+									>
+										{member.linkLabel} <span class="cta-arrow" aria-hidden="true">→</span>
+									</a>
+								) : null}
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
+		<section class="exp-processed" id="processed-images" aria-labelledby="processed-heading">
+			<div class="page-narrow exp-processed-intro">
+				<p class="label">Processed Eclipse Images</p>
+				<h2 id="processed-heading">A closer look at the solar corona.</h2>
+				<p>
+					First processed results from Pico Trigaza by{' '}
+					<a href={druckmullerSite} rel="noopener noreferrer" target="_blank">Miloslav Druckmüller</a>
+					{' '}and the team. More images will be added as the analysis continues — see the{' '}
+					<a href={druckArchive} rel="noopener noreferrer" target="_blank">full archive</a>.
+				</p>
+			</div>
+			<div class="exp-processed-gallery" aria-label="Processed eclipse photographs from Pico Trigaza">
+				{
+					processedImages.map((shot) => (
+						<figure class="exp-processed-card">
+							<a
+								class="exp-processed-card-link"
+								href={shot.href}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								<Image
+									class="exp-processed-photo"
+									src={shot.image}
+									alt={shot.alt}
+									widths={[640, 960, 1400]}
+									sizes="(max-width: 700px) 92vw, 48vw"
+								/>
+							</a>
+							<figcaption>
+								<strong>{shot.title}</strong>
+								<span>{shot.note}</span>
+								<span class="exp-processed-credit">{shot.credit}</span>
+							</figcaption>
+						</figure>
+					))
+				}
 			</div>
 		</section>
 
@@ -811,118 +1013,6 @@ const podcastDefault = podcast.languages[0];
 			)
 		}
 
-		<section class="exp-block exp-field" id="in-the-field" aria-labelledby="field-heading">
-			<div class="page-narrow">
-				<p class="label">In the Field</p>
-				<h2 id="field-heading">Preparation and observation.</h2>
-				<p>
-					From assembling the instruments to the minutes on site — Padilla de Abajo and Pico Trigaza,
-					side by side.
-				</p>
-			</div>
-			<div class="exp-field-grid" data-lightbox-gallery aria-label="Preparation and observation photographs">
-				{
-					fieldBeats.map((beat) => (
-						<figure class="exp-field-shot" style={`--shot-pos: ${beat.position}`}>
-							<button
-								type="button"
-								class="exp-field-shot-open"
-								data-lightbox-trigger
-								aria-label={`View larger: ${beat.label}. ${beat.caption}`}
-							>
-								<Image
-									src={beat.image}
-									alt={beat.alt}
-									widths={[480, 800, 1200]}
-									sizes="(max-width: 900px) 46vw, 22vw"
-									loading="lazy"
-									class="exp-field-photo"
-								/>
-							</button>
-							<figcaption>
-								<strong>{beat.label}</strong>
-								<span>{beat.note}</span>
-								<span class="exp-field-credit" data-lightbox-caption-text>
-									{beat.caption}
-								</span>
-							</figcaption>
-						</figure>
-					))
-				}
-			</div>
-		</section>
-
-		<section class="exp-block exp-team" id="team" aria-labelledby="team-heading">
-			<div class="page-narrow">
-				<p class="label">The Expedition Team</p>
-				<h2 id="team-heading">Who was in the field.</h2>
-				<p>The people who took part in the Burgos expedition, listed by observing site.</p>
-			</div>
-
-			<div class="exp-team-group">
-				<p class="label">Padilla de Abajo</p>
-				<ul class="exp-team-grid">
-					{
-						padillaTeam.map((member) => (
-							<li class="exp-team-card">
-								<div class="exp-well exp-well--portrait">
-									<Image
-										src={member.photo}
-										alt={member.name}
-										widths={[320, 480, 720]}
-										sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 22vw"
-									/>
-								</div>
-								<h3>{member.name}</h3>
-							</li>
-						))
-					}
-				</ul>
-			</div>
-
-			<div class="exp-team-group">
-				<p class="label">Pico Trigaza</p>
-				<ul class="exp-team-grid">
-					{
-						trigazaTeam.map((member) => (
-							<li class="exp-team-card">
-								<div class="exp-well exp-well--portrait exp-well--empty">
-									<p class="exp-well-label">Portrait</p>
-								</div>
-								<h3>{member.name}</h3>
-								{'note' in member && member.note ? <p class="exp-team-note">{member.note}</p> : null}
-								{'href' in member && member.href ? (
-									<a
-										class="exp-team-link"
-										href={member.href}
-										rel="noopener noreferrer"
-										target="_blank"
-									>
-										{member.linkLabel} <span class="cta-arrow" aria-hidden="true">→</span>
-									</a>
-								) : null}
-							</li>
-						))
-					}
-				</ul>
-			</div>
-		</section>
-
-		<!--
-			Editorial (not public): former note that logos match the rest of the site, and that
-			Valmala local supporters will be added when confirmed. Thank-you copy below is proposed —
-			confirm with Danilo before publish.
-		-->
-		<Partners
-			variant="block"
-			id="made-possible-by"
-			headingId="partners-heading"
-			label="Made Possible By"
-			heading="The support that put this expedition in the field."
-			lead="Thank you to the institutions, technical partners and local supporters who helped make the Burgos 2026 expedition possible."
-			include={[...burgosPartnerIds]}
-		/>
-
 		<section class="exp-block exp-podcast" id="podcast" aria-labelledby="podcast-heading" data-podcast>
 			<div class="exp-podcast-panel">
 				<div class="exp-podcast-layout">
@@ -945,9 +1035,6 @@ const podcastDefault = podcast.languages[0];
 						<p>
 							Science writer Ignacio Amigo joined the expedition in Padilla de Abajo, recording
 							conversations with the researchers and the sounds of eclipse day.
-						</p>
-						<p class="exp-podcast-about">
-							<a href={podcast.authorUrl} rel="noopener noreferrer" target="_blank">About Ignacio</a>
 						</p>
 					</div>
 
@@ -996,50 +1083,43 @@ const podcastDefault = podcast.languages[0];
 			</div>
 		</section>
 
-		<section class="exp-processed" id="processed-images" aria-labelledby="processed-heading">
-			<div class="exp-section-inner exp-processed-layout">
-				<figure class="exp-processed-media">
-					<Image
-						class="exp-processed-photo"
-						src={burgosProcessedCorona}
-						alt="Processed white-light image of the solar corona during the 2026 total solar eclipse"
-						widths={[640, 960, 1280]}
-						sizes="(max-width: 900px) 92vw, 52vw"
-					/>
-					<figcaption class="exp-processed-credit">
-						© 2026 Miloslav Druckmüller, Shadia Habbal, Zdeněk Sobotka
-					</figcaption>
-				</figure>
-				<div class="exp-processed-copy">
-					<p class="label">Processed Eclipse Images</p>
-					<h2 id="processed-heading">A closer look at the solar corona.</h2>
-					<p>
-						A processed image of the 2026 total solar eclipse by{' '}
-						<a href={druckmullerSite} rel="noopener noreferrer" target="_blank"
-							>Miloslav Druckmüller</a
-						>.
-					</p>
-				</div>
-			</div>
-		</section>
+		<!--
+			Editorial (not public): former note that logos match the rest of the site, and that
+			Valmala local supporters will be added when confirmed. Thank-you copy below is proposed —
+			confirm with Danilo before publish.
+		-->
+		<Partners
+			variant="block"
+			id="made-possible-by"
+			headingId="partners-heading"
+			label="Made Possible By"
+			heading="The support that put this expedition in the field."
+			lead="Thank you to the institutions, technical partners and local supporters who helped make the Burgos 2026 expedition possible."
+			include={[...burgosPartnerIds]}
+		/>
 
 		<section class="exp-next" id="what-comes-next" aria-labelledby="next-heading">
 			<div class="exp-next-panel">
-				<p class="label">Next Expedition</p>
-				<h2 id="next-heading">2 August 2027.</h2>
-				<p class="exp-next-lead">
-					The next campaign will bring the Sherpas to Egypt, southern Spain and Tunisia.
-				</p>
-				<ul class="exp-next-places">
-					{
-						nextPlaces.map((place) => (
-							<li>
-								<span>{place.label}</span>
-								<span class="exp-next-status">{place.status}</span>
-							</li>
-						))
-					}
-				</ul>
+				<div class="exp-next-copy">
+					<p class="label">Expedition 2027</p>
+					<h2 id="next-heading">2 August 2027.</h2>
+					<p class="exp-next-lead">
+						The next campaign follows the path of totality from southern Spain across North Africa to
+						Egypt — three sites where the Sherpas will be in the field.
+					</p>
+					<ul class="exp-next-places">
+						{
+							nextPlaces.map((place) => (
+								<li>
+									<span class="exp-next-place-country">{place.label}</span>
+									<span class="exp-next-place-site">{place.status}</span>
+									<span class="exp-next-status">{place.note}</span>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<Eclipse2027Map />
 			</div>
 		</section>
 

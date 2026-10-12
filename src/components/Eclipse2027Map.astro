@@ -1,0 +1,58 @@
+---
+import {
+	eclipse2027CentralPath,
+	eclipse2027LandPaths,
+	eclipse2027MapView,
+	eclipse2027Sites,
+	eclipse2027UmbralPath,
+} from '../data/eclipse-2027-map';
+
+const { width, height } = eclipse2027MapView;
+---
+
+<figure class="exp-next-map">
+	<svg
+		class="exp-next-map-svg"
+		viewBox={`0 0 ${width} ${height}`}
+		role="img"
+		aria-label="Map of the 2 August 2027 total solar eclipse path of totality across southern Spain, Tunisia and Egypt, with Solar Wind Sherpas sites marked at Betis, El Lousa and Luxor"
+	>
+		<rect width={width} height={height} fill="#05070c"></rect>
+		<g class="exp-next-map-land" fill="#121a28" stroke="#2a3a52" stroke-width="1.2" stroke-linejoin="round">
+			{eclipse2027LandPaths.map((d) => <path d={d}></path>)}
+		</g>
+		<path class="exp-next-map-umbra" d={eclipse2027UmbralPath}></path>
+		<path class="exp-next-map-center" d={eclipse2027CentralPath}></path>
+		<g class="exp-next-map-sites">
+			{
+				eclipse2027Sites.map((site) => {
+					const labelLeft = site.x > width * 0.72;
+					return (
+						<g transform={`translate(${site.x} ${site.y})`}>
+							<circle class="exp-next-map-pin-glow" r="14"></circle>
+							<circle class="exp-next-map-pin" r="5.5"></circle>
+							<text
+								class="exp-next-map-label"
+								x={labelLeft ? -12 : 12}
+								y={-10}
+								text-anchor={labelLeft ? 'end' : 'start'}
+							>
+								{site.label}
+							</text>
+						</g>
+					);
+				})
+			}
+		</g>
+		<text class="exp-next-map-caption" x={width - 24} y={height - 20} text-anchor="end">
+			Path of totality · 2 August 2027
+		</text>
+	</svg>
+	<figcaption class="exp-next-map-credit">
+		Path of totality from Fred Espenak, NASA/GSFC (
+		<a href="https://eclipse.gsfc.nasa.gov/SEpath/SEpath2001/SE2027Aug02Tpath.html"
+			>eclipse.gsfc.nasa.gov</a
+		>). Markers show planned Sherpas sites: Betis (Andalucía), El Lousa (Tunisia) and Luxor
+		(Egypt).
+	</figcaption>
+</figure>
