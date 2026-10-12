@@ -11,6 +11,11 @@ export const supportLinks = [
 	{ href: 'https://buymeacoffee.com/solarwindsherpas', label: 'Buy Me a Coffee' },
 ] as const;
 
+export const socialLinks = [
+	{ href: 'https://www.instagram.com/solarwindsherpas', label: 'Instagram' },
+	{ href: 'https://www.facebook.com/solarwindsherpas', label: 'Facebook' },
+] as const;
+
 /** Expeditions index and Join redirect to Home while this is true. About and Science are live. */
 export const homeOnlyPreview = true;
 
@@ -22,8 +27,7 @@ export const navLeft = [
 ];
 
 export const navRight = [
-	{ href: '#contact', label: 'Contact', live: true },
-	{ href: '#support', label: 'Support', live: true },
+	{ href: '#take-action', label: 'Contact/Support', live: true, featured: true },
 ];
 
 export const footerLinks = [
@@ -31,5 +35,5 @@ export const footerLinks = [
 	{ href: navLeft[1].href, label: 'About', live: navLeft[1].live },
 	{ href: navLeft[2].href, label: 'Science', live: navLeft[2].live },
 	{ href: navLeft[3].href, label: navLeft[3].label, live: navLeft[3].live },
-	{ href: navRight[1].href, label: 'Support', live: navRight[1].live },
+	{ href: navRight[0].href, label: navRight[0].label, live: navRight[0].live },
 ];

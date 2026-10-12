@@ -2,11 +2,10 @@
 import { Image } from 'astro:assets';
 import logoLockup from '../assets/images/brand/logo-lockup-dark.png';
 import logoMark from '../assets/images/brand/logo-mark-color.png';
-import { navLeft, navRight, site } from '../data/site';
+import { navLeft, navRight, site, socialLinks } from '../data/site';
 ---
 
 <footer class="site-footer">
-	<div class="footer-orbit" aria-hidden="true"></div>
 	<div class="footer-mark" aria-hidden="true">
 		<Image src={logoMark} alt="" class="footer-watermark" widths={[320, 480, 640]} sizes="15rem" />
 	</div>
@@ -23,6 +22,17 @@ import { navLeft, navRight, site } from '../data/site';
 				/>
 			</a>
 			<p class="footer-tagline">{site.tagline}</p>
+			<ul class="footer-social" aria-label="Social media">
+				{
+					socialLinks.map((item) => (
+						<li>
+							<a href={item.href} rel="noopener noreferrer" target="_blank">
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 
 		<nav class="footer-nav" aria-label="Footer">
@@ -47,7 +57,7 @@ import { navLeft, navRight, site } from '../data/site';
 			<p class="footer-support-copy">Help make the next totality possible.</p>
 			{
 				navRight
-					.filter((item) => item.label === 'Support')
+					.filter((item) => item.featured)
 					.map((item) => (
 					<a class="cta cta--button" href={item.href}>
 						{item.label} <span class="cta-arrow" aria-hidden="true">→</span>

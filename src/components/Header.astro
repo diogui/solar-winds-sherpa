@@ -72,7 +72,7 @@ function isCurrent(href: string) {
 					<li>
 						{item.live ? (
 							<a
-								class:list={['nav-link', item.label === 'Support' && 'nav-link--support']}
+								class:list={['nav-link', item.featured && 'nav-link--support']}
 								href={item.href}
 								aria-current={isCurrent(item.href) ? 'page' : undefined}
 							>
@@ -80,7 +80,7 @@ function isCurrent(href: string) {
 							</a>
 						) : (
 							<span
-								class:list={['nav-link', item.label === 'Support' && 'nav-link--support']}
+								class:list={['nav-link', item.featured && 'nav-link--support']}
 								aria-disabled="true"
 							>
 								{item.label}
@@ -101,7 +101,7 @@ function isCurrent(href: string) {
 					{item.live ? (
 						<a
 							href={item.href}
-							class={item.label === 'Support' ? 'is-support' : undefined}
+							class={item.featured ? 'is-support' : undefined}
 							aria-current={isCurrent(item.href) ? 'page' : undefined}
 						>
 							{item.label}
