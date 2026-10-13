@@ -39,8 +39,9 @@
  *    missing, so the camp photograph and the paper figures are not one continuous shoot.
  *
  * 5. Publications. Only the two papers already linked from the home page are listed.
- *    Do not add a third until the team names it. Do not use Boe et al. 2018 Figure 1A
- *    as the figure for Druckmüller et al. 2014 — that crop is only a stand-in on the home cards.
+ *    Do not add a third until the team names it.
+ *    Druckmüller et al. 2014 figure: Tatakoto 11 July 2010 high-resolution white-light corona
+ *    from Druckmüller’s archive (same eclipse as the paper’s Figure 1; not a scanned journal plate).
  *    Druckmüller et al. 2014 has no confirmed open full text (no arXiv record).
  *    Authors, year, journal, volume, issue, and page are from Crossref.
  *    The accessible summaries are the home-page wording. The team still needs to validate
@@ -62,7 +63,8 @@ export type ScienceImage =
 	| 'field-station'
 	| 'faroe-camp'
 	| 'boe-fig1'
-	| 'fe-composite';
+	| 'fe-composite'
+	| 'druckmuller-2014';
 
 export const hero = {
 	image: 'corona-white' as ScienceImage,
@@ -289,6 +291,12 @@ export const publications: Publication[] = [
 		page: '14',
 		doi: '10.1088/0004-637X/785/1/14',
 		href: 'https://doi.org/10.1088/0004-637X/785/1/14',
+		image: 'druckmuller-2014',
+		imageAlt:
+			'Processed white-light image of the solar corona from the 11 July 2010 total eclipse at Tatakoto, showing fine streamers and structure around the Moon',
+		imageCaption:
+			'High-resolution white-light corona from the 11 July 2010 eclipse at Tatakoto — the same campaign illustrated in the paper.',
+		imageCredit: '© Miloslav Druckmüller · Tatakoto, 2010',
 	},
 ];
 

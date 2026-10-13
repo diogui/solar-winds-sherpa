@@ -4,7 +4,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Partners from '../components/Partners.astro';
 import WorkCards from '../components/WorkCards.astro';
 import TakeAction from '../components/TakeAction.astro';
-import OnPageNav from '../components/OnPageNav.astro';
 import heroTotality from '../assets/images/field/burgos-totality.jpg';
 import shadia from '../assets/images/field/shadia-habbal.jpg';
 import storyGroupUsa from '../assets/images/about/story/group-usa-2024.jpg';
@@ -178,21 +177,12 @@ const peopleGallery = [
 	},
 ] as const;
 
-const aboutNav = [
-	{ id: 'founder', label: 'Founder' },
-	{ id: 'our-story', label: 'Our Story' },
-	{ id: 'people', label: 'People' },
-	{ id: 'actions', label: 'Actions' },
-	{ id: 'partners', label: 'Partners' },
-	{ id: 'take-action', label: 'Take Action' },
-] as const;
 ---
 
 <BaseLayout
 	title="About"
 	description="Solar Wind Sherpas brings together scientists, engineers and observers to study the Sun’s outer atmosphere from the path of totality."
 >
-	<OnPageNav sections={aboutNav} hero=".about-screen" />
 	<article class="page about about--chat">
 		<section class="about-screen" id="introduction" aria-labelledby="about-heading" data-header-hero>
 			<div class="about-screen-media">

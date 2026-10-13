@@ -152,6 +152,10 @@
 	color: var(--text-dim);
 }
 
+#eclipses .science-prose {
+	max-width: none;
+}
+
 .science-prose p + p,
 .science-step-copy p + p {
 	margin-top: 1rem;

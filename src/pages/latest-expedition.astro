@@ -3,19 +3,6 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Partners from '../components/Partners.astro';
 import TakeAction from '../components/TakeAction.astro';
-import OnPageNav from '../components/OnPageNav.astro';
-
-const expeditionNav = [
-	{ id: 'mission', label: 'Two Sites' },
-	{ id: 'in-the-field', label: 'Field' },
-	{ id: 'team', label: 'Team' },
-	{ id: 'processed-images', label: 'Processed' },
-	{ id: 'film', label: 'Film' },
-	{ id: 'podcast', label: 'Podcast' },
-	{ id: 'made-possible-by', label: 'Partners' },
-	{ id: 'what-comes-next', label: '2027' },
-	{ id: 'take-action', label: 'Take Action' },
-] as const;
 import padillaCamp from '../assets/images/field/latest-camp.jpg';
 import fieldAssemble from '../assets/images/expedition/field/field-assemble.jpg';
 import fieldCamp from '../assets/images/expedition/field/field-camp.jpg';
@@ -616,7 +603,6 @@ const podcastDefault = podcast.languages[0];
 	title="Latest Expedition"
 	description="Burgos, Spain, 2026. Solar Wind Sherpas observed the total solar eclipse from Padilla de Abajo and Pico Trigaza."
 >
-	<OnPageNav sections={expeditionNav} hero=".exp-screen" />
 	<article class="page exp">
 		<section class="exp-screen" id="burgos-2026" aria-labelledby="exp-heading" data-header-hero>
 			<div class="exp-screen-media">
