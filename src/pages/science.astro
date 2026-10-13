@@ -27,6 +27,7 @@ import faroeCamp from '../assets/images/about/story/group-field-2015.jpg';
 import boeFig1 from '../assets/images/papers/boe-2018-fig1.png';
 import feComposite from '../assets/images/papers/fe-composite.jpg';
 import druckmuller2014 from '../assets/images/papers/druckmuller-2014-corona.jpg';
+import burgosHorizon from '../assets/images/expedition/burgos/burgos-horizon.jpg';
 import '../styles/science.css';
 
 const photos: Record<ScienceImage, ImageMetadata> = {
@@ -313,17 +314,31 @@ const featured = featuredIds.map((id) => {
 
 		<section class="science-next" id="next" aria-labelledby="next-heading">
 			<div class="science-next-inner">
-				<p class="label">What comes next</p>
-				<h2 id="next-heading">{nextStep.title}</h2>
-				<p>{nextStep.text}</p>
-				<div class="science-next-links">
-					<a class="cta cta--button" href={nextStep.expeditionHref}>
-						{nextStep.expeditionLabel} <span class="cta-arrow" aria-hidden="true">→</span>
-					</a>
-					<a class="cta cta--button" href={nextStep.supportHref}>
-						{nextStep.supportLabel} <span class="cta-arrow" aria-hidden="true">→</span>
-					</a>
+				<div class="science-next-copy">
+					<p class="label">What comes next</p>
+					<h2 id="next-heading">{nextStep.title}</h2>
+					<p>{nextStep.text}</p>
+					<div class="science-next-links">
+						<a class="cta cta--button" href={nextStep.expeditionHref}>
+							{nextStep.expeditionLabel} <span class="cta-arrow" aria-hidden="true">→</span>
+						</a>
+						<a class="cta cta--button" href={nextStep.supportHref}>
+							{nextStep.supportLabel} <span class="cta-arrow" aria-hidden="true">→</span>
+						</a>
+					</div>
 				</div>
+				<figure class="science-next-media">
+					<div class="science-next-frame">
+						<Image
+							src={burgosHorizon}
+							alt={nextStep.imageAlt}
+							widths={[640, 960, 1400]}
+							sizes="(max-width: 900px) 92vw, 40vw"
+							loading="lazy"
+						/>
+					</div>
+					<figcaption class="science-credit">{nextStep.imageCredit}</figcaption>
+				</figure>
 			</div>
 		</section>
 

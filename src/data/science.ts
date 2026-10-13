@@ -53,6 +53,8 @@
  *    “Support our research” points at #support on this page.
  */
 
+import { latestExpeditionHref } from './site';
+
 export type ScienceImage =
 	| 'corona-white'
 	| 'sun'
@@ -305,8 +307,11 @@ export const featuredIds = ['boe-2018', 'druckmuller-2014'] as const;
 export const nextStep = {
 	title: 'The Burgos observations are being reduced.',
 	text: 'Some images from the 2026 eclipse are already processed. The rest of the analysis will take months, and in some cases years. The next totality is 2 August 2027.',
-	expeditionHref: '/latest-expedition',
+	expeditionHref: latestExpeditionHref,
 	expeditionLabel: 'Explore our latest expedition',
 	supportHref: '#support',
 	supportLabel: 'Support our research',
+	imageAlt:
+		'Tripods and instruments silhouetted against a low sun over the valley at Pico Trigaza, Burgos',
+	imageCredit: 'Pico Trigaza · Václav Široký, 2026',
 } as const;

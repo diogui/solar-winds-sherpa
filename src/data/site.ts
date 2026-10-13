@@ -19,11 +19,20 @@ export const socialLinks = [
 /** Expeditions index and Join redirect to Home while this is true. About and Science are live. */
 export const homeOnlyPreview = true;
 
+/**
+ * Permanent URL for the current campaign story page.
+ * When the next expedition ships, point this at the new slug; `/latest-expedition` redirects here.
+ */
+export const currentExpeditionPath = '/expeditions/2026-burgos';
+
+/** Soft alias used in the main nav — always the current campaign. */
+export const latestExpeditionHref = '/latest-expedition';
+
 export const navLeft = [
 	{ href: '/', label: 'Home', live: true },
 	{ href: '/about', label: 'About', live: true },
 	{ href: '/science', label: 'Science', live: true },
-	{ href: '/latest-expedition', label: 'Latest Expedition', live: true },
+	{ href: latestExpeditionHref, label: 'Latest Expedition', live: true },
 ];
 
 export const navRight = [

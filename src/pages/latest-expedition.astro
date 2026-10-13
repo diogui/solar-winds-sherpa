@@ -1,0 +1,9 @@
+---
+/**
+ * Soft alias for the current campaign story page.
+ * Update `currentExpeditionPath` in `src/data/site.ts` when the next expedition goes live.
+ */
+import { currentExpeditionPath } from '../data/site';
+
+return Astro.redirect(currentExpeditionPath, 308);
+---

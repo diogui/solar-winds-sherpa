@@ -1,0 +1,388 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { blockPatterns } from '../data/block-patterns';
+import { site } from '../data/site';
+import logoLockup from '../assets/images/brand/logo-lockup-dark.png';
+import logoMark from '../assets/images/brand/logo-mark-color.png';
+import burgosHorizon from '../assets/images/expedition/burgos/burgos-horizon.jpg';
+import coronaWhite from '../assets/images/papers/corona-structures.jpg';
+import fieldCamp from '../assets/images/field/latest-camp.jpg';
+import '../styles/design-kit.css';
+
+const colors = [
+	{ name: 'Background', token: '--bg', value: '#080d14', swatch: '#080d14' },
+	{ name: 'Surface', token: '--bg-2', value: '#11131a', swatch: '#11131a' },
+	{ name: 'Elevated', token: '--bg-3', value: '#1e2430', swatch: '#1e2430' },
+	{ name: 'Hero dusk', token: 'section band', value: '#171d2e', swatch: '#171d2e' },
+	{ name: 'Text', token: '--text', value: '#f5f5f3', swatch: '#f5f5f3' },
+	{ name: 'Text dim', token: '--text-dim', value: '70% white', swatch: 'rgba(245,245,243,0.7)' },
+	{ name: 'Accent yellow', token: '--accent', value: '#f9ab00', swatch: '#f9ab00' },
+	{ name: 'Accent soft', token: '--accent-soft', value: '18% yellow', swatch: 'rgba(249,171,0,0.18)' },
+] as const;
+
+const typeRows = [
+	{ meta: 'Display / H1', sample: 'Burgos, Spain', className: 'dk-type-display', style: 'font-size: clamp(1.85rem, 5vw, 3rem)' },
+	{ meta: 'Display / H2', sample: 'Why total eclipses matter', className: 'dk-type-display', style: 'font-size: clamp(1.5rem, 3vw, 2.2rem)' },
+	{ meta: 'Label', sample: 'Latest expedition · 2026', className: 'label', style: '' },
+	{
+		meta: 'Body',
+		sample:
+			'We follow total solar eclipses to study the Sun’s outer atmosphere and the origins of the solar wind.',
+		className: 'dk-type-body',
+		style: 'font-size: 1.125rem',
+	},
+] as const;
+
+const principles = {
+	do: [
+		{
+			title: 'Brand first in the opening',
+			text: 'The first viewport should still feel like Solar Wind Sherpas if the nav were removed — name, place, or eclipse atmosphere carries the brand.',
+		},
+		{
+			title: 'One job per section',
+			text: 'Each block has one purpose, one headline, and usually one short supporting sentence before media or actions.',
+		},
+		{
+			title: 'Yellow for emphasis',
+			text: 'Use the Meet yellow for labels, links, and focus — not as a full section background. Separate adjacent sections with surface shifts (--bg / --bg-2 / dusk).',
+		},
+		{
+			title: 'Real photographs',
+			text: 'Field, corona, and people images are the visual system. Prefer full-bleed or large media over abstract gradients.',
+		},
+	],
+	dont: [
+		{
+			title: 'Don’t invent a second palette',
+			text: 'No purple gradients, cream editorial themes, or neon glow stacks. Stay in night navy + warm yellow.',
+		},
+		{
+			title: 'Don’t card everything',
+			text: 'Cards are for interaction or comparison. If removing a border/shadow does not hurt understanding, drop the card.',
+		},
+		{
+			title: 'Don’t crowd the hero',
+			text: 'No stats strips, floating badges, or secondary promos in the first screen.',
+		},
+		{
+			title: 'Don’t bury the science',
+			text: 'Accessible language first; official paper titles and DOIs support it, they do not replace it.',
+		},
+	],
+} as const;
+
+const livePages = [
+	{ href: '/', title: 'Home', note: 'Brand entry · vision · latest teaser · globe' },
+	{ href: '/about', title: 'About', note: 'Story, people, founder, actions' },
+	{ href: '/science', title: 'Science', note: 'Questions, methods, papers, next steps' },
+	{ href: '/expeditions/2026-burgos', title: 'Expedition · Burgos 2026', note: 'Canonical campaign story page' },
+] as const;
+
+const statusLabel = {
+	shared: 'Shared',
+	candidate: 'Candidate',
+	exception: 'Exception',
+} as const;
+
+const kitNav = [
+	{ id: 'brand', label: 'Brand' },
+	{ id: 'logo', label: 'Logo' },
+	{ id: 'color', label: 'Color' },
+	{ id: 'type', label: 'Type' },
+	{ id: 'components', label: 'Components' },
+	{ id: 'layout', label: 'Layout' },
+	{ id: 'bands', label: 'Bands' },
+	{ id: 'photography', label: 'Photography' },
+	{ id: 'patterns', label: 'Patterns' },
+	{ id: 'pages', label: 'Pages' },
+] as const;
+---
+
+<BaseLayout
+	title="Design Kit"
+	description="Visual identity and layout system for the Solar Wind Sherpas website — for review with the team."
+>
+	<article class="page dk">
+		<header class="dk-hero">
+			<p class="label">Internal · For review with Danilo</p>
+			<h1>Design Kit</h1>
+			<p class="dk-hero-lead">
+				This page captures the visual direction of the {site.name} site as it stands today: dark field
+				atmosphere, yellow accent, display typography, and photography from the expeditions. Use it to
+				align on brand before we lock more pages — a PDF export can come later.
+			</p>
+			<ul class="dk-meta">
+				<li>Status · Working draft</li>
+				<li>Accent · Meet yellow #F9AB00</li>
+				<li>URL · /design-kit</li>
+			</ul>
+		</header>
+
+		<nav class="dk-toc" aria-label="Design kit sections">
+			<p class="label">On this page</p>
+			<ol>
+				{
+					kitNav.map((item) => (
+						<li>
+							<a href={`#${item.id}`}>{item.label}</a>
+						</li>
+					))
+				}
+			</ol>
+		</nav>
+
+		<section class="dk-section" id="brand" aria-labelledby="brand-heading">
+			<p class="label">01 · Brand</p>
+			<h2 id="brand-heading">Night field science, not a tech startup.</h2>
+			<p>
+				The site should feel like standing under totality: deep sky, instruments on a ridge, careful
+				language. We are documenting a research collaboration that travels to eclipses — not selling a
+				product.
+			</p>
+			<ul class="dk-principles">
+				<li>
+					<strong>Tone</strong>
+					<p>Clear, calm, precise. Warm enough for outreach; never casual or hype-led.</p>
+				</li>
+				<li>
+					<strong>Promise</strong>
+					<p>{site.tagline}</p>
+				</li>
+			</ul>
+		</section>
+
+		<section class="dk-section" id="logo" aria-labelledby="logo-heading">
+			<p class="label">02 · Logo</p>
+			<h2 id="logo-heading">Lockup and mark</h2>
+			<p>Primary lockup for navigation and footer. Color mark for watermarks and compact moments.</p>
+			<div class="dk-logo-row">
+				<figure class="dk-logo-card">
+					<Image src={logoLockup} alt="Solar Wind Sherpas wordmark lockup" widths={[360, 560]} sizes="280px" />
+					<figcaption>Lockup · dark backgrounds</figcaption>
+				</figure>
+				<figure class="dk-logo-card dk-logo-card--light">
+					<Image src={logoMark} alt="Solar Wind Sherpas eclipse mark" widths={[160, 240]} sizes="120px" />
+					<figcaption>Mark · light surfaces</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<section class="dk-section" id="color" aria-labelledby="color-heading">
+			<p class="label">03 · Color</p>
+			<h2 id="color-heading">Night navy + Meet yellow</h2>
+			<p>
+				Backgrounds stay near-black. Yellow is the signal color for labels, focus, and intentional
+				callouts. Magenta remains in the code as a rollback token only — not for new UI.
+			</p>
+			<div class="dk-grid-4">
+				{
+					colors.map((color) => (
+						<figure class="dk-swatch">
+							<div class="dk-swatch-chip" style={`background: ${color.swatch}`}></div>
+							<figcaption>
+								<strong>{color.name}</strong>
+								<span>{color.token}</span>
+								<span>{color.value}</span>
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="dk-section" id="type" aria-labelledby="type-heading">
+			<p class="label">04 · Typography</p>
+			<h2 id="type-heading">Oswald for display · Open Sans for reading</h2>
+			<p>
+				Satoshi supports the logo. Section kickers use the shared <code>.label</code> style (uppercase,
+				tracked, yellow).
+			</p>
+			<div>
+				{
+					typeRows.map((row) => (
+						<div class="dk-type-row">
+							<p class="dk-type-meta">{row.meta}</p>
+							<p class={row.className} style={row.style || undefined}>
+								{row.sample}
+							</p>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="dk-section" id="components" aria-labelledby="components-heading">
+			<p class="label">05 · Components</p>
+			<h2 id="components-heading">Labels, text links, buttons</h2>
+			<p>Same primitives across Home, About, Science, and Expedition pages.</p>
+			<div class="dk-demo">
+				<p class="label" style="margin:0">Section label</p>
+				<a class="cta" href="#pages">
+					Text CTA <span class="cta-arrow" aria-hidden="true">→</span>
+				</a>
+				<a class="cta cta--button" href="#pages">
+					Button CTA <span class="cta-arrow" aria-hidden="true">→</span>
+				</a>
+			</div>
+		</section>
+
+		<section class="dk-section" id="layout" aria-labelledby="layout-heading">
+			<p class="label">06 · Layout rails</p>
+			<h2 id="layout-heading">Content, prose, and wide media</h2>
+			<p>Width tokens keep pages aligned without inventing one-off containers.</p>
+			<div class="dk-rails">
+				<div class="dk-rail" style="width: min(100%, 1120px)">
+					--content · 1120px max <span>· main sections</span>
+				</div>
+				<div class="dk-rail" style="width: min(100%, 760px)">
+					--prose · 760px max <span>· long reading</span>
+				</div>
+				<div class="dk-rail" style="width: min(100%, 1280px)">
+					--media-wide · 1280px max <span>· galleries / stages</span>
+				</div>
+			</div>
+			<p class="dk-note">
+				Vertical rhythm uses <code>--section-y</code> (4.5rem) and <code>--section-y-lg</code> (6rem).
+				Gutters: <code>--page-gutter</code>.
+			</p>
+		</section>
+
+		<section class="dk-section" id="bands" aria-labelledby="bands-heading">
+			<p class="label">07 · Closing bands</p>
+			<h2 id="bands-heading">Surface shift vs dusk Take Action</h2>
+			<p>
+				Yellow is for labels and emphasis, not full section fills. On Science, “What comes next” sits on
+				<code>--bg-2</code> so it separates from the page background above and the dusk Take Action below.
+			</p>
+			<div class="dk-band-demo" style="background: var(--bg-2); color: var(--text)">
+				<p class="label">What comes next</p>
+				<h3 style="color: var(--text)">Surface band · --bg-2</h3>
+				<p style="color: var(--text-dim)">
+					Slightly lifted night surface + optional photograph — not the accent yellow fill.
+				</p>
+			</div>
+			<div class="dk-dusk-demo">
+				<p class="label">Take Action</p>
+				<h3>Dusk band</h3>
+				<p>Shared closing on every live page: Support, Contact, Stay Informed.</p>
+			</div>
+		</section>
+
+		<section class="dk-section" id="photography" aria-labelledby="photo-heading">
+			<p class="label">08 · Photography</p>
+			<h2 id="photo-heading">Field, corona, people</h2>
+			<p>
+				Imagery should show place, instruments, or processed eclipse science. Credit photographers in
+				captions or footers when known.
+			</p>
+			<div class="dk-photo-grid">
+				<figure>
+					<div class="dk-photo-frame">
+						<Image
+							src={burgosHorizon}
+							alt="Instruments on the Trigaza ridge at low sun"
+							widths={[480, 800]}
+							sizes="(max-width: 900px) 45vw, 22vw"
+						/>
+					</div>
+					<figcaption>Field · Burgos ridge</figcaption>
+				</figure>
+				<figure>
+					<div class="dk-photo-frame">
+						<Image
+							src={coronaWhite}
+							alt="Processed white-light solar corona"
+							widths={[480, 800]}
+							sizes="(max-width: 900px) 45vw, 22vw"
+						/>
+					</div>
+					<figcaption>Science · processed corona</figcaption>
+				</figure>
+				<figure>
+					<div class="dk-photo-frame">
+						<Image
+							src={fieldCamp}
+							alt="Team members at the Burgos field camp"
+							widths={[480, 800]}
+							sizes="(max-width: 900px) 45vw, 22vw"
+						/>
+					</div>
+					<figcaption>People · expedition camp</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<section class="dk-section" id="patterns" aria-labelledby="patterns-heading">
+			<p class="label">09 · Block patterns</p>
+			<h2 id="patterns-heading">Reusable layouts, named by structure</h2>
+			<p>
+				Compose new pages from these families. Full schematics live on{' '}
+				<a class="cta" href="/wire-frames-blocks">
+					/wire-frames-blocks <span class="cta-arrow" aria-hidden="true">→</span>
+				</a>
+			</p>
+			<div>
+				{
+					blockPatterns
+						.filter((pattern) => pattern.id !== 'on-page-toc')
+						.map((pattern) => (
+							<article class="dk-pattern">
+								<div class="dk-pattern-head">
+									<h3>{pattern.name}</h3>
+									<span class={`dk-pill dk-pill--${pattern.status}`}>{statusLabel[pattern.status]}</span>
+								</div>
+								<p>{pattern.layout}</p>
+								<p class="dk-used">Used on · {pattern.usedOn.join(' · ')}</p>
+							</article>
+						))
+				}
+			</div>
+		</section>
+
+		<section class="dk-section" id="pages" aria-labelledby="pages-heading">
+			<p class="label">10 · Live pages</p>
+			<h2 id="pages-heading">Where the system is applied</h2>
+			<p>Open these when reviewing with the team. Menu label “Latest Expedition” still points to Burgos via redirect.</p>
+			<ul class="dk-pages">
+				{
+					livePages.map((page) => (
+						<li>
+							<a href={page.href}>
+								<strong>{page.title}</strong>
+								<span>{page.note}</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+
+			<ul class="dk-principles" style="margin-top: 2rem">
+				{
+					principles.do.map((item) => (
+						<li class="dk-principles--do">
+							<strong>Do · {item.title}</strong>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+			<ul class="dk-principles" style="margin-top: 1.25rem">
+				{
+					principles.dont.map((item) => (
+						<li>
+							<strong>Don’t · {item.title}</strong>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+
+			<p class="dk-note">
+				Next step when you are ready: export this page to PDF (print stylesheet or design tool) for
+				Danilo offline. For now, share <strong>/design-kit</strong> on the same preview host as the site.
+			</p>
+		</section>
+	</article>
+</BaseLayout>

@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import field from '../../assets/images/field/latest-camp.jpg';
 import { burgosFilm } from '../../data/media';
+import { latestExpeditionHref } from '../../data/site';
 
 const hasFilm = true;
 const videoSrc = burgosFilm.full;
@@ -82,7 +83,7 @@ const posterSrc = '/media/latest/burgos-poster.jpg';
 					setting, the preparation and the people behind this expedition, and the scientific questions
 					that brought us into the field.
 				</p>
-				<a class="cta cta--button" href="/latest-expedition">
+				<a class="cta cta--button" href={latestExpeditionHref}>
 					Explore the expedition <span class="cta-arrow" aria-hidden="true">→</span>
 				</a>
 				{hasFilm && <p class="home-latest-credit">Film by Santiago Marrodán Ciordia</p>}

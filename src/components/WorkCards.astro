@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import researchPhoto from '../assets/images/work/research.jpg';
 import expeditionsPhoto from '../assets/images/work/expeditions.jpg';
 import outreachPhoto from '../assets/images/work/outreach.jpg';
-import { homeOnlyPreview } from '../data/site';
+import { homeOnlyPreview, latestExpeditionHref } from '../data/site';
 
 interface Props {
 	outreachHref?: string | false;
@@ -26,7 +26,7 @@ const fronts = [
 	{
 		title: 'Eclipse Expeditions',
 		text: 'Observing a total solar eclipse starts long before totality. We select observing sites, prepare instruments and bring people and equipment into the field, ready to make the most of a brief opportunity to study the corona.',
-		href: homeOnlyPreview ? '/latest-expedition' : '/expeditions',
+		href: homeOnlyPreview ? latestExpeditionHref : '/expeditions',
 		cta: homeOnlyPreview ? 'Explore our latest expedition' : 'Explore our expeditions',
 		image: expeditionsPhoto,
 		alt: 'Telescopes set up on a ridge in Spain at sunset, ready for eclipse observations',
