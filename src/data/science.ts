@@ -4,59 +4,22 @@
  *
  * PENDING — internal only. Do not render these notes on the page.
  *
- * 1. Questions. The three themes are the candidates in the page brief: coronal heating,
- *    the origin of the solar wind, and the structure and evolution of the corona and its
- *    magnetic fields. Confirm they are the questions to feature. No temperature numbers
- *    are stated; add them only if the team wants a specific wording.
- *
- * 2. Why eclipses matter. The page says totality complements spacecraft and other
- *    instruments. It does not claim the corona can only be studied during an eclipse.
- *    Confirm the specific advantage the team wants stated here.
- *    Photographer credits are missing for src/assets/images/why/sun.jpg, corona.jpg,
- *    and prominences.jpg.
- *
- * 3. Equipment. Groups are the ones already named on the site: white-light cameras,
- *    narrow-band filters, and spectrometers. Danilo still needs to confirm the inventory,
- *    which photograph belongs to which system, and what the Sherpas designed or adapted.
- *    Until then the page names no models, specifications, or in-house hardware.
- *    Photo pairings are descriptive only:
- *    - burgos-totality.jpg — cameras on the ridge during totality, Pico Trigaza, Spain 2026.
- *      Photographer credit is not confirmed (Latest Expedition uses this frame for the site).
- *    - latest-instruments.jpg — multi-camera rig, Spain 2026. Not confirmed as the filter system.
- *    - computers-night.jpg — instruments and computers running, USA 2024 (About caption).
- *      Not confirmed as a spectrometer.
- *    Photographer credits for these three files are not on the page.
- *
- * 4. Worked example. The sequence follows the 20 March 2015 eclipse and Boe et al. 2018
- *    because that is the published result with figures already in the repo. Confirm:
- *    - group-field-2015.jpg may be shown with that paper (About caption: Faroe Islands, 2015).
- *      It is not claimed as the exact frame of data in Figure 1.
- *    - corona-structures.jpg is Boe et al. 2018 Figure 1A.
- *    - boe-2018-fig1.png panel letters match the paper, especially panel B.
- *    - Color key: red is a display color for Fe XI (789.2 nm); green is the display color
- *      for Fe XIV (530.3 nm). Wavelengths are from the published abstract.
- *    A photo set from one expedition covering calibration, totality, and reduction is still
- *    missing, so the camp photograph and the paper figures are not one continuous shoot.
- *
- * 5. Publications. Only the two papers already linked from the home page are listed.
- *    Do not add a third until the team names it.
- *    Druckmüller et al. 2014 figure: Tatakoto 11 July 2010 high-resolution white-light corona
- *    from Druckmüller’s archive (same eclipse as the paper’s Figure 1; not a scanned journal plate).
- *    Druckmüller et al. 2014 has no confirmed open full text (no arXiv record).
- *    Authors, year, journal, volume, issue, and page are from Crossref.
- *    The accessible summaries are the home-page wording. The team still needs to validate
- *    them against the papers and to extend the selected list. No publication count is shown.
- *
- * 6. What comes next. The close follows the Latest Expedition page: Burgos data reduction
- *    is underway and will take months to years; the next totality is 2 August 2027.
- *    Confirm that this science-page close should stay in step with that page.
- *    “Support our research” points at #support on this page.
+ * Confirmed with Danilo (2026-10):
+ * 1. Questions + accessible explanations; opening image = Padilla TSE_2026_500mm_DBI;
+ *    credit Tülin Bedel (not Iscan).
+ * 2. Why eclipses = Moon vs coronagraph diffraction; complements other observatories.
+ * 3. Instruments = white-light / narrow-band filters / multi-channel spectrometers (copy).
+ *    In-house builds (Matěj, Adalbert) still pending.
+ * 4. Pipeline / who does what — wait for Shadia.
+ * 5. Featured papers: Habbal et al. 2026, Boe et al. 2018, Druckmüller et al. 2014.
+ * 6. What comes next / funding ask — still open (marked “(To be confirmed)” on page).
  */
 
 import { latestExpeditionHref } from './site';
 
 export type ScienceImage =
 	| 'corona-white'
+	| 'padilla-2026'
 	| 'sun'
 	| 'corona'
 	| 'prominences'
@@ -66,14 +29,15 @@ export type ScienceImage =
 	| 'faroe-camp'
 	| 'boe-fig1'
 	| 'fe-composite'
-	| 'druckmuller-2014';
+	| 'druckmuller-2014'
+	| 'corona-trigaza';
 
 export const hero = {
-	image: 'corona-white' as ScienceImage,
-	alt: 'Processed white-light image of the solar corona during the total eclipse of 20 March 2015, with fine rays around the black disk of the Moon and a small prominence on the left',
+	image: 'padilla-2026' as ScienceImage,
+	alt: 'Processed white-light image of the entire solar corona visible from Padilla de Abajo during the 2026 total solar eclipse, with pink prominences along the Moon’s limb',
 	caption:
-		'Processed white-light image of the solar corona during the total eclipse of 20 March 2015. Faint rays are enhanced so they can be seen. This is not a single raw exposure.',
-	credit: 'Boe et al. 2018, The Astrophysical Journal, Figure 1A',
+		'Entire solar corona visible from Padilla de Abajo during the 12 August 2026 eclipse. A composition of 244 frames; fine structure is enhanced so it can be seen.',
+	credit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Zachary Bailey, Tülin Bedel',
 };
 
 export const questions = [
@@ -81,25 +45,26 @@ export const questions = [
 		id: 'heating',
 		index: '01',
 		title: 'Why is the corona so hot?',
-		text: 'The Sun’s visible surface is much cooler than the corona above it. How that heat is arranged, and how it relates to magnetic structure, is one of the central problems in solar physics. Eclipse images are one way to see that arrangement.',
+		text: 'The Sun’s visible surface is about 5,500 °C, while the corona above it reaches millions of degrees. How energy reaches that outer atmosphere, and how the plasma there is heated, remains one of the open problems in solar physics.',
 	},
 	{
 		id: 'solar-wind',
 		index: '02',
 		title: 'Where does the solar wind begin?',
-		text: 'The solar wind is the stream of particles that flows out from the Sun and past Earth. It is launched in the inner corona. These observations look for where that happens, and how it differs from one coronal structure to another.',
+		text: 'The Sun continuously sends a stream of charged particles into space that interacts with the planets. We know many of its properties, but still investigate how it starts, how it is accelerated, and what sets its different speeds and character.',
 	},
 	{
 		id: 'structure',
 		index: '03',
-		title: 'How do the corona and its magnetic fields change?',
-		text: 'Streamers, loops, and prominences trace the corona’s large-scale structure. Repeating the same kinds of observations from eclipse to eclipse shows how that structure evolves, including across the solar cycle.',
+		title: 'What does the magnetic field reveal about the corona?',
+		text: 'The magnetic field organizes the corona and shapes its physical processes. Studying that configuration — especially during a total solar eclipse — shows how plasma is distributed, how energy moves, and how coronal structures connect to the solar wind.',
 	},
 ] as const;
 
 export const whyParagraphs = [
-	'The corona is the Sun’s outer atmosphere. Its visible light is faint, and it is usually lost in the glare of the solar surface. When the Moon covers that surface, the corona — and the prominences at its edge — can be photographed from the ground.',
-	'Spacecraft and other observatories study the corona throughout the year. Eclipse observations complement those measurements. During totality, Solar Wind Sherpas record the corona in white light, through narrow-band filters on emission lines of ionized iron, and with spectrometers. Those data are used to examine the corona’s structure, temperature, and motion, and its connection to the solar wind.',
+	'The main advantage of a total solar eclipse is that it lets us observe the inner corona very close to the Sun’s visible edge, using a natural occultation that is hard to reproduce with conventional instruments.',
+	'Coronagraphs study the corona throughout the year by blocking the photosphere with an artificial disk. Diffraction around that disk makes the regions closest to the Sun difficult to see. During totality, the Moon covers the photosphere without an equivalent instrumental obstruction, so those inner regions can be recorded.',
+	'An eclipse also lets us observe the corona in white light and, with specialized instruments, in specific spectral lines — combining structure with physical properties such as temperature and motion. Totality lasts only a few minutes at any site and depends on weather, so eclipses do not replace other observatories; they complement them.',
 ] as const;
 
 export const eclipseFrames = [
@@ -136,8 +101,8 @@ export const instruments = [
 		credit: 'Pico Trigaza, Spain, 2026',
 		position: '58% 46%',
 		measures:
-			'The corona’s visible light across a broad range of colors. In white-light images, streamers and prominences show the large-scale shape of the corona.',
-		question: 'How the corona and its magnetic fields are structured, and how they change.',
+			'The corona’s white-light emission across a wide brightness range, using several focal lengths and exposure times. Image processing developed by Miloslav Druckmüller turns those frames into high-resolution composites that show fine coronal structure.',
+		question: 'How the corona is shaped, and how its large-scale structure connects to the magnetic field.',
 	},
 	{
 		id: 'filters',
@@ -148,20 +113,20 @@ export const instruments = [
 		credit: 'Spain, 2026',
 		position: '42% 58%',
 		measures:
-			'Narrow slices of the spectrum, including emission lines of ionized iron such as Fe XI and Fe XIV. Comparing those lines shows where hotter and cooler plasma lies.',
-		question: 'Why the corona is so hot, and where the solar wind begins.',
+			'Narrow slices of the spectrum that isolate “colors” emitted by iron in different ionization states. Those filters reveal hotter regions of the corona that are invisible to the unaided eye.',
+		question: 'Why the corona is so hot, and where different temperatures sit relative to the solar wind.',
 	},
 	{
 		id: 'spectrometers',
-		name: 'Spectrometers',
+		name: 'Multi-channel spectrometers',
 		image: 'field-station' as ScienceImage,
 		alt: 'A researcher at field computers inside a dark tent, with instruments beside the screens',
 		caption: 'Instruments and field computers running in the dark.',
 		credit: 'USA, 2024',
 		position: '50% 42%',
 		measures:
-			'The spectrum of coronal light, so individual emission lines can be separated and studied. Spectra are part of how the team examines temperature and motion.',
-		question: 'How the corona is heated, and how it moves.',
+			'Resolved spectra of specific iron emission lines. Line widths and Doppler shifts give information on temperatures and motions in the corona.',
+		question: 'How the corona is heated, and how plasma moves within it.',
 	},
 ] as const;
 
@@ -186,25 +151,20 @@ export const pipeline = [
 		text: 'During totality the cameras record the corona in white light and through the narrow-band filters. A raw frame from this eclipse is not shown here. The image is the processed white-light view published as Figure 1A, made so faint rays can be seen.',
 		image: 'corona-white' as ScienceImage,
 		alt: 'Processed white-light image of the solar corona during the total eclipse of 20 March 2015',
-		caption: 'The same white-light image as at the top of this page, published as Figure 1A.',
+		caption: 'Processed white-light corona from Boe et al. 2018, Figure 1A.',
 		credit: 'Boe et al. 2018, The Astrophysical Journal',
 	},
 	{
 		id: 'reduce',
 		index: '03',
 		title: 'Processing and analysis',
-		text: 'Processing changes the contrast so faint structure can be seen. It does not add features that were not recorded. The panels then separate two emission lines from the white-light view. Fe XI is the line at 789.2 nm, in the near-infrared. Fe XIV is the line at 530.3 nm, in the green. In the figure, Fe XI is given a red display color and Fe XIV a green one, so the two measurements can be compared. The corona does not have those colors in the sky.',
-		image: 'boe-fig1' as ScienceImage,
-		alt: 'Five-panel scientific figure of the 20 March 2015 corona: processed white light, a closer white-light view, a red-and-green composite, Fe XI in red, and Fe XIV in green',
+		text: 'Processing changes the contrast so faint structure can be seen. It does not add features that were not recorded. Emission-line images then separate two iron lines from the white-light view. Fe XI is the line at 789.2 nm, in the near-infrared. Fe XIV is the line at 530.3 nm, in the green. In this composite, Fe XI is given a red display color and Fe XIV a green one, so the two measurements can be compared. The corona does not have those colors in the sky.',
+		image: 'fe-composite' as ScienceImage,
+		alt: 'Composite eclipse image of the solar corona with Fe XI shown in red and Fe XIV shown in green',
 		caption:
-			'Figure 1 of Boe et al. 2018. Panels A and B are white-light views. Panels D and E show one emission line each. Panel C combines them.',
+			'Boe et al. 2018, Figure 1C — Fe XI (red display color) and Fe XIV (green display color) combined.',
 		credit: 'Boe et al. 2018, The Astrophysical Journal',
 		legend: [
-			{
-				swatch: 'light',
-				label: 'White light',
-				text: 'Processed so faint rays can be seen. The gray tones are contrast, not the color of the sky.',
-			},
 			{
 				swatch: 'fe11',
 				label: 'Red',
@@ -252,6 +212,32 @@ export type Publication = {
 };
 
 export const publications: Publication[] = [
+	{
+		id: 'habbal-2026',
+		status: 'published',
+		accessibleTitle: 'Tracking plasma instabilities into space',
+		summary:
+			'Eclipse images first showed vortex-ring structures near the Sun. Combined with Parker Solar Probe white-light data, this work follows those structures outward and finds speeds that match the slow solar wind — evidence that they survive as they expand away from the Sun.',
+		title:
+			'Tracking the Evolution of Plasma Instabilities from the Prominence–Corona Transition Region into Interplanetary Space with Total Solar Eclipse and PSP/WISPR White Light Images',
+		authors:
+			'Shadia Rifai Habbal, Shaheda Begum Shaik, Zachary Bailey, Nathalia Alzate, Riddhi Bandyopadhyay, Miloslav Druckmüller, Simone Di Matteo, and Sage N. L. Constantinou',
+		year: 2026,
+		journal: 'The Astrophysical Journal',
+		volume: '998',
+		issue: '1',
+		page: '51',
+		doi: '10.3847/1538-4357/ae2ec7',
+		href: 'https://doi.org/10.3847/1538-4357/ae2ec7',
+		fullTextHref: 'https://arxiv.org/pdf/2601.10818',
+		fullTextLabel: 'Full text',
+		image: 'corona-trigaza',
+		imageAlt:
+			'Processed white-light image of the solar corona from Pico Trigaza during the 2026 eclipse, showing fine streamers around the Moon',
+		imageCaption:
+			'White-light eclipse imaging of the corona — the class of observations used to study fine structure and its evolution.',
+		imageCredit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Václav Široký · Pico Trigaza',
+	},
 	{
 		id: 'boe-2018',
 		status: 'published',
@@ -302,7 +288,7 @@ export const publications: Publication[] = [
 	},
 ];
 
-export const featuredIds = ['boe-2018', 'druckmuller-2014'] as const;
+export const featuredIds = ['habbal-2026', 'boe-2018', 'druckmuller-2014'] as const;
 
 export const nextStep = {
 	title: 'The Burgos observations are being reduced.',

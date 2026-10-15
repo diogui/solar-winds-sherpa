@@ -17,6 +17,7 @@ import {
 	type ScienceImage,
 } from '../data/science';
 import coronaWhite from '../assets/images/papers/corona-structures.jpg';
+import padilla2026 from '../assets/images/papers/padilla-2026-corona.jpg';
 import sun from '../assets/images/why/sun.jpg';
 import corona from '../assets/images/why/corona.jpg';
 import prominences from '../assets/images/why/prominences.jpg';
@@ -27,11 +28,13 @@ import faroeCamp from '../assets/images/about/story/group-field-2015.jpg';
 import boeFig1 from '../assets/images/papers/boe-2018-fig1.png';
 import feComposite from '../assets/images/papers/fe-composite.jpg';
 import druckmuller2014 from '../assets/images/papers/druckmuller-2014-corona.jpg';
+import coronaTrigaza from '../assets/images/expedition/burgos/processed/tse2026-trigaza-800mm.png';
 import burgosHorizon from '../assets/images/expedition/burgos/burgos-horizon.jpg';
 import '../styles/science.css';
 
 const photos: Record<ScienceImage, ImageMetadata> = {
 	'corona-white': coronaWhite,
+	'padilla-2026': padilla2026,
 	sun,
 	corona,
 	prominences,
@@ -42,6 +45,7 @@ const photos: Record<ScienceImage, ImageMetadata> = {
 	'boe-fig1': boeFig1,
 	'fe-composite': feComposite,
 	'druckmuller-2014': druckmuller2014,
+	'corona-trigaza': coronaTrigaza,
 };
 
 const featured = featuredIds.map((id) => {
@@ -72,8 +76,8 @@ const featured = featuredIds.map((id) => {
 						<Image
 							src={photos[hero.image]}
 							alt={hero.alt}
-							widths={[640, 960, 1280]}
-							sizes="(max-width: 900px) 92vw, min(28rem, 40vw)"
+							widths={[800, 1200, 1600]}
+							sizes="(max-width: 900px) 92vw, min(44rem, 55vw)"
 							loading="eager"
 						/>
 					</div>
@@ -212,7 +216,7 @@ const featured = featuredIds.map((id) => {
 							</div>
 							{'image' in step && (
 								<figure>
-									<div class:list={['science-step-frame', step.image === 'boe-fig1' && 'science-step-frame--trim']}>
+									<div class="science-step-frame">
 										<Image
 											src={photos[step.image]}
 											alt={step.alt}
@@ -238,7 +242,7 @@ const featured = featuredIds.map((id) => {
 			<h2 id="publications-heading">Scientific contributions &amp; publications</h2>
 			<div class="science-prose">
 				<p>
-					Two published papers are highlighted below. The list that follows is the reference for
+					Three published papers are highlighted below. The table that follows is the reference for
 					each one.
 				</p>
 			</div>
@@ -284,38 +288,56 @@ const featured = featuredIds.map((id) => {
 			</div>
 
 			<p class="label science-pub-label" id="selected-publications">Selected publications</p>
-			<ol class="science-pubs">
-				{
-					publications.map((paper) => (
-						<li class="science-pub" id={`publication-${paper.id}`}>
-							<p class="science-status">Published</p>
-							<h3>{paper.accessibleTitle}</h3>
-							<p class="science-official">{paper.title}</p>
-							<p class="science-pub-meta">{paper.authors}</p>
-							<p class="science-pub-meta">
-								{paper.year} · {paper.journal} · Vol. {paper.volume}, Issue {paper.issue}, p.{' '}
-								{paper.page}
-							</p>
-							<p class="science-pub-links">
-								<a class="science-doi" href={paper.href} rel="noopener noreferrer">
-									doi.org/{paper.doi}
-								</a>
-								{paper.fullTextHref && paper.fullTextLabel && (
-									<a class="cta" href={paper.fullTextHref} rel="noopener noreferrer">
-										{paper.fullTextLabel} <span class="cta-arrow" aria-hidden="true">→</span>
-									</a>
-								)}
-							</p>
-						</li>
-					))
-				}
-			</ol>
+			<div class="science-pubs-scroll">
+				<table class="science-pubs-table">
+					<thead>
+						<tr>
+							<th scope="col">Year</th>
+							<th scope="col">Publication</th>
+							<th scope="col">Access</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							publications.map((paper) => (
+								<tr id={`publication-${paper.id}`}>
+									<td class="science-pubs-year">{paper.year}</td>
+									<td>
+										<p class="science-pubs-short">{paper.accessibleTitle}</p>
+										<p class="science-official">{paper.title}</p>
+										<p class="science-pub-meta">{paper.authors}</p>
+										<p class="science-pub-meta">
+											{paper.journal} · Vol. {paper.volume}, Issue {paper.issue}, p.{' '}
+											{paper.page}
+										</p>
+									</td>
+									<td class="science-pubs-access">
+										<a class="science-doi" href={paper.href} rel="noopener noreferrer">
+											doi.org/{paper.doi}
+										</a>
+										{paper.fullTextHref && paper.fullTextLabel && (
+											<a class="cta" href={paper.fullTextHref} rel="noopener noreferrer">
+												{paper.fullTextLabel}{' '}
+												<span class="cta-arrow" aria-hidden="true">
+													→
+												</span>
+											</a>
+										)}
+									</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
 		</section>
 
 		<section class="science-next" id="next" aria-labelledby="next-heading">
 			<div class="science-next-inner">
 				<div class="science-next-copy">
-					<p class="label">What comes next</p>
+					<p class="label">
+						What comes next <span class="science-tbc">(To be confirmed)</span>
+					</p>
 					<h2 id="next-heading">{nextStep.title}</h2>
 					<p>{nextStep.text}</p>
 					<div class="science-next-links">

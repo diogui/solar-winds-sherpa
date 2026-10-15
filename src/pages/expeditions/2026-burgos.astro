@@ -781,7 +781,13 @@ const podcastDefault = podcast.languages[0];
 			</div>
 		</section>
 
-		<section class="exp-block exp-team" id="team" aria-labelledby="team-heading">
+		<section
+			class="exp-block exp-team"
+			id="team"
+			aria-labelledby="team-heading"
+			data-lightbox-gallery
+			aria-label="Expedition team photographs"
+		>
 			<div class="page-narrow">
 				<p class="label">The Expedition Team</p>
 				<h2 id="team-heading">Who was in the field.</h2>
@@ -794,14 +800,26 @@ const podcastDefault = podcast.languages[0];
 					{
 						padillaTeam.map((member) => (
 							<li class="exp-team-card">
-								<div class="exp-well exp-well--portrait">
-									<Image
-										src={member.photo}
-										alt={member.name}
-										widths={[320, 480, 720]}
-										sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 22vw"
-									/>
-								</div>
+								<figure class="exp-well exp-well--portrait exp-team-shot">
+									<button
+										type="button"
+										class="exp-team-shot-open"
+										data-lightbox-trigger
+										aria-label={`View larger: ${member.name}`}
+									>
+										<Image
+											src={member.photo}
+											alt={member.name}
+											widths={[320, 480, 720, 1000]}
+											sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 22vw"
+											loading="lazy"
+											class="exp-team-photo"
+										/>
+									</button>
+									<span class="visually-hidden" data-lightbox-caption-text>
+										{member.name}
+									</span>
+								</figure>
 								<h3>{member.name}</h3>
 							</li>
 						))
@@ -816,26 +834,30 @@ const podcastDefault = podcast.languages[0];
 						trigazaTeam.map((member) => (
 							<li class="exp-team-card">
 								{'photo' in member && member.photo ? (
-									<div
-										class:list={[
-											'exp-well',
-											'exp-well--portrait',
-											'photoClass' in member &&
-												member.photoClass === 'exp-team-photo--fotoklub' &&
-												'exp-well--group',
-										]}
-									>
-										<Image
-											src={member.photo}
-											alt={member.name}
-											widths={[320, 480, 720, 1000]}
-											sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 28vw"
-											class:list={[
-												member.name === 'Miloslav Druckmüller' && 'exp-team-photo--milos',
-												'photoClass' in member && member.photoClass,
-											]}
-										/>
-									</div>
+									<figure class="exp-well exp-well--portrait exp-team-shot">
+										<button
+											type="button"
+											class="exp-team-shot-open"
+											data-lightbox-trigger
+											aria-label={`View larger: ${member.name}`}
+										>
+											<Image
+												src={member.photo}
+												alt={member.name}
+												widths={[320, 480, 720, 1000]}
+												sizes="(max-width: 640px) 90vw, (max-width: 900px) 44vw, 28vw"
+												loading="lazy"
+												class:list={[
+													'exp-team-photo',
+													member.name === 'Miloslav Druckmüller' && 'exp-team-photo--milos',
+													'photoClass' in member && member.photoClass,
+												]}
+											/>
+										</button>
+										<span class="visually-hidden" data-lightbox-caption-text>
+											{member.name}
+										</span>
+									</figure>
 								) : (
 									<div class="exp-well exp-well--portrait exp-well--empty">
 										<p class="exp-well-label">Portrait</p>

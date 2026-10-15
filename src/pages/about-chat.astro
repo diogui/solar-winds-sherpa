@@ -47,6 +47,7 @@ const storyGallery = [
 		image: storyPeopleInstruments,
 		alt: 'Ben calibrating instruments inside a field tent',
 		position: '50% 42%',
+		fill: true,
 	},
 	{
 		image: storyGroup2017,
@@ -73,6 +74,7 @@ const storyGallery = [
 		image: storyPeopleAdjusting,
 		alt: 'Jana adjusting a multi-camera rig in the field',
 		position: '48% 40%',
+		fill: true,
 	},
 	{
 		image: storyComputers8003,
@@ -133,7 +135,8 @@ const peopleGallery = [
 		image: peopleMilos,
 		alt: 'Miloslav Druckmüller among telescope mounts on a ridge at golden hour',
 		area: 'a',
-		position: '42% 40%',
+		position: '72% 36%',
+		milos: true,
 	},
 	{
 		image: peopleMexicoEight,
@@ -297,7 +300,11 @@ const peopleGallery = [
 					{
 						storyGallery.map((shot) => (
 							<figure
-								class:list={['about-story-slide', shot.wide && 'about-story-slide--wide']}
+								class:list={[
+									'about-story-slide',
+									shot.wide && 'about-story-slide--wide',
+									'fill' in shot && shot.fill && 'about-story-slide--fill',
+								]}
 								style={`--shot-pos: ${shot.position}`}
 							>
 								<button
@@ -366,6 +373,7 @@ const peopleGallery = [
 							class:list={[
 								'about-people-shot',
 								shot.area === 'hero' && 'about-people-shot--wide',
+								'milos' in shot && shot.milos && 'about-people-shot--milos',
 							]}
 							style={`--shot-pos: ${shot.position}`}
 						>
@@ -378,11 +386,14 @@ const peopleGallery = [
 								<Image
 									src={shot.image}
 									alt={shot.alt}
-									widths={[480, 800, 1200, 1600]}
+									widths={[480, 800, 1200, 1600, 2000]}
 									sizes={
 										shot.area === 'hero'
 											? '(max-width: 900px) 94vw, 66vw'
-											: '(max-width: 900px) 94vw, 32vw'
+											: 'milos' in shot && shot.milos
+												? /* CSS zoom + retina — request near-full source */
+													'(max-width: 900px) 94vw, 1080px'
+												: '(max-width: 900px) 94vw, 32vw'
 									}
 									loading="lazy"
 									class="about-people-photo"
@@ -391,11 +402,11 @@ const peopleGallery = [
 						</figure>
 					))
 				}
-			</div>
-
-			<div class="page-narrow about-people-cta">
-				<a class="cta" href={expeditionTeamHref}>
-					Meet the Burgos 2026 expedition team <span class="cta-arrow" aria-hidden="true">→</span>
+				<a class="about-people-cta-tile" href={expeditionTeamHref}>
+					<span class="about-people-cta-tile-text">
+						Meet the Burgos 2026 expedition team
+						<span class="cta-arrow" aria-hidden="true">→</span>
+					</span>
 				</a>
 			</div>
 		</section>
