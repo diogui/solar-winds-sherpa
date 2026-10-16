@@ -6,9 +6,9 @@ interface Props {
 }
 
 const { active } = Astro.props;
-const other = active === 'chat' ? aboutVersionMeta.atual : aboutVersionMeta.chat;
 const current = aboutVersionMeta[active];
 const canonical = aboutVersionMeta[aboutVersion];
+const versions = [aboutVersionMeta.atual, aboutVersionMeta.chat, aboutVersionMeta.more] as const;
 ---
 
 <aside class="about-version-bar" aria-label="About page version switcher">
@@ -18,19 +18,13 @@ const canonical = aboutVersionMeta[aboutVersion];
 		<span>Canonical /about → {canonical.label}</span>
 	</p>
 	<nav class="about-version-bar-nav" aria-label="Switch About version">
-		<a
-			href={aboutVersionMeta.atual.path}
-			aria-current={active === 'atual' ? 'page' : undefined}
-		>
-			versao-atual
-		</a>
-		<a
-			href={aboutVersionMeta.chat.path}
-			aria-current={active === 'chat' ? 'page' : undefined}
-		>
-			versao-chat
-		</a>
-		<a class="about-version-bar-other" href={other.path}>Open {other.label} →</a>
+		{
+			versions.map((version) => (
+				<a href={version.path} aria-current={active === version.id ? 'page' : undefined}>
+					{version.label}
+				</a>
+			))
+		}
 	</nav>
 	<p class="about-version-bar-hint">
 		Change canonical in <code>src/data/about-version.ts</code>

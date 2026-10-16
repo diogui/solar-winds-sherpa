@@ -1097,9 +1097,8 @@ html.has-lightbox-open body {
 
 .about--chat .about-screen-photo {
 	object-fit: cover;
-	/* Drops the observers in the lower-left of burgos-totality.jpg. */
-	object-view-box: inset(0% 0% 37.8% 37.8%);
-	object-position: 34% 22%;
+	/* Keep the Svalbard corona high and the ice plain readable under the copy. */
+	object-position: 52% 42%;
 }
 
 .about--chat .about-screen-shade {
@@ -1181,6 +1180,140 @@ article.page.about.about--chat h1 {
 	font-weight: 500;
 	letter-spacing: 0.14em;
 	text-transform: uppercase;
+}
+
+/* ——— About-more: field voices (review draft) ——— */
+
+.about-more-banner {
+	position: relative;
+	z-index: 5;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.45rem 0.65rem;
+	margin: 0;
+	padding: 0.7rem var(--page-gutter);
+	background: rgb(249 171 0 / 0.12);
+	border-bottom: 1px solid rgb(249 171 0 / 0.28);
+	color: var(--text);
+	font-family: var(--font-display);
+	font-size: 0.72rem;
+	letter-spacing: 0.04em;
+	line-height: 1.45;
+}
+
+.about-more-banner a {
+	color: var(--accent);
+	text-decoration: none;
+	margin-left: auto;
+}
+
+.about-more-banner a:hover,
+.about-more-banner a:focus-visible {
+	text-decoration: underline;
+}
+
+.about-more-banner code {
+	font-size: 0.68rem;
+}
+
+.about-voices {
+	background:
+		radial-gradient(ellipse 70% 50% at 10% 0%, rgb(249 171 0 / 0.06), transparent 55%),
+		var(--bg);
+}
+
+.about-voices .label {
+	margin-bottom: 0.65rem;
+}
+
+.about-voices-lead {
+	max-width: 28rem;
+	margin: 0.85rem 0 0;
+	color: var(--text-dim);
+	font-size: 1.08rem;
+	line-height: 1.5;
+}
+
+.about-voices-moments {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0;
+	width: min(1120px, calc(100% - 2.5rem));
+	margin: 2.75rem auto 0;
+	border-top: 1px solid rgb(245 245 243 / 0.12);
+}
+
+.about-voice-moment {
+	display: flex;
+	flex-direction: column;
+	gap: 0.85rem;
+	margin: 0;
+	padding: 1.85rem 1.5rem 2rem 0;
+	border-bottom: 1px solid rgb(245 245 243 / 0.12);
+	min-width: 0;
+}
+
+.about-voice-moment:nth-child(odd) {
+	padding-right: 2rem;
+	border-right: 1px solid rgb(245 245 243 / 0.12);
+}
+
+.about-voice-moment:nth-child(even) {
+	padding-left: 2rem;
+}
+
+.about-voice-place {
+	margin: 0;
+	color: var(--accent);
+	font-family: var(--font-display);
+	font-size: 0.62rem;
+	font-weight: 500;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.about-voice-hook {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.about-voice-hook p {
+	margin: 0;
+	color: #fff;
+	font-family: var(--font-display);
+	font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+	font-weight: 500;
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+}
+
+.about-voice-note {
+	margin: 0;
+	max-width: 28rem;
+	color: var(--text-dim);
+	font-size: 0.98rem;
+	line-height: 1.55;
+}
+
+.about-voice-by {
+	margin-top: auto;
+	padding-top: 0.35rem;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.about-voices-note {
+	margin: 1.75rem auto 0;
+	color: var(--text-mute);
+	font-family: var(--font-display);
+	font-size: 0.68rem;
+	letter-spacing: 0.06em;
+	line-height: 1.5;
 }
 
 .about-montage--trio {
@@ -1571,6 +1704,27 @@ article.page.about.about--chat h1 {
 
 	.about--chat .about-indicators {
 		gap: 1rem 0.85rem;
+	}
+
+	.about-voices-moments {
+		grid-template-columns: 1fr;
+		width: min(1120px, calc(100% - 2rem));
+	}
+
+	.about-voice-moment,
+	.about-voice-moment:nth-child(odd),
+	.about-voice-moment:nth-child(even) {
+		padding: 1.5rem 0;
+		border-right: 0;
+	}
+
+	.about-voice-hook p {
+		font-size: clamp(1.25rem, 6vw, 1.55rem);
+	}
+
+	.about-more-banner a {
+		margin-left: 0;
+		width: 100%;
 	}
 
 	.about-montage--trio {

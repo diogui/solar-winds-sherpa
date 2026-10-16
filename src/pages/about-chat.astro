@@ -4,8 +4,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Partners from '../components/Partners.astro';
 import WorkCards from '../components/WorkCards.astro';
 import TakeAction from '../components/TakeAction.astro';
-import heroTotality from '../assets/images/field/burgos-totality.jpg';
+import heroSvalbard from '../assets/images/about/svalbard-hero-2015.jpg';
 import shadia from '../assets/images/field/shadia-habbal.jpg';
+import storySvalbard from '../assets/images/about/story/svalbard-2015.jpg';
 import storyGroupUsa from '../assets/images/about/story/group-usa-2024.jpg';
 import storyGroup2017 from '../assets/images/about/story/group-2017.jpg';
 import storyGroupSpain from '../assets/images/about/story/group-spain.jpg';
@@ -37,6 +38,14 @@ const expeditionTeamHref = `${latestExpeditionHref}#team`;
 
 /* Story photos: Danilo will select the final set — current picks are provisional. */
 const storyGallery = [
+	{
+		image: storySvalbard,
+		alt: 'Total solar eclipse over snow-covered mountains in Svalbard, Norway, with expedition vehicles on the ice',
+		position: '50% 38%',
+		wide: true,
+		caption: 'Svalbard, Norway',
+		credit: '© 2015 Miloslav Druckmüller, Peter Aniol',
+	},
 	{
 		image: storyGroupField2015,
 		alt: 'Red expedition tent and instruments on a coastal gravel site',
@@ -192,9 +201,9 @@ const peopleGallery = [
 		<section class="about-screen" id="introduction" aria-labelledby="about-heading" data-header-hero>
 			<div class="about-screen-media">
 				<Image
-					src={heroTotality}
-					alt="Total solar eclipse above a ridge, with a reservoir in the distance"
-					widths={[1200, 2000, 2800]}
+					src={heroSvalbard}
+					alt="Total solar eclipse over snow-covered mountains in Svalbard, Norway, with expedition vehicles on the ice"
+					widths={[1200, 1800, 2400]}
 					sizes="100vw"
 					loading="eager"
 					class="about-screen-photo"
@@ -223,6 +232,9 @@ const peopleGallery = [
 						<span class="about-indicator-label">peer-reviewed publications</span>
 					</li>
 				</ul>
+				<p class="about-screen-credit">
+					Svalbard, Norway · © 2015 Miloslav Druckmüller, Peter Aniol
+				</p>
 			</div>
 		</section>
 
@@ -322,6 +334,14 @@ const peopleGallery = [
 										class="about-story-photo"
 									/>
 								</button>
+								{'caption' in shot && shot.caption && (
+									<figcaption class="about-story-caption">
+										{shot.caption}
+										{'credit' in shot && shot.credit && (
+											<span class="visually-hidden">. {shot.credit}</span>
+										)}
+									</figcaption>
+								)}
 							</figure>
 						))
 					}
