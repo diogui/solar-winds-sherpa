@@ -61,8 +61,12 @@ function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean
 const HERO_GHOST_SKIP = { from: 38.72, to: 39.55 } as const;
 /** Skip the weak opening; start just before the eclipse callout so motion leads. */
 const HERO_START_AT = 2;
-/** Hold the large brand on the poster before autoplay and the compact tuck. */
-const HERO_START_DELAY_MS = 2000;
+/**
+ * Hold the large brand on the poster before autoplay and the compact tuck.
+ * Long enough to read the brand; short enough not to feel “stuck” on a still.
+ * Video is warmed (src + buffer) during this window so play starts cleanly.
+ */
+const HERO_START_DELAY_MS = 1800;
 
 export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	const video = root.querySelector<HTMLVideoElement>('[data-hero-video], video');
@@ -167,9 +171,15 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		setButton(false);
 	};
 
+	const clearWarmState = () => {
+		delete root.dataset.heroWarming;
+		delete root.dataset.heroReady;
+	};
+
 	const unload = () => {
 		if (ended) return;
 		clearStartDelay();
+		clearWarmState();
 		video.pause();
 		video.removeAttribute('src');
 		video.load();
@@ -185,10 +195,12 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		}
 		video.pause();
 		if (!video.getAttribute('src')) {
+			clearWarmState();
 			if (!motion.matches) setHeroCompact(false);
 			idle();
 			return;
 		}
+		clearWarmState();
 		video.removeAttribute('src');
 		video.load();
 		if (!motion.matches) setHeroCompact(false);
@@ -200,8 +212,34 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		ending.src = base + selection.ending;
 	};
 
+	/** Start buffering during the brand hold so autoplay is not a second “frozen” wait. */
+	const warm = () => {
+		if (!selection.file || video.getAttribute('src') || motion.matches) return;
+		video.preload = 'auto';
+		video.src = base + selection.file;
+		root.dataset.heroFile = selection.file;
+		root.dataset.heroWarming = 'true';
+		const seekStart = () => {
+			try {
+				if (video.currentTime < HERO_START_AT - 0.05) video.currentTime = HERO_START_AT;
+			} catch {
+				/* ignore seek before ready */
+			}
+		};
+		if (video.readyState >= 1) seekStart();
+		else video.addEventListener('loadedmetadata', seekStart, { once: true });
+		video.addEventListener(
+			'canplay',
+			() => {
+				root.dataset.heroReady = 'true';
+			},
+			{ once: true },
+		);
+	};
+
 	const play = async (explicit = false) => {
 		clearStartDelay();
+		delete root.dataset.heroWarming;
 		if (ended && selection.mobile && atEnd()) return;
 		if (ended && explicit && !selection.mobile) {
 			ended = false;
@@ -212,6 +250,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 			const selected =
 				explicit && !selection.file ? currentChoice(null, motion.matches) : selection;
 			if (!selected.file) return;
+			video.preload = 'auto';
 			video.src = base + selected.file;
 			root.dataset.heroFile = selected.file;
 		}
@@ -230,6 +269,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 
 	const scheduleAutoplay = () => {
 		if (userPaused || ended || !selection.file || startDelay !== undefined) return;
+		warm();
 		startDelay = window.setTimeout(() => {
 			startDelay = undefined;
 			if (userPaused || ended) return;

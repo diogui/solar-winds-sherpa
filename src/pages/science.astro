@@ -241,16 +241,16 @@ const featured = featuredIds.map((id) => {
 			<p class="label">Results</p>
 			<h2 id="publications-heading">Scientific contributions &amp; publications</h2>
 			<div class="science-prose">
-				<p>
-					Three published papers are highlighted below. The table that follows is the reference for
-					each one.
-				</p>
+				<p>Three published papers that show the kind of results that follow from the expeditions.</p>
 			</div>
 
 			<div class="science-features">
 				{
 					featured.map((paper) => (
-						<article class:list={['science-feature', !paper.image && 'science-feature--text']}>
+						<article
+							class:list={['science-feature', !paper.image && 'science-feature--text']}
+							id={`publication-${paper.id}`}
+						>
 							{paper.image && paper.imageAlt && paper.imageCaption && paper.imageCredit && (
 								<figure class="science-feature-photo">
 									<div class="science-feature-frame">
@@ -278,57 +278,27 @@ const featured = featuredIds.map((id) => {
 								</h3>
 								<p>{paper.summary}</p>
 								<p class="science-official">{paper.title}</p>
-								<a class="cta" href={paper.href} rel="noopener noreferrer">
-									View publication <span class="cta-arrow" aria-hidden="true">→</span>
-								</a>
+								<p class="science-pub-meta">{paper.authors}</p>
+								<p class="science-pub-meta">
+									{paper.journal} · Vol. {paper.volume}, Issue {paper.issue}, p. {paper.page}
+								</p>
+								<p class="science-pub-links">
+									<a class="science-doi" href={paper.href} rel="noopener noreferrer">
+										doi.org/{paper.doi}
+									</a>
+									{paper.fullTextHref && paper.fullTextLabel && (
+										<a class="cta" href={paper.fullTextHref} rel="noopener noreferrer">
+											{paper.fullTextLabel}{' '}
+											<span class="cta-arrow" aria-hidden="true">
+												→
+											</span>
+										</a>
+									)}
+								</p>
 							</div>
 						</article>
 					))
 				}
-			</div>
-
-			<p class="label science-pub-label" id="selected-publications">Selected publications</p>
-			<div class="science-pubs-scroll">
-				<table class="science-pubs-table">
-					<thead>
-						<tr>
-							<th scope="col">Year</th>
-							<th scope="col">Publication</th>
-							<th scope="col">Access</th>
-						</tr>
-					</thead>
-					<tbody>
-						{
-							publications.map((paper) => (
-								<tr id={`publication-${paper.id}`}>
-									<td class="science-pubs-year">{paper.year}</td>
-									<td>
-										<p class="science-pubs-short">{paper.accessibleTitle}</p>
-										<p class="science-official">{paper.title}</p>
-										<p class="science-pub-meta">{paper.authors}</p>
-										<p class="science-pub-meta">
-											{paper.journal} · Vol. {paper.volume}, Issue {paper.issue}, p.{' '}
-											{paper.page}
-										</p>
-									</td>
-									<td class="science-pubs-access">
-										<a class="science-doi" href={paper.href} rel="noopener noreferrer">
-											doi.org/{paper.doi}
-										</a>
-										{paper.fullTextHref && paper.fullTextLabel && (
-											<a class="cta" href={paper.fullTextHref} rel="noopener noreferrer">
-												{paper.fullTextLabel}{' '}
-												<span class="cta-arrow" aria-hidden="true">
-													→
-												</span>
-											</a>
-										)}
-									</td>
-								</tr>
-							))
-						}
-					</tbody>
-				</table>
 			</div>
 		</section>
 

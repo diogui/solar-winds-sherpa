@@ -55,13 +55,35 @@
 
 .home-hero-video {
 	opacity: 0;
-	transition: opacity 0.45s var(--ease);
+	transition: opacity 0.55s var(--ease);
 }
 
 .home-hero[data-playing='true'] .home-hero-video,
 .home-hero[data-ended='true'] .home-hero-video,
 .home-hero[data-paused='true'] .home-hero-video {
 	opacity: 1;
+}
+
+/* Soft pulse on the still while the brand holds and the file warms — reads as intentional, not stuck. */
+.home-hero[data-hero-warming='true']:not([data-playing='true']):not([data-ended='true']) .home-hero-still {
+	animation: home-hero-still-breathe 3.2s ease-in-out infinite;
+	transform-origin: 50% 20%;
+}
+
+@keyframes home-hero-still-breathe {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.025);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.home-hero[data-hero-warming='true']:not([data-playing='true']):not([data-ended='true']) .home-hero-still {
+		animation: none;
+	}
 }
 
 .home-hero-ending {

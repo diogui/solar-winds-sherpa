@@ -15,8 +15,6 @@
 .science-instrument p,
 .science-feature p,
 .science-official,
-.science-pub-meta,
-.science-pubs-short,
 .science-caption,
 .science-next-copy > p:not(.label) {
 	text-align: justify;
@@ -422,12 +420,23 @@
 	line-height: 1.45;
 }
 
-.science-feature .cta {
-	margin-top: 1.05rem;
+.science-feature .science-official {
+	margin-top: 0.85rem;
 }
 
-.science-pub-label {
-	margin: 2.75rem 0 0.35rem;
+.science-feature .science-pub-meta {
+	margin: 0.55rem 0 0;
+	color: var(--text-dim);
+	font-size: 0.95rem;
+	text-align: left;
+	hyphens: manual;
+}
+
+.science-pub-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45rem 1.25rem;
+	margin-top: 1.05rem;
 }
 
 .science-doi {
@@ -442,87 +451,6 @@
 .science-doi:hover,
 .science-doi:focus-visible {
 	color: var(--accent);
-}
-
-.science-pubs-scroll {
-	margin-top: 0.75rem;
-	overflow-x: auto;
-	-webkit-overflow-scrolling: touch;
-}
-
-.science-pubs-table {
-	width: 100%;
-	min-width: 40rem;
-	border-collapse: collapse;
-	text-align: left;
-}
-
-.science-pubs-table th {
-	padding: 0.65rem 1rem 0.65rem 0;
-	border-bottom: 1px solid var(--line-quiet);
-	color: var(--text-dim);
-	font-family: var(--font-display);
-	font-size: 0.68rem;
-	font-weight: 500;
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	white-space: nowrap;
-}
-
-.science-pubs-table th:last-child,
-.science-pubs-table td:last-child {
-	padding-right: 0;
-}
-
-.science-pubs-table td {
-	padding: 1.25rem 1rem 1.25rem 0;
-	vertical-align: top;
-	border-bottom: 1px solid var(--line-quiet);
-}
-
-.science-pubs-table tr {
-	scroll-margin-top: calc(var(--header-h) + 0.75rem);
-}
-
-.science-pubs-year {
-	width: 4.5rem;
-	color: var(--accent);
-	font-family: var(--font-display);
-	font-size: 0.95rem;
-	font-weight: 500;
-	letter-spacing: 0.04em;
-	white-space: nowrap;
-}
-
-.science-pubs-short {
-	margin: 0 0 0.35rem;
-	font-family: var(--font-display);
-	font-size: clamp(1.05rem, 1.8vw, 1.25rem);
-	font-weight: 500;
-	line-height: 1.25;
-}
-
-.science-pubs-table .science-official {
-	margin: 0.35rem 0 0;
-}
-
-.science-pub-meta {
-	margin: 0.55rem 0 0;
-	color: var(--text-dim);
-	font-size: 0.95rem;
-}
-
-.science-pubs-access {
-	width: 12rem;
-}
-
-.science-pubs-access .science-doi,
-.science-pubs-access .cta {
-	display: block;
-}
-
-.science-pubs-access .cta {
-	margin-top: 0.65rem;
 }
 
 .science-status {
