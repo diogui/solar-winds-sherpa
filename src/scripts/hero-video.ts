@@ -95,6 +95,8 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	let timeout: number | undefined;
 	let startDelay: number | undefined;
 	let userPaused = false;
+	/** Paused because the hero left the viewport — resume when it returns (unless the user paused). */
+	let scrollPaused = false;
 	let ended = false;
 	let skippingGhost = false;
 
@@ -161,9 +163,15 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		}
 	};
 
+	const clearWarmState = () => {
+		delete root.dataset.heroWarming;
+		delete root.dataset.heroReady;
+	};
+
 	const stop = () => {
 		if (ended) return;
 		clearStartDelay();
+		scrollPaused = false;
 		video.pause();
 		root.dataset.paused = 'true';
 		if (timeout !== undefined) window.clearTimeout(timeout);
@@ -171,36 +179,31 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		setButton(false);
 	};
 
-	const clearWarmState = () => {
-		delete root.dataset.heroWarming;
-		delete root.dataset.heroReady;
-	};
-
-	const unload = () => {
-		if (ended) return;
+	/** Leave the file in place so returning to the hero can resume mid-play. */
+	const pauseForScroll = () => {
 		clearStartDelay();
-		clearWarmState();
-		video.pause();
-		video.removeAttribute('src');
-		video.load();
-		if (!motion.matches) setHeroCompact(false);
-		idle();
-	};
-
-	const release = () => {
-		clearStartDelay();
-		if (ended) {
-			video.pause();
-			return;
-		}
-		video.pause();
+		if (ended || userPaused) return;
 		if (!video.getAttribute('src')) {
 			clearWarmState();
 			if (!motion.matches) setHeroCompact(false);
 			idle();
 			return;
 		}
+		if (video.paused) return;
+		scrollPaused = true;
+		video.pause();
+		root.dataset.paused = 'true';
+		if (timeout !== undefined) window.clearTimeout(timeout);
+		timeout = undefined;
+		setButton(false);
+	};
+
+	const unload = () => {
+		if (ended) return;
+		clearStartDelay();
 		clearWarmState();
+		scrollPaused = false;
+		video.pause();
 		video.removeAttribute('src');
 		video.load();
 		if (!motion.matches) setHeroCompact(false);
@@ -255,6 +258,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 			root.dataset.heroFile = selected.file;
 		}
 		userPaused = false;
+		scrollPaused = false;
 		delete root.dataset.paused;
 		setHeroCompact(true);
 		if (timeout !== undefined) window.clearTimeout(timeout);
@@ -272,7 +276,7 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		warm();
 		startDelay = window.setTimeout(() => {
 			startDelay = undefined;
-			if (userPaused || ended) return;
+			if (userPaused || ended || scrollPaused) return;
 			void play();
 		}, HERO_START_DELAY_MS);
 	};
@@ -347,11 +351,15 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		([entry]) => {
 			if (entry?.isIntersecting && (entry.intersectionRatio ?? 0) >= 0.2) {
 				if (userPaused || ended) return;
+				if (scrollPaused && video.getAttribute('src')) {
+					void play();
+					return;
+				}
 				if (selection.file) scheduleAutoplay();
 				else schedulePosterCompact();
 				return;
 			}
-			release();
+			pauseForScroll();
 		},
 		{ threshold: [0, 0.2] },
 	).observe(root);
