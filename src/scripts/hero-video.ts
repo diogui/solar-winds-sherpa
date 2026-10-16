@@ -61,12 +61,12 @@ function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean
 const HERO_GHOST_SKIP = { from: 38.72, to: 39.55 } as const;
 /** Skip the weak opening; start just before the eclipse callout so motion leads. */
 const HERO_START_AT = 2;
-/**
- * Hold the large brand on the poster before autoplay and the compact tuck.
- * Long enough to read the brand; short enough not to feel “stuck” on a still.
- * Video is warmed (src + buffer) during this window so play starts cleanly.
- */
-const HERO_START_DELAY_MS = 1800;
+/** Brief beat on the large title before it tucks downward. */
+const HERO_BRAND_HOLD_MS = 700;
+/** Match `.home-hero-name` compact transition — video starts after the title settles. */
+const HERO_COMPACT_MS = 1200;
+/** Pause when less than half the hero remains visible, or as soon as it scrolls up. */
+const HERO_PLAY_MIN_RATIO = 0.5;
 
 export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	const video = root.querySelector<HTMLVideoElement>('[data-hero-video], video');
@@ -274,11 +274,19 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	const scheduleAutoplay = () => {
 		if (userPaused || ended || !selection.file || startDelay !== undefined) return;
 		warm();
+		/* 1) Hold large brand → 2) title tucks down → 3) video starts. */
 		startDelay = window.setTimeout(() => {
-			startDelay = undefined;
-			if (userPaused || ended || scrollPaused) return;
-			void play();
-		}, HERO_START_DELAY_MS);
+			if (userPaused || ended || scrollPaused) {
+				startDelay = undefined;
+				return;
+			}
+			setHeroCompact(true);
+			startDelay = window.setTimeout(() => {
+				startDelay = undefined;
+				if (userPaused || ended || scrollPaused) return;
+				void play();
+			}, HERO_COMPACT_MS);
+		}, HERO_BRAND_HOLD_MS);
 	};
 
 	const schedulePosterCompact = () => {
@@ -286,8 +294,13 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 		startDelay = window.setTimeout(() => {
 			startDelay = undefined;
 			setHeroCompact(true);
-		}, HERO_START_DELAY_MS);
+		}, HERO_BRAND_HOLD_MS);
 	};
+
+	const inHeroPlayZone = (entry: IntersectionObserverEntry) =>
+		entry.isIntersecting &&
+		entry.boundingClientRect.top >= -16 &&
+		(entry.intersectionRatio ?? 0) >= HERO_PLAY_MIN_RATIO;
 
 	video.addEventListener('playing', () => {
 		if (atEnd()) return;
@@ -349,7 +362,8 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	mountHeroAnnotation(root, video);
 	new IntersectionObserver(
 		([entry]) => {
-			if (entry?.isIntersecting && (entry.intersectionRatio ?? 0) >= 0.2) {
+			if (!entry) return;
+			if (inHeroPlayZone(entry)) {
 				if (userPaused || ended) return;
 				if (scrollPaused && video.getAttribute('src')) {
 					void play();
@@ -359,9 +373,10 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 				else schedulePosterCompact();
 				return;
 			}
+			/* First scroll that lifts the hero, or ≤ half visible → pause immediately. */
 			pauseForScroll();
 		},
-		{ threshold: [0, 0.2] },
+		{ threshold: [0, 0.25, 0.5, 0.75, 1] },
 	).observe(root);
 
 	return selection;

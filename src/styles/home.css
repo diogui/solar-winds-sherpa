@@ -65,7 +65,8 @@
 }
 
 /* Soft pulse on the still while the brand holds and the file warms — reads as intentional, not stuck. */
-.home-hero[data-hero-warming='true']:not([data-playing='true']):not([data-ended='true']) .home-hero-still {
+.home-hero[data-hero-warming='true']:not([data-hero-compact='true']):not([data-playing='true']):not([data-ended='true'])
+	.home-hero-still {
 	animation: home-hero-still-breathe 3.2s ease-in-out infinite;
 	transform-origin: 50% 20%;
 }
@@ -81,7 +82,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.home-hero[data-hero-warming='true']:not([data-playing='true']):not([data-ended='true']) .home-hero-still {
+	.home-hero[data-hero-warming='true']:not([data-hero-compact='true']):not([data-playing='true']):not([data-ended='true'])
+		.home-hero-still {
 		animation: none;
 	}
 }
@@ -155,7 +157,7 @@
 	margin: 0 auto;
 	padding: calc(var(--header-h) + 1.15rem) 0 max(4.25rem, calc(50dvh - 8.25rem));
 	text-align: left;
-	transition: padding 1s var(--ease);
+	transition: padding 1.25s var(--ease);
 }
 
 .home-hero[data-hero-compact='true'] .home-hero-copy {
@@ -176,9 +178,9 @@
 	text-transform: uppercase;
 	text-shadow: 0 10px 32px rgb(8 13 20 / 0.55);
 	transition:
-		font-size 1s var(--ease),
-		letter-spacing 1s var(--ease),
-		gap 1s var(--ease);
+		font-size 1.25s var(--ease),
+		letter-spacing 1.25s var(--ease),
+		gap 1.25s var(--ease);
 }
 
 .home-hero-name-pair {
@@ -190,6 +192,22 @@
 .home-hero-name > span:not(.home-hero-name-pair),
 .home-hero-name-pair > span {
 	display: block;
+	transform: translateY(-0.28em);
+	transition: transform 1.25s var(--ease);
+	will-change: transform;
+}
+
+/* Stagger each title line as it settles downward into the compact state. */
+.home-hero-name-pair > span:nth-child(1) {
+	transition-delay: 0s;
+}
+
+.home-hero-name-pair > span:nth-child(2) {
+	transition-delay: 0.12s;
+}
+
+.home-hero-name > span:not(.home-hero-name-pair) {
+	transition-delay: 0.24s;
 }
 
 .home-hero[data-hero-compact='true'] .home-hero-name {
@@ -197,6 +215,11 @@
 	letter-spacing: 0.08em;
 	gap: 0.02em;
 	line-height: 1.02;
+}
+
+.home-hero[data-hero-compact='true'] .home-hero-name > span:not(.home-hero-name-pair),
+.home-hero[data-hero-compact='true'] .home-hero-name-pair > span {
+	transform: translateY(0);
 }
 
 .home-hero-question {
@@ -211,9 +234,10 @@
 	text-wrap: balance;
 	text-shadow: 0 2px 22px rgb(8 13 20 / 0.55);
 	transition:
-		font-size 1s var(--ease),
-		margin 1s var(--ease),
-		max-width 1s var(--ease);
+		font-size 1.25s var(--ease),
+		margin 1.25s var(--ease),
+		max-width 1.25s var(--ease);
+	transition-delay: 0.3s;
 }
 
 .home-hero[data-hero-compact='true'] .home-hero-question {
@@ -224,7 +248,8 @@
 
 .home-hero-cta {
 	margin-top: 0.95rem;
-	transition: margin 1s var(--ease);
+	transition: margin 1.25s var(--ease);
+	transition-delay: 0.36s;
 }
 
 .home-hero[data-hero-compact='true'] .home-hero-cta {
@@ -1831,6 +1856,8 @@
 	.home-hero[data-hero-compact='true'] .home-hero-name,
 	.home-hero[data-hero-compact='true'] .home-hero-question,
 	.home-hero[data-hero-compact='true'] .home-hero-cta,
+	.home-hero-name > span:not(.home-hero-name-pair),
+	.home-hero-name-pair > span,
 	.home-hero-shade-open,
 	.home-hero-shade-compact {
 		transition: none;
