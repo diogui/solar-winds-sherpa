@@ -12,6 +12,7 @@ import {
 	pipeline,
 	pipelineIntro,
 	publications,
+	morePapers,
 	questions,
 	whyParagraphs,
 	type ScienceImage,
@@ -137,9 +138,9 @@ const featured = featuredIds.map((id) => {
 			<h2 id="instruments-heading">Equipment &amp; instruments</h2>
 			<div class="science-prose">
 				<p>
-					The expeditions travel with white-light cameras, narrow-band filters, and spectrometers.
-					They are set up on site and used together during totality. The photographs show that work
-					in the field.
+					The expeditions travel with white-light cameras, narrow-band filters tuned to iron emission
+					at about 1 and 2 million degrees, and spectrometers built to be carried in the field. They
+					are set up on site and used together during totality.
 				</p>
 			</div>
 
@@ -241,7 +242,10 @@ const featured = featuredIds.map((id) => {
 			<p class="label">Results</p>
 			<h2 id="publications-heading">Scientific contributions &amp; publications</h2>
 			<div class="science-prose">
-				<p>Three published papers that show the kind of results that follow from the expeditions.</p>
+				<p>
+					Three published papers that show the kind of results that follow from the expeditions,
+					followed by a short list from the same body of work.
+				</p>
 			</div>
 
 			<div class="science-features">
@@ -299,6 +303,37 @@ const featured = featuredIds.map((id) => {
 						</article>
 					))
 				}
+			</div>
+
+			<div class="science-more">
+				<h3 class="science-more-heading">More papers</h3>
+				<ul class="science-more-list">
+					{
+						morePapers.map((paper) => (
+							<li>
+								<p class="science-status">Published · {paper.year}</p>
+								<h4>
+									<a href={paper.href} rel="noopener noreferrer">
+										{paper.accessibleTitle}
+										<span class="cta-arrow" aria-hidden="true">
+											→
+										</span>
+									</a>
+								</h4>
+								<p>{paper.summary}</p>
+								<p class="science-official">{paper.title}</p>
+								<p class="science-pub-meta">
+									{paper.authors} · {paper.journal}
+								</p>
+								<p class="science-pub-links">
+									<a class="science-doi" href={paper.href} rel="noopener noreferrer">
+										doi.org/{paper.doi}
+									</a>
+								</p>
+							</li>
+						))
+					}
+				</ul>
 			</div>
 		</section>
 

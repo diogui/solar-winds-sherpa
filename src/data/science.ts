@@ -7,11 +7,13 @@
  * Confirmed with Danilo (2026-10):
  * 1. Questions + accessible explanations; opening image = Padilla TSE_2026_500mm_DBI;
  *    credit Tülin Bedel (not Iscan).
- * 2. Why eclipses = Moon vs coronagraph diffraction; complements other observatories.
- * 3. Instruments = white-light / narrow-band filters / multi-channel spectrometers (copy).
+ * 2. Why eclipses = Moon vs coronagraph inner-corona gap; forbidden lines; complements
+ *    other observatories. Enriched from IFA Observations page (2026-10).
+ * 3. Instruments = white-light / Fe XI–Fe XIV filters / expedition spectrometers.
  *    In-house builds (Matěj, Adalbert) still pending.
  * 4. Pipeline / who does what — wait for Shadia.
  * 5. Featured papers: Habbal et al. 2026, Boe et al. 2018, Druckmüller et al. 2014.
+ *    Further papers (Habbal 2010, 2011, 2014; Ding & Habbal 2017) from the IFA archive.
  * 6. What comes next / funding ask — still open (marked “(To be confirmed)” on page).
  */
 
@@ -45,13 +47,13 @@ export const questions = [
 		id: 'heating',
 		index: '01',
 		title: 'Why is the corona so hot?',
-		text: 'The Sun’s visible surface is about 5,500 °C, while the corona above it reaches millions of degrees. How energy reaches that outer atmosphere, and how the plasma there is heated, remains one of the open problems in solar physics.',
+		text: 'The Sun’s visible surface is about 5,500 °C, while the corona above it reaches millions of degrees — and not at one temperature. Eclipse observations show plasma near 1 million degrees on open magnetic field, where the solar wind can escape, and plasma near 2 million degrees in closed loops. How that outer atmosphere is heated remains an open problem.',
 	},
 	{
 		id: 'solar-wind',
 		index: '02',
 		title: 'Where does the solar wind begin?',
-		text: 'The Sun continuously sends a stream of charged particles into space that interacts with the planets. We know many of its properties, but still investigate how it starts, how it is accelerated, and what sets its different speeds and character.',
+		text: 'The Sun continuously sends a stream of charged particles into space that interacts with the planets. Eclipse measurements link that wind to the cooler, million-degree plasma on open field lines, while hotter plasma stays in closed magnetic structures. We still investigate how the wind starts, how it is accelerated, and what sets its different speeds.',
 	},
 	{
 		id: 'structure',
@@ -63,8 +65,9 @@ export const questions = [
 
 export const whyParagraphs = [
 	'The main advantage of a total solar eclipse is that it lets us observe the inner corona very close to the Sun’s visible edge, using a natural occultation that is hard to reproduce with conventional instruments.',
-	'Coronagraphs study the corona throughout the year by blocking the photosphere with an artificial disk. Diffraction around that disk makes the regions closest to the Sun difficult to see. During totality, the Moon covers the photosphere without an equivalent instrumental obstruction, so those inner regions can be recorded.',
-	'An eclipse also lets us observe the corona in white light and, with specialized instruments, in specific spectral lines — combining structure with physical properties such as temperature and motion. Totality lasts only a few minutes at any site and depends on weather, so eclipses do not replace other observatories; they complement them.',
+	'Coronagraphs study the corona throughout the year by blocking the photosphere with an artificial disk. Diffraction around that disk — and the limited inner field of view of space-borne coronagraphs — leaves the regions closest to the Sun difficult to see. During totality the Moon covers the photosphere without that obstruction, so the corona can be recorded from the solar surface out to several solar radii.',
+	'An eclipse also lets us observe the corona in white light and in forbidden emission lines of highly ionized iron. Those lines have the same diagnostic power as extreme-ultraviolet lines from the same ions, but they remain visible much farther from the Sun because sunlight keeps exciting them. White-light images show structure; the emission lines add temperature and motion.',
+	'Totality lasts only a few minutes at any site and depends on weather, so eclipses do not replace other observatories; they complement them.',
 ] as const;
 
 export const eclipseFrames = [
@@ -101,7 +104,7 @@ export const instruments = [
 		credit: 'Pico Trigaza, Spain, 2026',
 		position: '58% 46%',
 		measures:
-			'The corona’s white-light emission across a wide brightness range, using several focal lengths and exposure times. Image processing developed by Miloslav Druckmüller turns those frames into high-resolution composites that show fine coronal structure.',
+			'The corona’s white-light emission across a huge brightness range, using several cameras with different focal lengths and exposure times. Image processing developed by Miloslav Druckmüller combines those frames into high-resolution composites that show fine coronal structure.',
 		question: 'How the corona is shaped, and how its large-scale structure connects to the magnetic field.',
 	},
 	{
@@ -113,8 +116,8 @@ export const instruments = [
 		credit: 'Spain, 2026',
 		position: '42% 58%',
 		measures:
-			'Narrow slices of the spectrum that isolate “colors” emitted by iron in different ionization states. Those filters reveal hotter regions of the corona that are invisible to the unaided eye.',
-		question: 'Why the corona is so hot, and where different temperatures sit relative to the solar wind.',
+			'Two iron emission lines that the eye cannot see: Fe XI at 789.2 nm, which traces plasma near 1 million degrees, and Fe XIV at 530.3 nm, which traces plasma near 2 million degrees. Narrow-band filters isolate each line so those temperatures can be mapped across the corona.',
+		question: 'Why the corona is so hot, and where the million-degree and two-million-degree plasma sit relative to the solar wind.',
 	},
 	{
 		id: 'spectrometers',
@@ -125,8 +128,8 @@ export const instruments = [
 		credit: 'USA, 2024',
 		position: '50% 42%',
 		measures:
-			'Resolved spectra of specific iron emission lines. Line widths and Doppler shifts give information on temperatures and motions in the corona.',
-		question: 'How the corona is heated, and how plasma moves within it.',
+			'The profiles of those same iron lines, with spectrometers designed to be carried on expeditions. The width of a line reflects thermal and non-thermal motions; a Doppler shift measures bulk motion of the plasma, including in eruptions.',
+		question: 'How the corona is heated, and how plasma moves as it expands or erupts.',
 	},
 ] as const;
 
@@ -289,6 +292,74 @@ export const publications: Publication[] = [
 ];
 
 export const featuredIds = ['habbal-2026', 'boe-2018', 'druckmuller-2014'] as const;
+
+export type MorePaper = {
+	id: string;
+	accessibleTitle: string;
+	summary: string;
+	title: string;
+	authors: string;
+	year: number;
+	journal: string;
+	doi: string;
+	href: string;
+};
+
+export const morePapers: MorePaper[] = [
+	{
+		id: 'habbal-2011',
+		accessibleTitle: 'Two temperatures in the corona',
+		summary:
+			'Simultaneous images in several iron lines showed that open magnetic field is near 1 million degrees, while the hottest plasma, near 2 million degrees, sits in closed loops at the base of streamers.',
+		title:
+			'Thermodynamics of the Solar Corona and Evolution of the Solar Magnetic Field as Inferred from the Total Solar Eclipse Observations of 2010 July 11',
+		authors: 'Shadia Rifai Habbal, Miloslav Druckmüller, Huw Morgan, Adalbert Ding, Judd Johnson, Hana Druckmüllerová, Adrian Daw, Martina B. Arndt, Martin Dietzel, and Jon Saken',
+		year: 2011,
+		journal: 'The Astrophysical Journal',
+		doi: '10.1088/0004-637X/734/2/120',
+		href: 'https://doi.org/10.1088/0004-637X/734/2/120',
+	},
+	{
+		id: 'habbal-2010',
+		accessibleTitle: 'Connecting the corona to the solar wind in space',
+		summary:
+			'Iron emission mapped during two eclipses matched the iron charge states later measured in interplanetary space, giving a direct link between what is seen near the Sun and what spacecraft sample in the solar wind.',
+		title:
+			'Mapping the Distribution of Electron Temperature and Fe Charge States in the Corona with Total Solar Eclipse Observations',
+		authors:
+			'Shadia Rifai Habbal, Miloslav Druckmüller, Huw Morgan, Adrian Daw, Judd Johnson, Adalbert Ding, Martina Arndt, Ruth Esser, Vojtech Rušin, and Isabelle Scholl',
+		year: 2010,
+		journal: 'The Astrophysical Journal',
+		doi: '10.1088/0004-637X/708/2/1650',
+		href: 'https://doi.org/10.1088/0004-637X/708/2/1650',
+	},
+	{
+		id: 'habbal-2014',
+		accessibleTitle: 'Prominences and the slow solar wind',
+		summary:
+			'A decade of eclipse images showed how prominences connect to large-scale coronal structure. The interface between those cool features and the hot corona is a likely source of the slow solar wind.',
+		title:
+			'Exploring the Prominence–Corona Connection and Its Expansion into the Outer Corona Using Total Solar Eclipse Observations',
+		authors: 'Shadia Rifai Habbal, Huw Morgan, and Miloslav Druckmüller',
+		year: 2014,
+		journal: 'The Astrophysical Journal',
+		doi: '10.1088/0004-637X/793/2/119',
+		href: 'https://doi.org/10.1088/0004-637X/793/2/119',
+	},
+	{
+		id: 'ding-2017',
+		accessibleTitle: 'Cool material inside a hot eruption',
+		summary:
+			'Spectra from the 2015 eclipse caught a two-million-degree eruption still carrying cooler prominence plasma, moving at hundreds to more than a thousand kilometres per second.',
+		title:
+			'First Detection of Prominence Material Embedded within a 2 × 10⁶ K CME Front Streaming away at 100–1500 km s⁻¹ in the Solar Corona',
+		authors: 'Adalbert Ding and Shadia Rifai Habbal',
+		year: 2017,
+		journal: 'The Astrophysical Journal Letters',
+		doi: '10.3847/2041-8213/aa7460',
+		href: 'https://doi.org/10.3847/2041-8213/aa7460',
+	},
+];
 
 export const nextStep = {
 	title: 'The Burgos observations are being reduced.',

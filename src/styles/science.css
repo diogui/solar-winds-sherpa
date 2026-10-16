@@ -14,6 +14,7 @@
 .science-facts dd,
 .science-instrument p,
 .science-feature p,
+.science-more p,
 .science-official,
 .science-caption,
 .science-next-copy > p:not(.label) {
@@ -166,7 +167,7 @@
 }
 
 #eclipses .science-prose {
-	max-width: none;
+	max-width: 46rem;
 }
 
 .science-prose p + p,
@@ -463,6 +464,64 @@
 	text-transform: uppercase;
 }
 
+.science-more {
+	margin-top: 2.75rem;
+	padding-top: 2rem;
+	border-top: 1px solid var(--line-quiet);
+}
+
+.science-more-heading {
+	margin: 0 0 1.25rem;
+	font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+}
+
+.science-more-list {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1.75rem 2rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.science-more-list li {
+	min-width: 0;
+}
+
+.science-more-list h4 {
+	margin: 0.15rem 0 0.55rem;
+	font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+	line-height: 1.25;
+	text-wrap: balance;
+}
+
+.science-more-list h4 a {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.45rem;
+}
+
+.science-more-list h4 a:hover,
+.science-more-list h4 a:focus-visible {
+	color: var(--accent);
+}
+
+.science-more-list p {
+	color: var(--text-dim);
+}
+
+.science-more-list .science-official {
+	margin-top: 0.7rem;
+}
+
+.science-more-list .science-pub-meta {
+	margin: 0.45rem 0 0;
+	color: var(--text-dim);
+	font-size: 0.95rem;
+	text-align: left;
+	hyphens: manual;
+}
+
 .science-next {
 	margin-top: 0;
 	padding: var(--section-y) 0 var(--section-y-lg);
@@ -575,7 +634,8 @@
 	}
 
 	.science-instrument,
-	.science-feature {
+	.science-feature,
+	.science-more-list {
 		grid-template-columns: 1fr;
 	}
 
