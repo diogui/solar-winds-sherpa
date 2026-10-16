@@ -32,6 +32,9 @@ function chooseSrc(root: HTMLElement, force = false): string | null {
 export function mountLatestFilm(root: HTMLElement) {
 	const video = root.querySelector<HTMLVideoElement>('[data-latest-video]');
 	const toggle = root.querySelector<HTMLButtonElement>('[data-latest-toggle]');
+	const playBtn = root.querySelector<HTMLButtonElement>('[data-latest-play]');
+	const playLabel = root.querySelector<HTMLElement>('[data-latest-play-label]');
+	const muteBtn = root.querySelector<HTMLButtonElement>('[data-latest-mute]');
 	const load = root.querySelector<HTMLElement>('[data-latest-load]');
 	const loadBar = root.querySelector<HTMLElement>('[data-latest-load-bar]');
 	if (!video || !toggle) return;
@@ -39,12 +42,33 @@ export function mountLatestFilm(root: HTMLElement) {
 	const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	let inView = false;
 	let warmed = false;
+	/** After the visitor leaves the section, resume only on an explicit Play click. */
+	let needsClick = false;
 
 	const mode = () => (root.dataset.latestMode === PHOTOS ? PHOTOS : FILM);
 
 	const setReady = (ready: boolean) => {
-		if (ready && mode() === FILM && !video.paused) root.dataset.latestReady = 'true';
+		if (ready) root.dataset.latestReady = 'true';
 		else delete root.dataset.latestReady;
+	};
+
+	const syncTransport = () => {
+		const playing = mode() === FILM && !video.paused && !video.ended;
+		if (playing) root.dataset.latestPlaying = 'true';
+		else delete root.dataset.latestPlaying;
+
+		if (!playBtn) return;
+		const copy = playing ? 'Pause' : 'Play';
+		if (playLabel) playLabel.textContent = copy;
+		playBtn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+		playBtn.setAttribute('aria-pressed', String(!playing));
+	};
+
+	const syncMute = () => {
+		if (!muteBtn) return;
+		const muted = video.muted;
+		muteBtn.setAttribute('aria-pressed', String(muted));
+		muteBtn.setAttribute('aria-label', muted ? 'Unmute sound' : 'Mute sound');
 	};
 
 	const setLoad = (percent: number, state: 'idle' | 'loading' | 'ready') => {
@@ -102,36 +126,51 @@ export function mountLatestFilm(root: HTMLElement) {
 		return Math.max(FILM_START_AT + 1, duration - FILM_SKIP_TAIL);
 	};
 
-	const play = async () => {
+	const play = async (explicit = false) => {
 		if (mode() !== FILM || motion.matches) return;
+		if (needsClick && !explicit) {
+			syncTransport();
+			return;
+		}
 		warm(true);
 		try {
 			if (video.readyState >= 1) seekToFadeIn();
 			await video.play();
+			needsClick = false;
 			if (!atFadeIn()) {
 				seekToFadeIn();
-				setReady(false);
+				syncTransport();
 				return;
 			}
 			setReady(true);
+			syncTransport();
 		} catch {
-			setReady(false);
+			syncTransport();
 		}
 	};
 
-	const pause = () => {
+	const pause = (requireClick = false) => {
 		video.pause();
-		setReady(false);
+		if (requireClick) needsClick = true;
+		/* Keep the frozen film frame visible so Play stays on the video. */
+		if (mode() === FILM && atFadeIn()) setReady(true);
+		else if (mode() !== FILM) setReady(false);
+		syncTransport();
 	};
 
 	const setMode = (next: typeof FILM | typeof PHOTOS) => {
 		root.dataset.latestMode = next;
 		toggle.setAttribute('aria-checked', String(next === PHOTOS));
-		if (next === PHOTOS) pause();
-		else if (inView) play();
-		else {
+		if (next === PHOTOS) {
+			pause(false);
 			setReady(false);
+			return;
+		}
+		if (inView && !needsClick) void play();
+		else {
 			warm(true);
+			if (atFadeIn()) setReady(true);
+			syncTransport();
 		}
 	};
 
@@ -147,7 +186,8 @@ export function mountLatestFilm(root: HTMLElement) {
 		if (inView && mode() === FILM && !motion.matches) seekToFadeIn();
 	});
 	video.addEventListener('seeked', () => {
-		if (mode() === FILM && !video.paused && atFadeIn()) setReady(true);
+		if (mode() === FILM && atFadeIn()) setReady(true);
+		syncTransport();
 	});
 	video.addEventListener('playing', () => {
 		if (!atFadeIn()) {
@@ -155,9 +195,10 @@ export function mountLatestFilm(root: HTMLElement) {
 			return;
 		}
 		setReady(true);
+		syncTransport();
 	});
 	video.addEventListener('pause', () => {
-		if (mode() === PHOTOS || video.ended) setReady(false);
+		syncTransport();
 	});
 	video.addEventListener('timeupdate', () => {
 		if (mode() !== FILM || video.paused || motion.matches) return;
@@ -170,21 +211,25 @@ export function mountLatestFilm(root: HTMLElement) {
 		}
 	});
 	video.addEventListener('ended', () => {
-		if (inView && mode() === FILM && !motion.matches) {
+		if (inView && mode() === FILM && !motion.matches && !needsClick) {
 			seekToFadeIn();
 			void play();
 			return;
 		}
-		setReady(false);
+		needsClick = true;
+		if (mode() === FILM && atFadeIn()) setReady(true);
+		syncTransport();
 	});
 	video.addEventListener('canplay', () => {
 		updateLoad();
-		if (inView && mode() === FILM && !motion.matches) void play();
+		if (inView && mode() === FILM && !motion.matches && !needsClick) void play();
 	});
 	video.addEventListener('canplaythrough', updateLoad);
 
 	if (motion.matches || !chooseSrc(root)) setMode(PHOTOS);
 	setLoad(0, 'idle');
+	syncMute();
+	syncTransport();
 
 	new IntersectionObserver(
 		(entries) => {
@@ -199,8 +244,14 @@ export function mountLatestFilm(root: HTMLElement) {
 				inView = entry.isIntersecting && entry.intersectionRatio >= 0.2;
 				if (inView) {
 					warm();
-					play();
-				} else pause();
+					if (!needsClick) void play();
+					else syncTransport();
+				} else if (mode() === FILM && !video.paused) {
+					pause(true);
+				} else if (mode() === FILM) {
+					needsClick = true;
+					syncTransport();
+				}
 			}
 		},
 		{ threshold: [0, 0.2, 0.6] },
@@ -208,5 +259,23 @@ export function mountLatestFilm(root: HTMLElement) {
 
 	toggle.addEventListener('click', () => {
 		setMode(mode() === FILM ? PHOTOS : FILM);
+	});
+
+	playBtn?.addEventListener('click', (event) => {
+		event.stopPropagation();
+		if (mode() !== FILM) {
+			setMode(FILM);
+			void play(true);
+			return;
+		}
+		if (video.paused) void play(true);
+		else pause(true);
+	});
+
+	muteBtn?.addEventListener('click', (event) => {
+		event.stopPropagation();
+		video.muted = !video.muted;
+		video.defaultMuted = video.muted;
+		syncMute();
 	});
 }

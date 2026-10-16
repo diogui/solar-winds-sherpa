@@ -803,6 +803,103 @@
 	visibility: hidden;
 }
 
+.home-latest[data-latest-mode='photos'] .home-latest-transport {
+	display: none;
+}
+
+.home-latest-transport {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.55rem;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	background: rgb(8 13 20 / 0.22);
+	transition:
+		opacity 0.25s var(--ease),
+		visibility 0.25s var(--ease);
+}
+
+.home-latest[data-latest-mode='film'][data-latest-ready] .home-latest-shot:hover .home-latest-transport,
+.home-latest[data-latest-mode='film'][data-latest-ready] .home-latest-transport:focus-within,
+.home-latest[data-latest-mode='film'][data-latest-ready]:not([data-latest-playing]) .home-latest-transport {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+
+@media (hover: none) {
+	.home-latest[data-latest-mode='film'][data-latest-ready] .home-latest-transport {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		background: transparent;
+	}
+}
+
+.home-latest-play,
+.home-latest-mute {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	border: 1px solid rgb(245 245 243 / 0.22);
+	border-radius: 999px;
+	background: rgb(8 13 20 / 0.78);
+	color: var(--text);
+	font-family: var(--font-display);
+	backdrop-filter: blur(10px);
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		border-color 0.2s var(--ease),
+		color 0.2s var(--ease);
+}
+
+.home-latest-play {
+	min-width: 5.5rem;
+	padding: 0.72rem 1.2rem 0.68rem;
+	font-size: 0.68rem;
+	font-weight: 500;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+.home-latest-mute {
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+}
+
+.home-latest-play:hover,
+.home-latest-play:focus-visible,
+.home-latest-mute:hover,
+.home-latest-mute:focus-visible {
+	border-color: rgb(245 245 243 / 0.36);
+	background: rgb(8 13 20 / 0.9);
+	color: var(--accent);
+	outline: none;
+}
+
+.home-latest-mute-icon {
+	display: grid;
+	place-items: center;
+}
+
+.home-latest-mute-on,
+.home-latest-mute-off {
+	display: none;
+}
+
+.home-latest-mute[aria-pressed='false'] .home-latest-mute-on,
+.home-latest-mute[aria-pressed='true'] .home-latest-mute-off {
+	display: block;
+}
+
 .home-latest-controls {
 	position: absolute;
 	right: 0.7rem;
