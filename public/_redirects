@@ -1,3 +1,4 @@
+# Home-only preview: keep Join and the expeditions index on Home.
+# Do NOT splat /expeditions/* — Burgos (and future campaign pages) must stay reachable.
 /join / 302
 /expeditions / 302
-/expeditions/* / 302

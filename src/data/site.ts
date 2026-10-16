@@ -25,8 +25,8 @@ export const homeOnlyPreview = true;
  */
 export const currentExpeditionPath = '/expeditions/2026-burgos';
 
-/** Soft alias used in the main nav — always the current campaign. */
-export const latestExpeditionHref = '/latest-expedition';
+/** Nav and CTAs point at the current campaign (alias `/latest-expedition` still redirects here). */
+export const latestExpeditionHref = currentExpeditionPath;
 
 export const navLeft = [
 	{ href: '/', label: 'Home', live: true },
