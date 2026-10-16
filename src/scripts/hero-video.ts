@@ -61,10 +61,8 @@ function currentChoice(connection: ConnectionLike | null, reducedMotion: boolean
 const HERO_GHOST_SKIP = { from: 38.72, to: 39.55 } as const;
 /** Skip the weak opening; start just before the eclipse callout so motion leads. */
 const HERO_START_AT = 2;
-/** Brief beat on the large title before it tucks downward. */
+/** Brief beat on the large title before compact + video start together. */
 const HERO_BRAND_HOLD_MS = 700;
-/** Match `.home-hero-name` compact transition — video starts after the title settles. */
-const HERO_COMPACT_MS = 1200;
 /** Pause when less than half the hero remains visible, or as soon as it scrolls up. */
 const HERO_PLAY_MIN_RATIO = 0.5;
 
@@ -274,18 +272,11 @@ export function mountHero(root: HTMLElement, base = '/media/hero/') {
 	const scheduleAutoplay = () => {
 		if (userPaused || ended || !selection.file || startDelay !== undefined) return;
 		warm();
-		/* 1) Hold large brand → 2) title tucks down → 3) video starts. */
+		/* Hold large brand briefly, then title tucks and video starts together. */
 		startDelay = window.setTimeout(() => {
-			if (userPaused || ended || scrollPaused) {
-				startDelay = undefined;
-				return;
-			}
-			setHeroCompact(true);
-			startDelay = window.setTimeout(() => {
-				startDelay = undefined;
-				if (userPaused || ended || scrollPaused) return;
-				void play();
-			}, HERO_COMPACT_MS);
+			startDelay = undefined;
+			if (userPaused || ended || scrollPaused) return;
+			void play();
 		}, HERO_BRAND_HOLD_MS);
 	};
 
