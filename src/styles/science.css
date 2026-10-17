@@ -167,7 +167,7 @@
 }
 
 #eclipses .science-prose {
-	max-width: 46rem;
+	max-width: none;
 }
 
 .science-prose p + p,
