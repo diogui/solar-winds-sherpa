@@ -825,8 +825,7 @@
 }
 
 .home-latest[data-latest-mode='film'][data-latest-ready] .home-latest-shot:hover .home-latest-transport,
-.home-latest[data-latest-mode='film'][data-latest-ready] .home-latest-transport:focus-within,
-.home-latest[data-latest-mode='film'][data-latest-ready]:not([data-latest-playing]) .home-latest-transport {
+.home-latest[data-latest-mode='film'][data-latest-ready] .home-latest-transport:focus-within {
 	opacity: 1;
 	visibility: visible;
 	pointer-events: auto;

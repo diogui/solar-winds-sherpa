@@ -266,10 +266,13 @@ export function mountLatestFilm(root: HTMLElement) {
 		if (mode() !== FILM) {
 			setMode(FILM);
 			void play(true);
-			return;
+		} else if (video.paused) {
+			void play(true);
+		} else {
+			pause(true);
 		}
-		if (video.paused) void play(true);
-		else pause(true);
+		/* Drop focus so controls hide on mouse leave instead of sticking via :focus-within. */
+		playBtn.blur();
 	});
 
 	muteBtn?.addEventListener('click', (event) => {
@@ -277,5 +280,6 @@ export function mountLatestFilm(root: HTMLElement) {
 		video.muted = !video.muted;
 		video.defaultMuted = video.muted;
 		syncMute();
+		muteBtn.blur();
 	});
 }
