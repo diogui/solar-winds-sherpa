@@ -1307,15 +1307,6 @@ article.page.about.about--chat h1 {
 	text-transform: uppercase;
 }
 
-.about-voices-note {
-	margin: 1.75rem auto 0;
-	color: var(--text-mute);
-	font-family: var(--font-display);
-	font-size: 0.68rem;
-	letter-spacing: 0.06em;
-	line-height: 1.5;
-}
-
 .about-montage--trio {
 	display: grid;
 	grid-template-columns: 1.2fr 1fr 1fr;
