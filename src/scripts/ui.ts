@@ -226,7 +226,7 @@ function initWhyEclipses() {
 	const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-why-step]')];
 	if (!section || !figure || !buttons.length) return;
 
-	const photoTitles = ['', 'Solar corona', 'Prominences'];
+	const photoTitles = ['', 'Solar corona'];
 	const last = buttons.length - 1;
 	const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const compact = window.matchMedia('(max-width: 900px)');

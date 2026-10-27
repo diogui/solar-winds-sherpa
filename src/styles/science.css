@@ -30,7 +30,7 @@
 	text-wrap: balance;
 }
 
-/* Essay opening — concept-led, not a screen hero */
+/* Opening: copy + small corner image, then questions close below */
 .science-opening {
 	width: var(--media-wide);
 	margin: 0 auto;
@@ -38,15 +38,16 @@
 	scroll-margin-top: var(--header-h);
 }
 
-.science-essay {
+.science-head {
 	display: grid;
-	grid-template-columns: minmax(0, 0.85fr) minmax(18rem, 1.25fr);
-	gap: clamp(1.75rem, 4vw, 3.25rem);
+	grid-template-columns: minmax(0, 1fr) minmax(18rem, 34rem);
+	gap: clamp(1.25rem, 3vw, 2.75rem);
 	align-items: start;
 }
 
 .science-intro {
 	min-width: 0;
+	max-width: 40rem;
 }
 
 .science-intro .lead {
@@ -57,6 +58,32 @@
 .science-figure {
 	margin: 0;
 	min-width: 0;
+}
+
+.science-figure--corner {
+	justify-self: end;
+	width: 100%;
+	max-width: 34rem;
+}
+
+.science-figure--corner .science-figure-frame {
+	aspect-ratio: 16 / 10;
+}
+
+.science-figure--corner .science-figure-frame img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 50%;
+}
+
+.science-figure--corner .science-caption {
+	margin-top: 0.45rem;
+	max-width: none;
+}
+
+.science-figure--corner .science-credit {
+	margin-top: 0;
 }
 
 .science-figure-frame {
@@ -82,12 +109,6 @@
 	display: block;
 	margin-top: 0.35rem;
 	color: var(--text-mute);
-	font-family: var(--font-display);
-	font-size: var(--label-size);
-	font-weight: 500;
-	letter-spacing: var(--label-tracking);
-	line-height: 1.4;
-	text-transform: uppercase;
 }
 
 /* Feature grid · 3 — same family as Take Action / What we do */
@@ -96,7 +117,7 @@
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 0;
 	align-items: start;
-	margin: var(--section-y) 0 0;
+	margin: clamp(1.75rem, 3.5vw, 2.5rem) 0 0;
 	padding: 0;
 	list-style: none;
 }
@@ -592,19 +613,19 @@
 		font-size: clamp(1.6rem, 7vw, 2.15rem);
 	}
 
-	.science-essay {
+	.science-head {
 		grid-template-columns: 1fr;
-		gap: 1.75rem;
+		gap: 1.25rem;
 	}
 
-	.science-figure-frame {
-		aspect-ratio: 16 / 10;
-		max-width: 28rem;
+	.science-figure--corner {
+		justify-self: start;
+		max-width: 22rem;
 	}
 
 	.science-questions {
 		grid-template-columns: 1fr;
-		margin-top: 2.25rem;
+		margin-top: 1.75rem;
 	}
 
 	.science-question {

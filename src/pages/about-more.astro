@@ -7,19 +7,10 @@ import TakeAction from '../components/TakeAction.astro';
 import heroSvalbard from '../assets/images/about/svalbard-hero-2015.jpg';
 import shadia from '../assets/images/field/shadia-habbal.jpg';
 import storySvalbard from '../assets/images/about/story/svalbard-2015.jpg';
-import storyGroupUsa from '../assets/images/about/story/group-usa-2024.jpg';
 import storyGroup2017 from '../assets/images/about/story/group-2017.jpg';
 import storyGroupSpain from '../assets/images/about/story/group-spain.jpg';
 import storyGroupField2015 from '../assets/images/about/story/group-field-2015.jpg';
-import storyPeopleAdjusting from '../assets/images/about/story/people-adjusting.jpg';
-import storyPeopleShadia from '../assets/images/about/story/people-shadia-field.jpg';
-import storyPeopleHorses from '../assets/images/about/story/people-horses.jpg';
-import storyPeopleJanaHorses from '../assets/images/about/story/people-jana-horses.jpg';
 import storyPeopleInstruments from '../assets/images/about/story/people-instruments.jpg';
-import storyPeopleOutreach from '../assets/images/about/story/people-outreach.jpg';
-import storyPeopleCerro from '../assets/images/about/story/people-cerro-tololo.jpg';
-import storyComputers8003 from '../assets/images/about/story/computers-8003.jpg';
-import storyComputersNight from '../assets/images/about/story/computers-night.jpg';
 import peopleUsa from '../assets/images/about/people/group-usa-2024.jpg';
 import people2021 from '../assets/images/about/people/group-2021.jpg';
 import peopleAirport from '../assets/images/about/people/group-airport.jpg';
@@ -28,7 +19,6 @@ import peopleMexicoTrio from '../assets/images/about/people/group-mexico-trio.jp
 import peopleMilos from '../assets/images/about/people/milos-field.jpg';
 import peopleGear from '../assets/images/about/people/group-gear-2024.jpg';
 import people2017 from '../assets/images/about/people/group-2017.jpg';
-import peopleField2015 from '../assets/images/about/people/group-field-2015.jpg';
 import '../styles/work.css';
 import '../styles/about.css';
 
@@ -81,85 +71,45 @@ const fieldMoments = [
 	},
 ] as const;
 
-/* Story photos: Danilo will select the final set — current picks are provisional. */
-const storyGallery = [
+/**
+ * Our Story timeline — provisional moments for Danilo review.
+ * Each entry needs a readable marker + one line so the sequence is a story, not a mood board.
+ */
+const storyTimeline = [
 	{
+		marker: '2015 · Svalbard',
+		line: 'Totality on the ice — a campaign that shaped how the Sherpas work in the field.',
 		image: storySvalbard,
 		alt: 'Total solar eclipse over snow-covered mountains in Svalbard, Norway, with expedition vehicles on the ice',
 		position: '50% 38%',
-		wide: true,
-		caption: 'Svalbard, Norway',
-		credit: '© 2015 Miloslav Druckmüller, Peter Aniol',
 	},
 	{
+		marker: '2015 · Faroe Islands',
+		line: 'Instruments into the path of totality — portable observatories on the coast.',
 		image: storyGroupField2015,
 		alt: 'Red expedition tent and instruments on a coastal gravel site',
 		position: '50% 48%',
-		wide: true,
 	},
 	{
-		image: storyPeopleInstruments,
-		alt: 'Ben calibrating instruments inside a field tent',
-		position: '50% 42%',
-		fill: true,
-	},
-	{
+		marker: '2017 · On the road',
+		line: 'The team grows across campaigns — scientists, engineers and observers sharing the work.',
 		image: storyGroup2017,
 		alt: 'Large expedition group in red shirts in front of field vehicles',
 		position: '50% 45%',
 	},
 	{
-		image: storyPeopleHorses,
-		alt: 'Petr, Jana and a teammate on horseback among mountain trees',
-		position: '50% 40%',
-	},
-	{
-		image: storyPeopleJanaHorses,
-		alt: 'Jana working under a cloth at an instrument, with horses nearby',
-		position: '45% 50%',
-	},
-	{
-		image: storyPeopleCerro,
-		alt: 'Cerro Tololo observatory landscape under a bright sun',
-		position: '50% 45%',
-		wide: true,
-	},
-	{
-		image: storyPeopleAdjusting,
-		alt: 'Jana adjusting a multi-camera rig in the field',
-		position: '48% 40%',
-		fill: true,
-	},
-	{
-		image: storyComputers8003,
-		alt: 'Total solar eclipse above silhouetted cameras and telescopes in the field',
-		position: '50% 35%',
-	},
-	{
-		image: storyGroupUsa,
-		alt: 'Solar Wind Sherpas team in matching blue shirts posing in a grassy field',
+		marker: 'In the field',
+		line: 'Prepare, calibrate, wait — the minutes of darkness are too short to fix a problem later.',
+		image: storyPeopleInstruments,
+		alt: 'Ben calibrating instruments inside a field tent',
 		position: '50% 42%',
 	},
 	{
-		image: storyComputersNight,
-		alt: 'Field computers glowing in a darkened operations tent before totality',
-		position: '50% 48%',
-	},
-	{
-		image: storyPeopleShadia,
-		alt: 'Shadia Habbal working alone at a field site in the distance',
-		position: '42% 48%',
-	},
-	{
-		image: storyPeopleOutreach,
-		alt: 'Ben and Martina speaking on stage with an eclipse slide behind them',
-		position: '50% 40%',
-	},
-	{
+		marker: '2026 · Burgos',
+		line: 'The latest campaign — two sites in Spain, and the work that follows from them.',
 		image: storyGroupSpain,
 		alt: 'Team portrait on a grassy ridge with a telescope beside them',
 		position: '50% 38%',
-		wide: true,
 	},
 ] as const;
 
@@ -228,12 +178,6 @@ const peopleGallery = [
 		area: 'g',
 		position: '50% 45%',
 	},
-	{
-		image: peopleField2015,
-		alt: 'Red expedition tent and instruments on a coastal gravel observing site',
-		area: 'h',
-		position: '50% 48%',
-	},
 ] as const;
 
 ---
@@ -277,10 +221,10 @@ const peopleGallery = [
 						<span class="about-indicator-label">peer-reviewed publications</span>
 					</li>
 				</ul>
-				<p class="about-screen-credit">
-					Svalbard, Norway · © 2015 Miloslav Druckmüller, Peter Aniol
-				</p>
 			</div>
+			<p class="about-screen-credit">
+				Svalbard, Norway · © 2015 Miloslav Druckmüller, Peter Aniol
+			</p>
 		</section>
 
 		<section class="about-founder" id="founder" aria-labelledby="founder-heading">
@@ -343,66 +287,38 @@ const peopleGallery = [
 				</dl>
 			</div>
 
-			<div
-				class="about-story-carousel carousel"
-				data-carousel
-				data-lightbox-gallery
-			>
-				<div
-					class="carousel-track about-story-track"
-					data-carousel-track
-					tabindex="0"
-					aria-label="Our Story photographs"
-				>
-					{
-						storyGallery.map((shot) => (
-							<figure
-								class:list={[
-									'about-story-slide',
-									shot.wide && 'about-story-slide--wide',
-									'fill' in shot && shot.fill && 'about-story-slide--fill',
-								]}
-								style={`--shot-pos: ${shot.position}`}
-							>
+			<ol class="about-timeline" data-lightbox-gallery aria-label="Our Story timeline">
+				{
+					storyTimeline.map((moment) => (
+						<li class="about-timeline-item">
+							<div class="about-timeline-copy">
+								<p class="label">{moment.marker}</p>
+								<p class="about-timeline-line">{moment.line}</p>
+							</div>
+							<figure class="about-timeline-shot" style={`--shot-pos: ${moment.position}`}>
 								<button
 									type="button"
-									class="about-story-shot-open"
+									class="about-timeline-shot-open"
 									data-lightbox-trigger
-									aria-label={`View larger: ${shot.alt}`}
+									aria-label={`View larger: ${moment.alt}`}
 								>
 									<Image
-										src={shot.image}
-										alt={shot.alt}
+										src={moment.image}
+										alt={moment.alt}
 										widths={[640, 960, 1200, 1600]}
-										sizes="(max-width: 900px) 85vw, (max-width: 1200px) 48vw, 34vw"
+										sizes="(max-width: 900px) 92vw, 36rem"
 										loading="lazy"
-										class="about-story-photo"
+										class="about-timeline-photo"
 									/>
 								</button>
-								{'caption' in shot && shot.caption && (
-									<figcaption class="about-story-caption">
-										{shot.caption}
-										{'credit' in shot && shot.credit && (
-											<span class="visually-hidden">. {shot.credit}</span>
-										)}
-									</figcaption>
-								)}
+								<span class="visually-hidden" data-lightbox-caption-text>
+									{moment.marker}. {moment.line}
+								</span>
 							</figure>
-						))
-					}
-				</div>
-				<div class="carousel-controls about-story-carousel-controls">
-					<p class="about-story-carousel-hint">Swipe or use the arrows to browse</p>
-					<div class="carousel-arrows">
-						<button class="icon-btn" type="button" data-carousel-prev aria-label="Previous photographs">
-							←
-						</button>
-						<button class="icon-btn" type="button" data-carousel-next aria-label="Next photographs">
-							→
-						</button>
-					</div>
-				</div>
-			</div>
+						</li>
+					))
+				}
+			</ol>
 		</section>
 
 		<section class="about-block about-voices" id="in-the-field" aria-labelledby="voices-heading">

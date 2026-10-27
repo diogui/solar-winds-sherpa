@@ -22,9 +22,9 @@ import padilla2026 from '../assets/images/papers/padilla-2026-corona.jpg';
 import sun from '../assets/images/why/sun.jpg';
 import corona from '../assets/images/why/corona.jpg';
 import prominences from '../assets/images/why/prominences.jpg';
-import camerasTotality from '../assets/images/field/burgos-totality.jpg';
-import filterRig from '../assets/images/field/latest-instruments.jpg';
-import fieldStation from '../assets/images/about/story/computers-night.jpg';
+import camerasTotality from '../assets/images/expedition/burgos/burgos-instrument-bear.jpg';
+import filterRig from '../assets/images/about/story/people-instruments.jpg';
+import fieldStation from '../assets/images/expedition/field/field-observe.jpg';
 import faroeCamp from '../assets/images/about/story/group-field-2015.jpg';
 import boeFig1 from '../assets/images/papers/boe-2018-fig1.png';
 import feComposite from '../assets/images/papers/fe-composite.jpg';
@@ -62,7 +62,7 @@ const featured = featuredIds.map((id) => {
 >
 	<article class="page science">
 		<section class="science-opening" id="questions" aria-labelledby="questions-heading">
-			<div class="science-essay">
+			<div class="science-head">
 				<header class="science-intro">
 					<p class="label page-kicker">Science</p>
 					<h1 id="questions-heading">The questions we explore</h1>
@@ -72,18 +72,18 @@ const featured = featuredIds.map((id) => {
 					</p>
 				</header>
 
-				<figure class="science-figure">
+				<figure class="science-figure science-figure--corner">
 					<div class="science-figure-frame">
 						<Image
 							src={photos[hero.image]}
 							alt={hero.alt}
-							widths={[800, 1200, 1600]}
-							sizes="(max-width: 900px) 92vw, min(44rem, 55vw)"
+							widths={[480, 720, 960]}
+							sizes="(max-width: 900px) min(22rem, 92vw), 34rem"
 							loading="eager"
 						/>
 					</div>
 					<figcaption class="science-caption">
-						{hero.caption}
+						<span class="visually-hidden">{hero.caption}</span>
 						<span class="science-credit">{hero.credit}</span>
 					</figcaption>
 				</figure>

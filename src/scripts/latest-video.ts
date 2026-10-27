@@ -1,7 +1,5 @@
 import type { ConnectionLike } from './hero-video';
 
-const FILM = 'film';
-const PHOTOS = 'photos';
 /** Match latest-expedition `data-exp-skip-start` — fade-in after the black lead-in. */
 const FILM_START_AT = 5;
 /** Match latest-expedition `data-exp-skip-tail` — stop before the black lead-out. */
@@ -31,21 +29,16 @@ function chooseSrc(root: HTMLElement, force = false): string | null {
 
 export function mountLatestFilm(root: HTMLElement) {
 	const video = root.querySelector<HTMLVideoElement>('[data-latest-video]');
-	const toggle = root.querySelector<HTMLButtonElement>('[data-latest-toggle]');
 	const playBtn = root.querySelector<HTMLButtonElement>('[data-latest-play]');
 	const playLabel = root.querySelector<HTMLElement>('[data-latest-play-label]');
 	const muteBtn = root.querySelector<HTMLButtonElement>('[data-latest-mute]');
-	const load = root.querySelector<HTMLElement>('[data-latest-load]');
-	const loadBar = root.querySelector<HTMLElement>('[data-latest-load-bar]');
-	if (!video || !toggle) return;
+	if (!video) return;
 
 	const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	let inView = false;
 	let warmed = false;
-	/** After the visitor leaves the section, resume only on an explicit Play click. */
-	let needsClick = false;
-
-	const mode = () => (root.dataset.latestMode === PHOTOS ? PHOTOS : FILM);
+	/** Visitor paused while the section is still on screen — do not auto-resume until they leave and return. */
+	let userPaused = false;
 
 	const setReady = (ready: boolean) => {
 		if (ready) root.dataset.latestReady = 'true';
@@ -53,7 +46,7 @@ export function mountLatestFilm(root: HTMLElement) {
 	};
 
 	const syncTransport = () => {
-		const playing = mode() === FILM && !video.paused && !video.ended;
+		const playing = !video.paused && !video.ended;
 		if (playing) root.dataset.latestPlaying = 'true';
 		else delete root.dataset.latestPlaying;
 
@@ -71,34 +64,8 @@ export function mountLatestFilm(root: HTMLElement) {
 		muteBtn.setAttribute('aria-label', muted ? 'Unmute sound' : 'Mute sound');
 	};
 
-	const setLoad = (percent: number, state: 'idle' | 'loading' | 'ready') => {
-		const value = Math.max(0, Math.min(100, Math.round(percent)));
-		root.dataset.latestLoad = state;
-		if (loadBar) loadBar.style.transform = `scaleX(${value / 100})`;
-		if (!load) return;
-		load.setAttribute('aria-valuenow', String(value));
-		load.setAttribute(
-			'aria-valuetext',
-			state === 'ready' ? 'Film downloaded' : `Film downloading, ${value} percent`,
-		);
-	};
-
-	const updateLoad = () => {
-		const duration = video.duration;
-		if (!duration || !Number.isFinite(duration)) {
-			setLoad(0, warmed ? 'loading' : 'idle');
-			return;
-		}
-		let loaded = 0;
-		const ranges = video.buffered;
-		if (ranges.length) loaded = ranges.end(ranges.length - 1);
-		const percent = (loaded / duration) * 100;
-		setLoad(percent, percent >= 99.5 ? 'ready' : 'loading');
-	};
-
 	const attach = (src: string) => {
 		if (video.getAttribute('src') === src) return;
-		setLoad(0, 'loading');
 		video.preload = 'auto';
 		video.src = src;
 	};
@@ -126,9 +93,8 @@ export function mountLatestFilm(root: HTMLElement) {
 		return Math.max(FILM_START_AT + 1, duration - FILM_SKIP_TAIL);
 	};
 
-	const play = async (explicit = false) => {
-		if (mode() !== FILM || motion.matches) return;
-		if (needsClick && !explicit) {
+	const play = async () => {
+		if (motion.matches || userPaused) {
 			syncTransport();
 			return;
 		}
@@ -136,7 +102,6 @@ export function mountLatestFilm(root: HTMLElement) {
 		try {
 			if (video.readyState >= 1) seekToFadeIn();
 			await video.play();
-			needsClick = false;
 			if (!atFadeIn()) {
 				seekToFadeIn();
 				syncTransport();
@@ -149,29 +114,10 @@ export function mountLatestFilm(root: HTMLElement) {
 		}
 	};
 
-	const pause = (requireClick = false) => {
+	const pause = () => {
 		video.pause();
-		if (requireClick) needsClick = true;
-		/* Keep the frozen film frame visible so Play stays on the video. */
-		if (mode() === FILM && atFadeIn()) setReady(true);
-		else if (mode() !== FILM) setReady(false);
+		if (atFadeIn()) setReady(true);
 		syncTransport();
-	};
-
-	const setMode = (next: typeof FILM | typeof PHOTOS) => {
-		root.dataset.latestMode = next;
-		toggle.setAttribute('aria-checked', String(next === PHOTOS));
-		if (next === PHOTOS) {
-			pause(false);
-			setReady(false);
-			return;
-		}
-		if (inView && !needsClick) void play();
-		else {
-			warm(true);
-			if (atFadeIn()) setReady(true);
-			syncTransport();
-		}
 	};
 
 	video.muted = true;
@@ -179,14 +125,19 @@ export function mountLatestFilm(root: HTMLElement) {
 	video.loop = false;
 	video.playsInline = true;
 
-	video.addEventListener('loadstart', () => setLoad(0, 'loading'));
-	video.addEventListener('progress', updateLoad);
+	if (motion.matches || !chooseSrc(root)) {
+		root.dataset.latestMode = 'photos';
+		setReady(false);
+	}
+
+	syncMute();
+	syncTransport();
+
 	video.addEventListener('loadedmetadata', () => {
-		updateLoad();
-		if (inView && mode() === FILM && !motion.matches) seekToFadeIn();
+		if (inView && !motion.matches) seekToFadeIn();
 	});
 	video.addEventListener('seeked', () => {
-		if (mode() === FILM && atFadeIn()) setReady(true);
+		if (atFadeIn()) setReady(true);
 		syncTransport();
 	});
 	video.addEventListener('playing', () => {
@@ -197,11 +148,9 @@ export function mountLatestFilm(root: HTMLElement) {
 		setReady(true);
 		syncTransport();
 	});
-	video.addEventListener('pause', () => {
-		syncTransport();
-	});
+	video.addEventListener('pause', syncTransport);
 	video.addEventListener('timeupdate', () => {
-		if (mode() !== FILM || video.paused || motion.matches) return;
+		if (video.paused || motion.matches) return;
 		if (video.currentTime < FILM_START_AT - 0.05) {
 			seekToFadeIn();
 			return;
@@ -211,25 +160,17 @@ export function mountLatestFilm(root: HTMLElement) {
 		}
 	});
 	video.addEventListener('ended', () => {
-		if (inView && mode() === FILM && !motion.matches && !needsClick) {
+		if (inView && !motion.matches && !userPaused) {
 			seekToFadeIn();
 			void play();
 			return;
 		}
-		needsClick = true;
-		if (mode() === FILM && atFadeIn()) setReady(true);
+		if (atFadeIn()) setReady(true);
 		syncTransport();
 	});
 	video.addEventListener('canplay', () => {
-		updateLoad();
-		if (inView && mode() === FILM && !motion.matches && !needsClick) void play();
+		if (inView && !motion.matches && !userPaused) void play();
 	});
-	video.addEventListener('canplaythrough', updateLoad);
-
-	if (motion.matches || !chooseSrc(root)) setMode(PHOTOS);
-	setLoad(0, 'idle');
-	syncMute();
-	syncTransport();
 
 	new IntersectionObserver(
 		(entries) => {
@@ -243,13 +184,12 @@ export function mountLatestFilm(root: HTMLElement) {
 			for (const entry of entries) {
 				inView = entry.isIntersecting && entry.intersectionRatio >= 0.2;
 				if (inView) {
+					userPaused = false;
 					warm();
-					if (!needsClick) void play();
-					else syncTransport();
-				} else if (mode() === FILM && !video.paused) {
-					pause(true);
-				} else if (mode() === FILM) {
-					needsClick = true;
+					void play();
+				} else if (!video.paused) {
+					pause();
+				} else {
 					syncTransport();
 				}
 			}
@@ -257,21 +197,15 @@ export function mountLatestFilm(root: HTMLElement) {
 		{ threshold: [0, 0.2, 0.6] },
 	).observe(root);
 
-	toggle.addEventListener('click', () => {
-		setMode(mode() === FILM ? PHOTOS : FILM);
-	});
-
 	playBtn?.addEventListener('click', (event) => {
 		event.stopPropagation();
-		if (mode() !== FILM) {
-			setMode(FILM);
-			void play(true);
-		} else if (video.paused) {
-			void play(true);
+		if (video.paused) {
+			userPaused = false;
+			void play();
 		} else {
-			pause(true);
+			userPaused = true;
+			pause();
 		}
-		/* Drop focus so controls hide on mouse leave instead of sticking via :focus-within. */
 		playBtn.blur();
 	});
 

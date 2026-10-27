@@ -12,7 +12,7 @@
  * 3. Instruments = white-light / Fe XI–Fe XIV filters / expedition spectrometers.
  *    In-house builds (Matěj, Adalbert) still pending.
  * 4. Pipeline / who does what — wait for Shadia.
- * 5. Featured papers: Habbal et al. 2026, Boe et al. 2018, Druckmüller et al. 2014.
+ * 5. Featured papers: Habbal et al. 2026, Druckmüller et al. 2014, Boe et al. 2018.
  *    Further papers (Habbal 2010, 2011, 2014; Ding & Habbal 2017) from the IFA archive.
  * 6. What comes next / funding ask — still open (marked “(To be confirmed)” on page).
  */
@@ -99,10 +99,10 @@ export const instruments = [
 		id: 'white-light',
 		name: 'White-light cameras',
 		image: 'cameras-totality' as ScienceImage,
-		alt: 'Large camera lenses in the foreground on a ridge, aimed toward a total solar eclipse over the mountains',
-		caption: 'Cameras on the ridge during totality.',
-		credit: 'Pico Trigaza, Spain, 2026',
-		position: '58% 46%',
+		alt: 'Multi-camera white-light array on a tracking mount, with red cooled cameras and cables in the field',
+		caption: 'White-light camera array prepared for totality.',
+		credit: 'Padilla de Abajo, Spain, 2026',
+		position: '50% 45%',
 		measures:
 			'The corona’s white-light emission across a huge brightness range, using several cameras with different focal lengths and exposure times. Image processing developed by Miloslav Druckmüller combines those frames into high-resolution composites that show fine coronal structure.',
 		question: 'How the corona is shaped, and how its large-scale structure connects to the magnetic field.',
@@ -111,10 +111,10 @@ export const instruments = [
 		id: 'filters',
 		name: 'Narrow-band filters',
 		image: 'filter-rig' as ScienceImage,
-		alt: 'A multi-camera instrument rig and a field laptop on a ridge in Spain, with hills behind',
-		caption: 'A multi-camera rig and field computer on the ridge.',
-		credit: 'Spain, 2026',
-		position: '42% 58%',
+		alt: 'Multi-lens instrument array with reflective filter fronts inside a field tent, with laptops beside it',
+		caption: 'Narrow-band filter cameras set up in the field tent.',
+		credit: 'Solar Wind Sherpas field campaign',
+		position: '48% 42%',
 		measures:
 			'Two iron emission lines that the eye cannot see: Fe XI at 789.2 nm, which traces plasma near 1 million degrees, and Fe XIV at 530.3 nm, which traces plasma near 2 million degrees. Narrow-band filters isolate each line so those temperatures can be mapped across the corona.',
 		question: 'Why the corona is so hot, and where the million-degree and two-million-degree plasma sit relative to the solar wind.',
@@ -123,10 +123,10 @@ export const instruments = [
 		id: 'spectrometers',
 		name: 'Multi-channel spectrometers',
 		image: 'field-station' as ScienceImage,
-		alt: 'A researcher at field computers inside a dark tent, with instruments beside the screens',
-		caption: 'Instruments and field computers running in the dark.',
-		credit: 'USA, 2024',
-		position: '50% 42%',
+		alt: 'Dual-tube field telescope with cameras attached, viewed from inside a dark tent toward researchers in the sun',
+		caption: 'Spectrometer and camera tubes aimed for totality.',
+		credit: 'Padilla de Abajo, Spain, 2026',
+		position: '62% 48%',
 		measures:
 			'The profiles of those same iron lines, with spectrometers designed to be carried on expeditions. The width of a line reflects thermal and non-thermal motions; a Doppler shift measures bulk motion of the plasma, including in eruptions.',
 		question: 'How the corona is heated, and how plasma moves as it expands or erupts.',
@@ -242,6 +242,28 @@ export const publications: Publication[] = [
 		imageCredit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Václav Široký · Pico Trigaza',
 	},
 	{
+		id: 'druckmuller-2014',
+		status: 'published',
+		accessibleTitle: 'Revealing fine structures in the corona',
+		summary:
+			'Detailed processing of eclipse images revealed faint loops, rings and twisted structures, providing new evidence of the corona’s dynamic behavior.',
+		title: 'Discovery of a New Class of Coronal Structures in White Light Eclipse Images',
+		authors: 'Miloslav Druckmüller, Shadia Rifai Habbal, and Huw Morgan',
+		year: 2014,
+		journal: 'The Astrophysical Journal',
+		volume: '785',
+		issue: '1',
+		page: '14',
+		doi: '10.1088/0004-637X/785/1/14',
+		href: 'https://doi.org/10.1088/0004-637X/785/1/14',
+		image: 'druckmuller-2014',
+		imageAlt:
+			'Processed white-light image of the solar corona from the 11 July 2010 total eclipse at Tatakoto, showing fine streamers and structure around the Moon',
+		imageCaption:
+			'High-resolution white-light corona from the 11 July 2010 eclipse at Tatakoto — the same campaign illustrated in the paper.',
+		imageCredit: '© Miloslav Druckmüller · Tatakoto, 2010',
+	},
+	{
 		id: 'boe-2018',
 		status: 'published',
 		accessibleTitle: 'Tracing the solar wind’s origins',
@@ -267,31 +289,9 @@ export const publications: Publication[] = [
 			'Fe XI is shown in red and Fe XIV in green. Both are display colors, explained above. The dark corner is the edge of the frame, not a feature of the Sun.',
 		imageCredit: 'Boe et al. 2018, The Astrophysical Journal, Figure 1C',
 	},
-	{
-		id: 'druckmuller-2014',
-		status: 'published',
-		accessibleTitle: 'Revealing fine structures in the corona',
-		summary:
-			'Detailed processing of eclipse images revealed faint loops, rings and twisted structures, providing new evidence of the corona’s dynamic behavior.',
-		title: 'Discovery of a New Class of Coronal Structures in White Light Eclipse Images',
-		authors: 'Miloslav Druckmüller, Shadia Rifai Habbal, and Huw Morgan',
-		year: 2014,
-		journal: 'The Astrophysical Journal',
-		volume: '785',
-		issue: '1',
-		page: '14',
-		doi: '10.1088/0004-637X/785/1/14',
-		href: 'https://doi.org/10.1088/0004-637X/785/1/14',
-		image: 'druckmuller-2014',
-		imageAlt:
-			'Processed white-light image of the solar corona from the 11 July 2010 total eclipse at Tatakoto, showing fine streamers and structure around the Moon',
-		imageCaption:
-			'High-resolution white-light corona from the 11 July 2010 eclipse at Tatakoto — the same campaign illustrated in the paper.',
-		imageCredit: '© Miloslav Druckmüller · Tatakoto, 2010',
-	},
 ];
 
-export const featuredIds = ['habbal-2026', 'boe-2018', 'druckmuller-2014'] as const;
+export const featuredIds = ['habbal-2026', 'druckmuller-2014', 'boe-2018'] as const;
 
 export type MorePaper = {
 	id: string;

@@ -1,22 +1,22 @@
 ---
 import { Image } from 'astro:assets';
-import freezeIn from '../../../assets/images/papers/fe-composite.jpg';
+import habbal from '../../../assets/images/papers/padilla-2026-corona.jpg';
 import structures from '../../../assets/images/papers/corona-structures.jpg';
-import ironLine from '../../../assets/images/papers/fe-xi.jpg';
+import freezeIn from '../../../assets/images/papers/fe-composite.jpg';
 
 const papers = [
 	{
-		kicker: 'Boe et al. · 2018 · ApJ',
-		title: 'Tracing the solar wind’s origins',
-		text: 'Observations from the 2015 eclipse helped identify where two types of iron ions settle into the charge states they carry outward with the solar wind, offering clues to conditions near the Sun.',
+		kicker: 'Habbal et al. · 2026 · ApJ',
+		title: 'Tracking plasma instabilities into space',
+		text: 'Eclipse images first showed vortex-ring structures near the Sun. Combined with Parker Solar Probe white-light data, this work follows those structures outward and finds speeds that match the slow solar wind — evidence that they survive as they expand away from the Sun.',
 		original:
-			'The First Empirical Determination of the Fe¹⁰⁺ and Fe¹³⁺ Freeze-in Distances in the Solar Corona',
+			'Tracking the Evolution of Plasma Instabilities from the Prominence–Corona Transition Region into Interplanetary Space with Total Solar Eclipse and PSP/WISPR White Light Images',
 		cta: 'View publication',
-		href: 'https://doi.org/10.3847/1538-4357/aabfb7',
+		href: 'https://doi.org/10.3847/1538-4357/ae2ec7',
 		external: true,
-		image: freezeIn,
-		alt: 'Composite eclipse image of the solar corona, with Fe XI emission in red and Fe XIV in green',
-		variant: 'freeze',
+		image: habbal,
+		alt: 'Processed white-light image of the solar corona during the 2026 eclipse, showing fine streamers around the Moon',
+		variant: 'habbal',
 	},
 	{
 		kicker: 'Druckmüller et al. · 2014 · ApJ',
@@ -31,25 +31,21 @@ const papers = [
 		variant: 'structures',
 	},
 	{
-		kicker: 'The observing program',
-		title: 'The corona, in a few minutes of night',
-		text: 'Our observations combine high-resolution white-light imaging of the corona with narrow-band filters centred on forbidden emission lines of highly ionized iron, including Fe XI and Fe XIV.',
-		cta: 'Explore the science',
-		href: '/science',
-		external: false,
-		image: ironLine,
-		alt: 'Narrow-band eclipse image of the solar corona in Fe XI emission',
-		variant: 'archive',
+		kicker: 'Boe et al. · 2018 · ApJ',
+		title: 'Tracing the solar wind’s origins',
+		text: 'Observations from the 2015 eclipse helped identify where two types of iron ions settle into the charge states they carry outward with the solar wind, offering clues to conditions near the Sun.',
+		original:
+			'The First Empirical Determination of the Fe¹⁰⁺ and Fe¹³⁺ Freeze-in Distances in the Solar Corona',
+		cta: 'View publication',
+		href: 'https://doi.org/10.3847/1538-4357/aabfb7',
+		external: true,
+		image: freezeIn,
+		alt: 'Composite eclipse image of the solar corona, with Fe XI emission in red and Fe XIV in green',
+		variant: 'freeze',
 	},
 ] as const;
 ---
 
-<!--
-	Review: card thumbnails are cropped from Boe et al. 2018, arXiv 1805.03211 (author preprint Fig. 1).
-	Card 1 = Fig. 1C (Fe XI red + Fe XIV green). Card 2 = Fig. 1A (processed white light, 2015 eclipse)
-	as a stand-in for Druckmüller et al. 2014 — replace with a figure from that paper when Danilo has one.
-	Card 3 = Fig. 1D (Fe XI); not a third paper. Confirm a third publication before adding one.
--->
 <section class="home-papers" aria-labelledby="papers-heading">
 	<div class="home-papers-head reveal">
 		<p class="label">Scientific contributions</p>
@@ -82,9 +78,7 @@ const papers = [
 							</span>
 						</a>
 						<p>{paper.text}</p>
-						{'original' in paper && (
-							<p class="home-papers-original">{paper.original}</p>
-						)}
+						<p class="home-papers-original">{paper.original}</p>
 						<a
 							class="cta"
 							href={paper.href}

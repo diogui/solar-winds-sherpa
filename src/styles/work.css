@@ -79,10 +79,6 @@
 	right: 0.75rem;
 	bottom: 0.55rem;
 	margin: 0;
-	font-family: var(--font-display);
-	font-size: 0.58rem;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
 	color: rgb(245 245 243 / 0.72);
 	text-shadow: 0 1px 8px rgb(8 13 20 / 0.65);
 }

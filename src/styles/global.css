@@ -64,6 +64,10 @@
 	/* Shared section kicker — one size/tracking site-wide */
 	--label-size: 0.9rem;
 	--label-tracking: 0.14em;
+	/* Photo / film credits — same type whether overlaid or below the media */
+	--credit-size: 0.55rem;
+	--credit-tracking: 0.1em;
+	--credit-line: 1.35;
 }
 
 *,
@@ -184,6 +188,33 @@ p {
 /* Muted kicker on busy photo heroes when accent would fight the image */
 .label--on-media {
 	color: rgb(245 245 243 / 0.78);
+}
+
+/* Photographer / film credits — keep placement local; share type here */
+.photo-credit,
+.science-credit,
+.home-work-credit,
+.home-latest-credit,
+.about-screen-credit,
+.about-media figcaption,
+.about-montage--trio figcaption,
+.about-people-chat-photo figcaption,
+.about-sharing-media figcaption,
+.about-story-caption,
+.about-people-caption,
+.about-lightbox-caption,
+.exp-screen-credit,
+.exp-hero-credit,
+.exp-processed-credit,
+.exp-next-map-credit,
+.exp-sites-caption,
+.exp-burgos-caption {
+	font-family: var(--font-display);
+	font-size: var(--credit-size);
+	font-weight: 500;
+	letter-spacing: var(--credit-tracking);
+	line-height: var(--credit-line);
+	text-transform: uppercase;
 }
 
 .nav-link {
@@ -1226,6 +1257,9 @@ body:has([data-header-hero]) .site-header[data-variant='page'] {
 .footer-meta {
 	margin: 0;
 	max-width: 38rem;
+	font-size: var(--credit-size);
+	letter-spacing: var(--credit-tracking);
+	line-height: var(--credit-line);
 	text-wrap: pretty;
 }
 

@@ -2,7 +2,6 @@
 import { Image } from 'astro:assets';
 import sun from '../../assets/images/why/sun.jpg';
 import corona from '../../assets/images/why/corona.jpg';
-import prominences from '../../assets/images/why/prominences.jpg';
 
 const frames = [
 	{
@@ -13,15 +12,9 @@ const frames = [
 	},
 	{
 		image: corona,
-		alt: 'Total solar eclipse, with the Moon covering the Sun and the corona glowing around it',
+		alt: 'Total solar eclipse over Exmouth, with the Moon covering the Sun and the corona glowing around it',
 		stage: '1',
 		variant: 'corona',
-	},
-	{
-		image: prominences,
-		alt: 'The Moon’s limb during totality, with pink prominences and a sliver of chromosphere',
-		stage: '2',
-		variant: 'prominences',
 	},
 ] as const;
 ---
@@ -56,14 +49,6 @@ const frames = [
 					<span class="home-why-step-title">Revealed by the Moon</span>
 					<span class="home-why-step-body">
 						During totality, the Moon covers the Sun’s bright disk, revealing the corona around it.
-					</span>
-				</button>
-				<button type="button" class="home-why-step is-locked" data-why-step="2" aria-pressed="false">
-					<span class="home-why-step-index">03</span>
-					<span class="home-why-step-title">A window for science</span>
-					<span class="home-why-step-body">
-						Prominences appear at the Moon’s limb — plasma structures we measure during the few
-						minutes of totality.
 					</span>
 				</button>
 			</div>

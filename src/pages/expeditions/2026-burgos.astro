@@ -68,7 +68,6 @@ import tulinBedel from '../../assets/images/team/tulin-bedel.jpg';
 import zacBailey from '../../assets/images/team/zac-bailey.jpg';
 import ignacioAmigo from '../../assets/images/team/ignacio-amigo.jpg';
 import miloslavDruckmuller from '../../assets/images/team/miloslav-druckmuller.jpg';
-import fotoklubTechnika from '../../assets/images/team/studentsky-fotoklub-technika-brno.jpg';
 import '../../styles/home.css';
 import '../../styles/expedition.css';
 import { burgosFilm } from '../../data/media';
@@ -87,7 +86,6 @@ const fieldBeats = [
 		note: 'Building the camera array',
 		image: fieldAssemble,
 		alt: 'Two researchers assembling a multi-camera instrument array on a wooden table',
-		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
 		position: '50% 45%',
 	},
 	{
@@ -95,7 +93,6 @@ const fieldBeats = [
 		note: 'The field station at Padilla de Abajo',
 		image: fieldCamp,
 		alt: 'Grey observation tents lined up in a dry field under a clear sky',
-		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
 		position: '50% 50%',
 	},
 	{
@@ -103,7 +100,6 @@ const fieldBeats = [
 		note: 'Instruments into the field',
 		image: fieldInstall,
 		alt: 'Team members setting up telescopes and camera rigs in open grassland',
-		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
 		position: '50% 45%',
 	},
 	{
@@ -111,7 +107,6 @@ const fieldBeats = [
 		note: 'Aligning before totality',
 		image: fieldCalibrate,
 		alt: 'A researcher adjusting a large instrument mounted on a tripod',
-		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
 		position: '48% 40%',
 	},
 	{
@@ -119,7 +114,6 @@ const fieldBeats = [
 		note: 'Setup on Pico Trigaza',
 		image: fieldRidge,
 		alt: 'Multi-telescope instrument array on the rocky ridge at Pico Trigaza',
-		caption: 'Pico Trigaza · Václav Široký',
 		position: '50% 45%',
 	},
 	{
@@ -127,7 +121,6 @@ const fieldBeats = [
 		note: 'Work under red light',
 		image: fieldNight,
 		alt: 'Researchers working on instruments at night under deep red light',
-		caption: 'Pico Trigaza · Václav Široký',
 		position: '50% 50%',
 	},
 	{
@@ -135,7 +128,6 @@ const fieldBeats = [
 		note: 'Checking the first frames',
 		image: fieldData,
 		alt: 'Laptop on a wooden table showing a processed image of the solar corona',
-		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
 		position: '50% 50%',
 	},
 	{
@@ -143,7 +135,6 @@ const fieldBeats = [
 		note: 'At the instrument',
 		image: fieldObserve,
 		alt: 'A researcher looking through a large white scientific instrument in the field',
-		caption: 'Padilla de Abajo · Santiago Marrodán Ciordia',
 		position: '50% 40%',
 	},
 ] as const;
@@ -154,7 +145,6 @@ const siteLeads = [
 		label: 'Padilla de Abajo',
 		image: burgosFieldWide,
 		alt: 'Wide view of the Padilla de Abajo observing site with tents and people',
-		credit: 'Santiago Marrodán Ciordia',
 		position: '50% 50%',
 	},
 	{
@@ -162,7 +152,6 @@ const siteLeads = [
 		label: 'Pico Trigaza',
 		image: burgosTrigazaSummit,
 		alt: 'Rocky summit at Pico Trigaza with radio towers and a stone building',
-		credit: 'Martin Šebek',
 		position: '50% 42%',
 	},
 ] as const;
@@ -513,7 +502,7 @@ const trigazaTeam = [
 	{ name: 'Zuzana Druckmüllerova' },
 	{
 		name: 'Studentský Fotoklub Technika Brno',
-		photo: fotoklubTechnika,
+		photo: burgosVan,
 		photoClass: 'exp-team-photo--fotoklub',
 		note: 'Student photography club',
 		href: fotoklubInstagram,
@@ -522,9 +511,9 @@ const trigazaTeam = [
 ] as const;
 
 const nextPlaces = [
-	{ label: 'Spain', status: 'Betis, Andalucía', note: 'Totality ~1 min 57 s' },
-	{ label: 'Tunisia', status: 'El Lousa', note: 'Totality ~5 min' },
-	{ label: 'Egypt', status: 'Luxor', note: 'Totality ~6 min 22 s · near greatest eclipse' },
+	{ label: 'Spain', status: 'Betis', note: 'Totality 4 min 30 s' },
+	{ label: 'Tunisia', status: 'El Louza', note: 'Totality 5 min 04 s' },
+	{ label: 'Egypt', status: 'Luxor', note: 'Totality 6 min 22 s · near greatest eclipse' },
 ] as const;
 
 const druckArchive = 'http://www.zam.fme.vutbr.cz/~druck/Eclipse/Ecl2026s/0-info.htm';
@@ -669,7 +658,7 @@ const podcastDefault = podcast.languages[0];
 			</div>
 
 			<div class="exp-gallery-head">
-				<p class="exp-gallery-note">Filter by site.</p>
+				<p class="exp-gallery-note">Filter by site</p>
 				<div class="exp-gallery-toolbar" role="group" aria-label="Filter photographs by site">
 					<button type="button" class="exp-site-btn" data-gallery-filter="all" aria-pressed="true">
 						All
@@ -757,7 +746,7 @@ const podcastDefault = podcast.languages[0];
 								type="button"
 								class="exp-field-shot-open"
 								data-lightbox-trigger
-								aria-label={`View larger: ${beat.label}. ${beat.caption}`}
+								aria-label={`View larger: ${beat.label}. ${beat.note}`}
 							>
 								<Image
 									src={beat.image}
@@ -771,10 +760,10 @@ const podcastDefault = podcast.languages[0];
 							<figcaption>
 								<strong>{beat.label}</strong>
 								<span>{beat.note}</span>
-								<span class="exp-field-credit" data-lightbox-caption-text>
-									{beat.caption}
-								</span>
 							</figcaption>
+							<span class="visually-hidden" data-lightbox-caption-text>
+								{beat.label}. {beat.note}
+							</span>
 						</figure>
 					))
 				}
@@ -925,6 +914,7 @@ const podcastDefault = podcast.languages[0];
 		{
 			hasFull && (
 				<section class="exp-block exp-film exp-open" id="film" aria-labelledby="film-heading">
+					<div class="exp-film-panel">
 					<div class="page-narrow exp-film-copy">
 						<p class="label">The film</p>
 						<h2 id="film-heading">A film from Padilla de Abajo.</h2>
@@ -1016,6 +1006,7 @@ const podcastDefault = podcast.languages[0];
 							</div>
 						</div>
 						<p class="exp-hero-credit">Film by Santiago Marrodán Ciordia</p>
+					</div>
 					</div>
 				</section>
 			)
