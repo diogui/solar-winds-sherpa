@@ -27,16 +27,19 @@ import { latestExpeditionHref } from '../data/site';
 const expeditionTeamHref = `${latestExpeditionHref}#team`;
 
 /**
- * Field voices — edited from published Sherpa anecdotes for Danilo / Shadia review.
+ * Field voices — short hooks from published Sherpa anecdotes.
+ * Full texts stay on the IFA anecdotes page (linked below); we don’t republish them here.
  * Source: https://project.ifa.hawaii.edu/solarwindsherpas/the-solar-wind-sherpas/anecdotes/
- * Do not ship publicly without permission to reuse.
  * Layout: one hook line + one short note per moment (scannable, not dense prose).
  */
+const fieldAnecdotesUrl =
+	'https://project.ifa.hawaii.edu/solarwindsherpas/the-solar-wind-sherpas/anecdotes/';
+
 const fieldMoments = [
 	{
 		place: 'Svalbard, Norway · 2015',
 		hook: 'The entire world around us disappeared. It was just us and the eclipse.',
-		note: '1°F on the ice — feels like −16°F. Someone shouted “First contact!” Then darkness, the corona, and a silence after the cheer.',
+		note: '1°F on the ice, feels like −16°F. Someone shouted “First contact!” Then darkness, the corona, and a silence after the cheer.',
 		attribution: 'Naty Alzate',
 	},
 	{
@@ -344,15 +347,28 @@ const peopleGallery = [
 					))
 				}
 			</div>
+
+			<div class="page-narrow about-voices-more">
+				<a
+					class="cta"
+					href={fieldAnecdotesUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Read the full field stories
+					<span class="cta-arrow" aria-hidden="true">→</span>
+				</a>
+			</div>
 		</section>
 
 		<section class="about-block about-people-chat" id="people" aria-labelledby="people-heading">
 			<div class="page-narrow">
 				<h2 id="people-heading">The People Behind the Sherpas</h2>
 				<p>
-					The team changes from one expedition to the next. Each campaign brings together the
-					scientists, engineers and observers needed for its instruments and observing sites. Between
-					eclipses, work continues through instrument preparation, data processing and scientific
+					The team changes from one expedition to the next, but a stable core remains throughout. Each
+					campaign adds the scientists, engineers and observers needed for its instruments and
+					observing sites, working alongside this permanent group. Between eclipses, the core team
+					keeps the work going through instrument preparation, data processing and scientific
 					analysis.
 				</p>
 			</div>
@@ -426,7 +442,7 @@ const peopleGallery = [
 						communities we meet.
 					</p>
 				</header>
-				<WorkCards outreachHref={false} hideCredits />
+				<WorkCards hideCredits />
 			</div>
 		</section>
 

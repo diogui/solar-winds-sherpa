@@ -1292,6 +1292,16 @@ article.page.about.about--chat h1 {
 	text-transform: uppercase;
 }
 
+.about-voices-more {
+	margin-top: 2rem;
+}
+
+.about-voices-more .cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+
 .about-montage--trio {
 	display: grid;
 	grid-template-columns: 1.2fr 1fr 1fr;
