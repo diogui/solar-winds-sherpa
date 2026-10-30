@@ -6,12 +6,13 @@ import outreachPhoto from '../assets/images/work/outreach.jpg';
 import { homeOnlyPreview, latestExpeditionHref } from '../data/site';
 
 interface Props {
+	/** Outreach CTA target — Contact by default (Danilo). Pass false to hide the link. */
 	outreachHref?: string | false;
 	/** Hide photographer credits under card photos (About feedback). */
 	hideCredits?: boolean;
 }
 
-const { outreachHref = '/about#actions', hideCredits = false } = Astro.props;
+const { outreachHref = '#contact', hideCredits = false } = Astro.props;
 
 const fronts = [
 	{
@@ -36,7 +37,7 @@ const fronts = [
 		title: 'Education & Outreach',
 		text: 'We share eclipse science with communities where our expeditions take us. Through talks and educational activities, we explain what happens during an eclipse, introduce our research and help people understand how to observe the event safely.',
 		href: outreachHref || undefined,
-		cta: 'Discover our outreach',
+		cta: 'Contact us',
 		image: outreachPhoto,
 		alt: 'An evening public talk in a village square, with a lunar eclipse projected for the audience',
 		variant: 'outreach',

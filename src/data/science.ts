@@ -32,7 +32,9 @@ export type ScienceImage =
 	| 'boe-fig1'
 	| 'fe-composite'
 	| 'druckmuller-2014'
-	| 'corona-trigaza';
+	| 'boe-2018-fig1a'
+	| 'boe-2018-fig1c'
+	| 'corona-trigaza'
 
 export const hero = {
 	image: 'padilla-2026' as ScienceImage,
@@ -127,6 +129,8 @@ export const instruments = [
 		caption: 'Spectrometer and camera tubes aimed for totality.',
 		credit: 'Padilla de Abajo, Spain, 2026',
 		position: '62% 48%',
+		/** Temporary review note — current photo is not a spectrometer; ask Shadia for a replacement. */
+		replaceLabel: 'Replace by a Spectrometer',
 		measures:
 			'The profiles of those same iron lines, with spectrometers designed to be carried on expeditions. The width of a line reflects thermal and non-thermal motions; a Doppler shift measures bulk motion of the plasma, including in eruptions.',
 		question: 'How the corona is heated, and how plasma moves as it expands or erupts.',
@@ -234,12 +238,12 @@ export const publications: Publication[] = [
 		href: 'https://doi.org/10.3847/1538-4357/ae2ec7',
 		fullTextHref: 'https://arxiv.org/pdf/2601.10818',
 		fullTextLabel: 'Full text',
-		image: 'corona-trigaza',
+		image: 'padilla-2026',
 		imageAlt:
-			'Processed white-light image of the solar corona from Pico Trigaza during the 2026 eclipse, showing fine streamers around the Moon',
+			'Processed white-light image of the entire solar corona from Padilla de Abajo during the 2026 eclipse, with pink prominences along the Moon’s limb',
 		imageCaption:
-			'White-light eclipse imaging of the corona — the class of observations used to study fine structure and its evolution.',
-		imageCredit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Václav Široký · Pico Trigaza',
+			'White-light eclipse imaging of the corona — the class of observations used to study fine structure and its evolution outward.',
+		imageCredit: '© 2026 Miloslav Druckmüller, Shadia Habbal, Zachary Bailey, Tülin Bedel · Padilla',
 	},
 	{
 		id: 'druckmuller-2014',
@@ -258,10 +262,10 @@ export const publications: Publication[] = [
 		href: 'https://doi.org/10.1088/0004-637X/785/1/14',
 		image: 'druckmuller-2014',
 		imageAlt:
-			'Processed white-light image of the solar corona from the 11 July 2010 total eclipse at Tatakoto, showing fine streamers and structure around the Moon',
+			'High-resolution processed white-light corona from the 11 July 2010 total eclipse at Tatakoto, showing fine streamers, polar plumes and a prominence',
 		imageCaption:
-			'High-resolution white-light corona from the 11 July 2010 eclipse at Tatakoto — the same campaign illustrated in the paper.',
-		imageCredit: '© Miloslav Druckmüller · Tatakoto, 2010',
+			'Processed white-light corona from the 11 July 2010 Tatakoto eclipse — the campaign illustrated in Figure 1 of the paper.',
+		imageCredit: '© 2010 Miloslav Druckmüller, Martin Dietzel, Shadia Habbal, Vojtech Rušin',
 	},
 	{
 		id: 'boe-2018',
@@ -282,12 +286,12 @@ export const publications: Publication[] = [
 		href: 'https://doi.org/10.3847/1538-4357/aabfb7',
 		fullTextHref: 'https://arxiv.org/pdf/1805.03211',
 		fullTextLabel: 'Full text',
-		image: 'fe-composite',
+		image: 'boe-2018-fig1a',
 		imageAlt:
-			'Composite eclipse image of the solar corona, with Fe XI shown in red and Fe XIV shown in green',
+			'Processed white-light image of the solar corona from the 2015 total eclipse, with pink prominences on the Moon’s limb',
 		imageCaption:
-			'Fe XI is shown in red and Fe XIV in green. Both are display colors, explained above. The dark corner is the edge of the frame, not a feature of the Sun.',
-		imageCredit: 'Boe et al. 2018, The Astrophysical Journal, Figure 1C',
+			'Processed white-light corona from the 2015 eclipse — Figure 1A of the paper, the same campaign used for the iron freeze-in analysis.',
+		imageCredit: 'Boe et al. 2018, The Astrophysical Journal, Figure 1A',
 	},
 ];
 

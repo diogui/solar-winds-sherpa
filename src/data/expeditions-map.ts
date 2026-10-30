@@ -48,7 +48,7 @@ export const expeditionSites: ExpeditionSite[] = [
 	{ id: '2026-iceland', n: 21, year: 2026, date: '12 August 2026', place: 'Iceland', lat: 65.502, lng: -24.367, totality: '2 min 13 s', status: 'past' },
 	{ id: '2026-spain', n: 21, year: 2026, date: '12 August 2026', place: 'Spain', lat: 42.34, lng: -3.7, totality: '1 min 44 s', status: 'past' },
 	{ id: '2027-egypt', n: 22, year: 2027, date: '2 August 2027', place: 'Luxor, Egypt', lat: 25.69, lng: 32.64, totality: '6 min 22 s', status: 'upcoming' },
-	{ id: '2027-spain', n: 22, year: 2027, date: '2 August 2027', place: 'Betis, Spain', lat: 36.25, lng: -5.95, totality: '4 min 30 s', status: 'upcoming' },
+	{ id: '2027-spain', n: 22, year: 2027, date: '2 August 2027', place: 'Andalucía, Spain', lat: 36.25, lng: -5.95, totality: '4 min 30 s', status: 'upcoming' },
 	{ id: '2027-tunisia', n: 22, year: 2027, date: '2 August 2027', place: 'El Louza, Tunisia', lat: 34.65, lng: 10.7, totality: '5 min 04 s', status: 'upcoming' },
 	{ id: '2028-australia', n: 23, year: 2028, date: '22 July 2028', place: 'Australia', lat: -15.7, lng: 129.0, totality: '5 min 10 s', status: 'upcoming' },
 	{ id: '2030-south-africa', n: 24, year: 2030, date: '25 November 2030', place: 'South Africa', lat: -28.5, lng: 24.8, totality: '2 min 20 s', status: 'upcoming' },
