@@ -1,0 +1,24 @@
+Solar Wind Sherpas — logos (Out 2026)
+
+01-lockup-white-transparent.png
+  Anel a cores + texto SOLAR WIND SHERPAS branco, fundo transparente.
+  Uso: fundos escuros (site, vídeo, slides escuros).
+  Fonte: teu export Canva + remoção de fundo Canva.
+
+02-lockup-dark-text-transparent.png
+  Lockup com texto escuro, fundo transparente.
+  Uso: fundos claros.
+
+03-mark-color-transparent.png
+  Só o anel a cores, fundo transparente.
+
+04-mark-white-transparent.png
+  Só o anel claro/mono, fundo transparente.
+
+05-mark-color-alt-transparent.png
+  Variante do anel a cores, fundo transparente.
+
+06-mark-color-on-black.png
+  Anel a cores sobre preto (artboard original).
+
+Nota: o .ai/.pdf do Danilo não traz PNG nativo sem fundo; os *-transparent foram gerados a partir desses ficheiros / Canva.
