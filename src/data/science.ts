@@ -14,7 +14,7 @@
  * 4. Pipeline / who does what — wait for Shadia.
  * 5. Featured papers: Habbal et al. 2026, Druckmüller et al. 2014, Boe et al. 2018.
  *    Further papers (Habbal 2010, 2011, 2014; Ding & Habbal 2017) from the IFA archive.
- * 6. What comes next / funding ask — still open (marked “(To be confirmed)” on page).
+ * 6. What comes next / funding ask — still open.
  */
 
 import { latestExpeditionHref } from './site';
