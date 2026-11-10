@@ -1,0 +1,42 @@
+---
+import Eclipse2027Map from './Eclipse2027Map.astro';
+import '../styles/expedition-2027.css';
+
+interface Props {
+	sectionId?: string;
+	headingId?: string;
+}
+
+const { sectionId = 'expedition-2027', headingId = 'expedition-2027-heading' } = Astro.props;
+
+const nextPlaces = [
+	{ label: 'Spain', status: 'Andalucía', note: 'Totality 4 min 30 s' },
+	{ label: 'Tunisia', status: 'El Louza', note: 'Totality 5 min 04 s' },
+	{ label: 'Egypt', status: 'Luxor', note: 'Totality 6 min 22 s · near greatest eclipse' },
+] as const;
+---
+
+<section class="exp-next" id={sectionId} aria-labelledby={headingId}>
+	<div class="exp-next-panel">
+		<div class="exp-next-copy">
+			<p class="label">Expedition 2027</p>
+			<h2 id={headingId}>2 August 2027.</h2>
+			<p class="exp-next-lead">
+				The next campaign follows the path of totality from southern Spain across North Africa to Egypt
+				— three sites where the Sherpas will be in the field.
+			</p>
+			<ul class="exp-next-places">
+				{
+					nextPlaces.map((place) => (
+						<li>
+							<span class="exp-next-place-country">{place.label}</span>
+							<span class="exp-next-place-site">{place.status}</span>
+							<span class="exp-next-status">{place.note}</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<Eclipse2027Map />
+	</div>
+</section>
